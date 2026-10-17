@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Govt. Exam Photo & Signature Resizer | DamnResize.in</title>
+ <script src="https://cdn.tailwindcss.com"></script>
+ <script>
+ tailwind.config = {
+ darkMode: 'class',
+ theme: {
+ extend: {
+ colors: {
+ dark: {
+ 900: '#0b0f19',
+ 800: '#1e293b',
+ 700: '#334155'
+ }
+ }
+ }
+ }
+ }
+ </script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+ 
+ <!-- Navbar -->
+ <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-3">
+ <div class="max-w-7xl mx-auto flex justify-between items-center relative">
+ <!-- Left: Logo -->
+ <div class="flex items-center">
+ <a href="index.html" class="flex items-center group">
+ <img src="damnresize-v4-dark.png" alt="DamnResize.in Logo" class="h-14 md:h-16 w-auto object-contain group-hover:scale-105 transition">
+ </a>
+ </div>
+ 
+ <!-- Center: Navigation Elements -->
+ <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300 absolute left-1/2 -translate-x-1/2">
+ <a href="index.html" class="hover:text-indigo-400 transition">Home</a>
+ <a href="index.html#tools" class="hover:text-indigo-400 transition">All Utilities</a>
+ <a href="exams.html" class="text-indigo-400 font-semibold transition">Govt Exams</a>
+ </nav>
+ 
+ <!-- Right: Get Started Button -->
+ <div class="flex items-center">
+ <a href="#tool-section" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-lg shadow-indigo-500/20">Get Started</a>
+ </div>
+ </div>
+ </header>
+ 
+ <!-- Main Content -->
+ <main class="flex-grow max-w-6xl mx-auto px-4 py-10 w-full" id="tool-section">
+ 
+ <!-- Page Title -->
+ <div class="text-center mb-10">
+ <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent mb-3">
+ Sarkari Exam Photo & Signature Resizer
+ </h1>
+ <p class="text-slate-400 text-sm md:text-base max-w-2xl mx-auto">
+ Select your target exam below. The exact dimensions and KB limits will load automatically. Upload your files side-by-side and get them ready instantly!
+ </p>
+ </div>
+ 
+ <!-- Exam Selector Card -->
+ <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8 shadow-xl">
+ <label for="examSelect" class="block text-sm font-medium text-slate-300 mb-2">Select Target Examination:</label>
+ <select id="examSelect" onchange="updateExamRequirements()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-indigo-500 transition text-base">
+ <option value="ssc">SSC (CGL, CHSL, MTS, GD) - Standard Photo & Signature</option>
+ <option value="ibps">Banking (IBPS PO, Clerk, SBI)</option>
+ <option value="upsc">UPSC Civil Services / NDA / CDS</option>
+ <option value="uppolice">UP Police Constable & SI / UPSSSC PET</option>
+ </select>
+ <div id="examInfo" class="mt-4 text-xs text-indigo-300 bg-indigo-950/40 border border-indigo-900/50 rounded-xl p-3">
+ <!-- Dynamic requirements text will appear here -->
+ </div>
+ </div>
+ 
+ <!-- Side-by-Side Workspace -->
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+ 
+ <!-- LEFT: Photo Box -->
+ <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
+ <div>
+ <div class="flex justify-between items-center mb-4">
+ <h2 class="text-lg font-bold text-slate-200 flex items-center gap-2">
+ <span>📷</span> Passport Size Photo
+ </h2>
+ <span id="photoReqBadge" class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full font-mono">20KB - 50KB</span>
+ </div>
+ 
+ <!-- Dropzone / Upload -->
+ <div class="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-xl p-6 text-center cursor-pointer transition bg-slate-950/50 relative mb-4" onclick="document.getElementById('photoInput').click()">
+ <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'photo')">
+ <div id="photoPlaceholder">
+ <p class="text-sm text-slate-400 mb-1">Click to upload or drag & drop photo</p>
+ <p class="text-xs text-slate-500">JPG, JPEG or PNG</p>
+ </div>
+ <div id="photoPreviewContainer" class="hidden flex flex-col items-center">
+ <img id="photoPreview" class="max-h-40 object-contain rounded-lg mb-2 border border-slate-700">
+ <p id="photoMeta" class="text-xs text-slate-400 font-mono"></p>
+ </div>
+ </div>
+ </div>
+ 
+ <div>
+ <button onclick="processImage('photo')" id="photoBtn" disabled class="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 disabled:text-slate-600 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-indigo-500/20">
+ Process & Download Photo
+ </button>
+ </div>
+ </div>
+ 
+ <!-- RIGHT: Signature Box -->
+ <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
+ <div>
+ <div class="flex justify-between items-center mb-4">
+ <h2 class="text-lg font-bold text-slate-200 flex items-center gap-2">
+ <span>✍️</span> Candidate Signature
+ </h2>
+ <span id="sigReqBadge" class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full font-mono">10KB - 20KB</span>
+ </div>
+ 
+ <!-- Dropzone / Upload -->
+ <div class="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-xl p-6 text-center cursor-pointer transition bg-slate-950/50 relative mb-4" onclick="document.getElementById('sigInput').click()">
+ <input type="file" id="sigInput" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'sig')">
+ <div id="sigPlaceholder">
+ <p class="text-sm text-slate-400 mb-1">Click to upload or drag & drop signature</p>
+ <p class="text-xs text-slate-500">JPG, JPEG or PNG</p>
+ </div>
+ <div id="sigPreviewContainer" class="hidden flex flex-col items-center">
+ <img id="sigPreview" class="max-h-40 object-contain rounded-lg mb-2 border border-slate-700 bg-white p-1">
+ <p id="sigMeta" class="text-xs text-slate-400 font-mono"></p>
+ </div>
+ </div>
+ </div>
+ 
+ <div>
+ <button onclick="processImage('sig')" id="sigBtn" disabled class="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 disabled:text-slate-600 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-indigo-500/20">
+ Process & Download Signature
+ </button>
+ </div>
+ </div>
+ 
+ </div>
+ </main>
+ 
+ <!-- Footer -->
+ <footer class="border-t border-slate-800 bg-slate-900/40 text-center py-6 text-xs text-slate-500 mt-12">
+ <p>&copy; 2026 DamnResize.in. All rights reserved. Built for Indian Exam Aspirants.</p>
+ </footer>
+ 
+ <!-- Processing Script -->
+ <script>
+ const examConfigs = {
+ ssc: {
+ name: "Staff Selection Commission (SSC)",
+ photo: { minKb: 20, maxKb: 50, width: 200, height: 230, text: "Photo: 20 KB - 50 KB | 3.5cm x 4.5cm" },
+ sig: { minKb: 10, maxKb: 20, width: 140, height: 60, text: "Signature: 10 KB - 20 KB | 4.0cm x 2.0cm" }
+ },
+ ibps: {
+ name: "Banking (IBPS & SBI)",
+ photo: { minKb: 20, maxKb: 50, width: 200, height: 230, text: "Photo: 20 KB - 50 KB | 200x230 px" },
+ sig: { minKb: 10, maxKb: 20, width: 140, height: 60, text: "Signature: 10 KB - 20 KB | 140x60 px" }
+ },
+ upsc: {
+ name: "UPSC Civil Services / NDA",
+ photo: { minKb: 20, maxKb: 300, width: 350, height: 350, text: "Photo: 20 KB - 300 KB | 350x350 px" },
+ sig: { minKb: 20, maxKb: 300, width: 350, height: 350, text: "Signature: 20 KB - 300 KB | 350x350 px" }
+ },
+ uppolice: {
+ name: "UP Police & UPSSSC PET",
+ photo: { minKb: 20, maxKb: 50, width: 200, height: 230, text: "Photo: 20 KB - 50 KB | 3.5cm x 4.5cm" },
+ sig: { minKb: 5, maxKb: 20, width: 140, height: 60, text: "Signature: 5 KB - 20 KB | 3.5cm x 1.5cm" }
+ }
+ };
+ 
+ let rawFiles = { photo: null, sig: null };
+ 
+ function updateExamRequirements() {
+ const val = document.getElementById('examSelect').value;
+ const cfg = examConfigs[val];
+ document.getElementById('examInfo').innerHTML = `<strong>Selected:</strong> ${cfg.name}<br>• ${cfg.photo.text}<br>• ${cfg.sig.text}`;
+ document.getElementById('photoReqBadge').innerText = `${cfg.photo.minKb}KB - ${cfg.photo.maxKb}KB`;
+ document.getElementById('sigReqBadge').innerText = `${cfg.sig.minKb}KB - ${cfg.sig.maxKb}KB`;
+ }
+ 
+ // Initialize info on load
+ window.onload = updateExamRequirements;
+ 
+ function handleImageUpload(event, type) {
+ const file = event.target.files[0];
+ if (!file) return;
+ rawFiles[type] = file;
+ 
+ const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById(`${type}Placeholder`).classList.add('hidden');
+                const previewContainer = document.getElementById(`${type}PreviewContainer`);
+                previewContainer.classList.remove('hidden');
+                
+                const previewImg = document.getElementById(`${type}Preview`);
+                previewImg.src = e.target.result;
+ 
+                const sizeKb = (file.size / 1024).toFixed(1);
+                document.getElementById(`${type}Meta`).innerText = `${file.name} (${sizeKb} KB)`;
+                
+                // Enable button
+                document.getElementById(`${type}Btn`).disabled = false;
+            }
+            reader.readAsDataURL(file);
+        }
+ 
+        function processImage(type) {
+            const file = rawFiles[type];
+            if (!file) return;
+ 
+            const examVal = document.getElementById('examSelect').value;
+            const cfg = examConfigs[examVal][type];
+ 
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                canvas.width = cfg.width;
+                canvas.height = cfg.height;
+                const ctx = canvas.getContext('2d');
+                
+                // Draw resized image
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, cfg.width, cfg.height);
+ 
+                // Compress iteratively to target KB
+                let quality = 0.90;
+                let dataUrl = canvas.toDataURL('image/jpeg', quality);
+ 
+                // Binary search/loop to hit target maxKb roughly
+                let attempts = 0;
+                while (dataUrl.length * 0.75 > cfg.maxKb * 1024 && quality > 0.1 && attempts < 10) {
+                    quality -= 0.1;
+                    dataUrl = canvas.toDataURL('image/jpeg', quality);
+                    attempts++;
+                }
+ 
+                // Trigger download
+                const link = document.createElement('a');
+                link.download = `ready_${type}_${examVal}.jpg`;
+                link.href = dataUrl;
+                link.click();
+            }
+            img.src = URL.createObjectURL(file);
+        }
+    </script>
+</body>
+</html>
