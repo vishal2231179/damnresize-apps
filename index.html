@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DamnResize.in - Ultimate Image Toolkit</title>
+    <title>DamnResize.in - Ultimate Image Toolkit & Compressor</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -29,12 +29,12 @@
     <section class="py-16 px-6 text-center bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-900">
         <div class="max-w-4xl mx-auto">
             <span class="inline-block bg-indigo-500/10 text-indigo-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-4 border border-indigo-500/20">⚡ Lightning Fast & Secure Utility Hub</span>
-            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">Resize, Crop, Compress & Convert <span class="bg-gradient-to-r from-indigo-400 to-pink-500 bg-clip-text text-transparent">Like a Boss.</span></h1>
-            <p class="text-slate-400 text-base md:text-lg mb-8 max-w-2xl mx-auto">The ultimate platform for fast image processing. Resize photos, compress files, and convert formats instantly inside your browser.</p>
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">Resize, Compress & Convert <span class="bg-gradient-to-r from-indigo-400 to-pink-500 bg-clip-text text-transparent">Like a Boss.</span></h1>
+            <p class="text-slate-400 text-base md:text-lg mb-8 max-w-2xl mx-auto">The ultimate platform for fast image processing. Resize photos, target precise KB/MB sizes, and convert formats instantly.</p>
         </div>
     </section>
 
-    <!-- Main Functional Tool Section -->
+    <!-- Main Functional Tool Section with KB/MB UI -->
     <section id="tool" class="py-12 px-6 max-w-3xl mx-auto w-full">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
             <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -42,7 +42,7 @@
             <h2 class="text-2xl font-bold mb-2 flex items-center gap-2">
                 <i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i> Quick Image Resizer & Compressor
             </h2>
-            <p class="text-slate-400 text-sm mb-6">Upload your image, adjust dimensions, and download instantly.</p>
+            <p class="text-slate-400 text-sm mb-6">Upload your image, check file sizes, customize dimensions & KB target, and download.</p>
             
             <!-- File Input -->
             <div class="mb-6">
@@ -50,33 +50,62 @@
                 <input type="file" id="imageInput" accept="image/*" class="block w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer border border-slate-700 rounded-xl bg-slate-950 p-2"/>
             </div>
 
-            <!-- Dimension Controls -->
-            <div id="controlsSection" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 hidden">
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">Width (px)</label>
-                    <input type="number" id="widthInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500"/>
+            <!-- Image Info & Controls (Hidden until upload) -->
+            <div id="editorWorkspace" class="hidden space-y-6">
+                
+                <!-- Live File Stats Card (KB/MB display) -->
+                <div class="grid grid-cols-2 gap-4 bg-slate-950 border border-slate-800 p-4 rounded-2xl text-center">
+                    <div>
+                        <p class="text-xs text-slate-400 mb-1">Original Size</p>
+                        <p id="originalSizeText" class="text-lg font-bold text-amber-400">0 KB</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 mb-1">Estimated Output Size</p>
+                        <p id="outputSizeText" class="text-lg font-bold text-emerald-400">0 KB</p>
+                    </div>
                 </div>
+
+                <!-- Dimension Controls -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Width (px)</label>
+                        <input type="number" id="widthInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500"/>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Height (px)</label>
+                        <input type="number" id="heightInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500"/>
+                    </div>
+                </div>
+
+                <!-- Compression Quality Slider -->
                 <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">Height (px)</label>
-                    <input type="number" id="heightInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500"/>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-slate-300 font-medium">Compression Quality</span>
+                        <span id="qualityVal" class="text-indigo-400 font-bold">90%</span>
+                    </div>
+                    <input type="range" id="qualityRange" min="10" max="100" value="90" class="w-full accent-indigo-500 cursor-pointer"/>
+                </div>
+
+                <!-- Preview Box -->
+                <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-2xl p-6 bg-slate-950/50 min-h-[200px]">
+                    <img id="imagePreview" class="max-h-64 rounded-lg shadow-md mb-4" alt="Preview"/>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button id="resizeBtn" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-6 rounded-xl transition shadow-lg shadow-indigo-600/20">Process & Apply</button>
+                    <a id="downloadBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl text-center transition shadow-lg shadow-emerald-600/20" download="damnresize_output.jpg"><i class="fa-solid fa-download mr-2"></i>Download Compressed Image</a>
                 </div>
             </div>
 
-            <!-- Preview Box -->
-            <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-2xl p-6 mb-6 bg-slate-950/50 min-h-[200px]">
-                <img id="imagePreview" class="max-h-64 rounded-lg shadow-md hidden mb-4" alt="Preview"/>
-                <p id="placeholderText" class="text-slate-500 text-sm"><i class="fa-regular fa-image mr-2"></i>Preview will appear here after selecting an image</p>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4">
-                <button id="resizeBtn" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-6 rounded-xl transition shadow-lg shadow-indigo-600/20 hidden">Process & Resize</button>
-                <a id="downloadBtn" class="hidden flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl text-center transition shadow-lg shadow-emerald-600/20" download="resized_image.jpg"><i class="fa-solid fa-download mr-2"></i>Download Image</a>
+            <!-- Placeholder Box when no image -->
+            <div id="placeholderBox" class="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-2xl p-6 bg-slate-950/50 min-h-[200px]">
+                <p class="text-slate-500 text-sm"><i class="fa-regular fa-image mr-2 text-lg block mb-2"></i>Preview and file size stats will appear here after selecting an image</p>
             </div>
         </div>
     </section>
 
-    <!-- Professional Categories & Cards Grid Section -->
+    <!-- Professional Categories Grid Section -->
     <section id="tools" class="py-16 px-6 max-w-7xl mx-auto w-full">
         <div class="text-center mb-12">
             <h2 class="text-3xl font-bold tracking-tight mb-3">Explore All Utility Tools</h2>
@@ -84,95 +113,26 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            <!-- Card 1: Image Resizer -->
             <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
                 <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-expand text-xl"></i></div>
                 <h3 class="text-lg font-semibold mb-2">Image Resizer</h3>
-                <p class="text-slate-400 text-sm mb-4">Resize JPG, PNG or WebP images by exact dimensions or percentage.</p>
-                <ul class="text-xs text-slate-500 space-y-1">
-                    <li>• Bulk Resize</li>
-                    <li>• Resize PNG / JPG / WebP</li>
-                </ul>
+                <p class="text-slate-400 text-sm mb-4">Resize JPG, PNG or WebP images by exact dimensions.</p>
             </div>
-
-            <!-- Card 2: Crop Image -->
             <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
                 <div class="w-12 h-12 bg-pink-500/10 rounded-xl flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-crop text-xl"></i></div>
                 <h3 class="text-lg font-semibold mb-2">Crop Image</h3>
-                <p class="text-slate-400 text-sm mb-4">Trim unwanted edges and focus on the core subject easily.</p>
-                <ul class="text-xs text-slate-500 space-y-1">
-                    <li>• Crop PNG & WebP</li>
-                    <li>• Custom Aspect Ratios</li>
-                </ul>
+                <p class="text-slate-400 text-sm mb-4">Trim unwanted edges and focus on the core subject.</p>
             </div>
-
-            <!-- Card 3: Image Compressor -->
             <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
                 <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-compress text-xl"></i></div>
                 <h3 class="text-lg font-semibold mb-2">Image Compressor</h3>
-                <p class="text-slate-400 text-sm mb-4">Reduce file size in KBs without losing quality for web portals.</p>
-                <ul class="text-xs text-slate-500 space-y-1">
-                    <li>• Compress JPEG & PNG</li>
-                    <li>• Target KB Size Control</li>
-                </ul>
+                <p class="text-slate-400 text-sm mb-4">Reduce file size in KBs without losing quality.</p>
             </div>
-
-            <!-- Card 4: Format Converter -->
             <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
                 <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center text-amber-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-file-arrow-down text-xl"></i></div>
                 <h3 class="text-lg font-semibold mb-2">Format Converter</h3>
-                <p class="text-slate-400 text-sm mb-4">Convert images seamlessly between popular and modern formats.</p>
-                <ul class="text-xs text-slate-500 space-y-1">
-                    <li>• HEIC to JPG</li>
-                    <li>• WebP to PNG / JPG</li>
-                </ul>
+                <p class="text-slate-400 text-sm mb-4">Convert seamlessly between popular modern formats.</p>
             </div>
-
-            <!-- Card 5: AI Tools -->
-            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
-                <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-wand-magic-sparkles text-xl"></i></div>
-                <h3 class="text-lg font-semibold mb-2">AI Tools</h3>
-                <p class="text-slate-400 text-sm mb-4">Advanced AI utilities for quick background edits and image fixes.</p>
-                <ul class="text-xs text-slate-500 space-y-1">
-                    <li>• Remove Background</li>
-                    <li>• AI Upscaler & Enhancer</li>
-                </ul>
-            </div>
-
-            <!-- Card 6: Utility Extras -->
-            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
-                <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-toolbox text-xl"></i></div>
-                <h3 class="text-lg font-semibold mb-2">Utility Toolkit</h3>
-                <p class="text-slate-400 text-sm mb-4">Handy little web utilities for everyday editing tasks.</p>
-                <ul class="text-xs text-slate-500 space-y-1">
-                    <li>• Color Picker & Meme Gen</li>
-                    <li>• Rotate & Flip Image</li>
-                </ul>
-            </div>
-
-            <!-- Card 7: Bulk Processing -->
-            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
-                <div class="w-12 h-12 bg-rose-500/10 rounded-xl flex items-center justify-center text-rose-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-layer-group text-xl"></i></div>
-                <h3 class="text-lg font-semibold mb-2">Bulk Processing</h3>
-                <p class="text-slate-400 text-sm mb-4">Process multiple images simultaneously to save time.</p>
-                <ul class="text-xs text-slate-500 space-y-1">
-                    <li>• Multi-file Upload</li>
-                    <li>• Zip Download</li>
-                </ul>
-            </div>
-
-            <!-- Card 8: Secure & Private -->
-            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
-                <div class="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-shield-halved text-xl"></i></div>
-                <h3 class="text-lg font-semibold mb-2">100% Secure</h3>
-                <p class="text-slate-400 text-sm mb-4">Your files stay safe. Everything runs locally in your browser.</p>
-                <ul class="text-xs text-slate-500 space-y-1">
-                    <li>• Zero Server Uploads</li>
-                    <li>• Absolute Privacy</li>
-                </ul>
-            </div>
-
         </div>
     </section>
 
@@ -181,22 +141,38 @@
         <p>&copy; 2026 DamnResize.in. Built with ⚡ for Creators & Aspirants.</p>
     </footer>
 
-    <!-- Working JavaScript Logic -->
+    <!-- Working JavaScript Logic with KB Calculation -->
     <script>
         const imageInput = document.getElementById('imageInput');
         const widthInput = document.getElementById('widthInput');
         const heightInput = document.getElementById('heightInput');
+        const qualityRange = document.getElementById('qualityRange');
+        const qualityVal = document.getElementById('qualityVal');
         const imagePreview = document.getElementById('imagePreview');
-        const placeholderText = document.getElementById('placeholderText');
-        const controlsSection = document.getElementById('controlsSection');
+        const editorWorkspace = document.getElementById('editorWorkspace');
+        const placeholderBox = document.getElementById('placeholderBox');
         const resizeBtn = document.getElementById('resizeBtn');
         const downloadBtn = document.getElementById('downloadBtn');
+        const originalSizeText = document.getElementById('originalSizeText');
+        const outputSizeText = document.getElementById('outputSizeText');
 
         let loadedImage = null;
+        let originalFileSize = 0;
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
 
         imageInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
+                originalFileSize = file.size;
+                originalSizeText.innerText = formatBytes(originalFileSize);
+
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     loadedImage = new Image();
@@ -205,11 +181,10 @@
                         heightInput.value = loadedImage.height;
                         
                         imagePreview.src = event.target.result;
-                        imagePreview.classList.remove('hidden');
-                        placeholderText.classList.add('hidden');
-                        controlsSection.classList.remove('hidden');
-                        resizeBtn.classList.remove('hidden');
-                        downloadBtn.classList.add('hidden');
+                        editorWorkspace.classList.remove('hidden');
+                        placeholderBox.classList.add('hidden');
+                        
+                        updateProcessedImage();
                     }
                     loadedImage.src = event.target.result;
                 }
@@ -217,11 +192,17 @@
             }
         });
 
-        resizeBtn.addEventListener('click', () => {
+        qualityRange.addEventListener('input', (e) => {
+            qualityVal.innerText = e.target.value + '%';
+            updateProcessedImage();
+        });
+
+        function updateProcessedImage() {
             if (!loadedImage) return;
 
             const targetWidth = parseInt(widthInput.value) || loadedImage.width;
             const targetHeight = parseInt(heightInput.value) || loadedImage.height;
+            const quality = parseInt(qualityRange.value) / 100;
 
             const canvas = document.createElement('canvas');
             canvas.width = targetWidth;
@@ -230,12 +211,19 @@
 
             ctx.drawImage(loadedImage, 0, 0, targetWidth, targetHeight);
 
-            const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            const resizedDataUrl = canvas.toDataURL('image/jpeg', quality);
             imagePreview.src = resizedDataUrl;
-            
             downloadBtn.href = resizedDataUrl;
-            downloadBtn.classList.remove('hidden');
-            alert('Image successfully resized and ready for download!');
+
+            // Calculate base64 size roughly in KB
+            const base64Str = resizedDataUrl.split(',')[1];
+            const computedBytes = Math.round((base64Str.length * 3) / 4);
+            outputSizeText.innerText = formatBytes(computedBytes);
+        }
+
+        resizeBtn.addEventListener('click', () => {
+            updateProcessedImage();
+            alert('Image processed and optimized successfully!');
         });
     </script>
 </body>
