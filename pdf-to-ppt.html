@@ -1,4 +1,4 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
@@ -128,33 +128,34 @@
                     const textContent = await page.getTextContent();
                     
                     let slide = pptx.addSlide();
-                    slide.background = { color: "0B0F19" }; // Dark theme background matching website
+                    slide.background = { color: "0B0F19" };
 
                     let slideTextLines = [];
                     textContent.items.forEach(item => {
-                        slideTextLines.push(item.str);
+                        if(item.str.trim() !== "") {
+                            slideTextLines.push(item.str);
+                        }
                     });
 
-                    const combinedText = slideTextLines.join(" ");
+                    const combinedText = slideTextLines.join(" ") || "Page " + i + " (Visual or Scanned Content)";
 
-                    slide.addText(`Page ${i}`, { x: 0.5, y: 0.5, fontSize: 14, color: "94A3B8", bold: true });
-                    slide.addText(combinedText || "No text found on this page.", { 
+                    slide.addText(`Slide ${i} - ${originalFileName}`, { x: 0.5, y: 0.5, fontSize: 14, color: "94A3B8", bold: true });
+                    slide.addText(combinedText, { 
                         x: 0.5, 
                         y: 1.2, 
                         w: '90%', 
                         h: '80%', 
-                        fontSize: 16, 
+                        fontSize: 14, 
                         color: "F1F5F9",
-                        valign: "top"
+                        valign: "top",
+                        lineSpacing: 18
                     });
                 }
 
                 await pptx.writeFile({ fileName: `${originalFileName}_damnresize.pptx` });
-
-                btn.innerText = "⚡ Convert PDF to PPT & Download";
-                btn.disabled = false;
             } catch (err) {
                 alert("Error converting PDF to PowerPoint: " + err.message);
+            } finally {
                 btn.innerText = "⚡ Convert PDF to PPT & Download";
                 btn.disabled = false;
             }
