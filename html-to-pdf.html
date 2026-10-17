@@ -1,4 +1,4 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
@@ -63,7 +63,7 @@
 &lt;p&gt;&lt;b&gt;Features:&lt;/b&gt; Fast, secure, and fully client-side rendering!&lt;/p&gt;</textarea>
             </div>
 
-            <!-- Preview Render Target (Hidden or styled container) -->
+            <!-- Preview Render Target -->
             <div class="mb-6">
                 <label class="block text-sm font-semibold text-slate-300 mb-2">Live Preview Area:</label>
                 <div id="renderPreview" class="bg-white text-slate-900 p-6 rounded-xl border border-slate-700 min-h-[120px]">
@@ -111,7 +111,7 @@
                 margin:       10,
                 filename:     'document_damnresize.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
