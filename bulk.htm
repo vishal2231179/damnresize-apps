@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Image Processor & Resizer - Process Multiple Images | DamnResize.in</title>
+    <meta name="description" content="Process multiple images simultaneously online for free. Bulk resize, compress, and convert photo batches instantly in your browser.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-rose-500 selection:text-white">
+
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="text-2xl font-black tracking-wider bg-gradient-to-r from-rose-400 to-pink-500 bg-clip-text text-transparent">DamnResize<span class="text-amber-400">.in</span></a>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
+                <a href="index.html" class="hover:text-rose-400 transition"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Header Section -->
+    <section class="py-12 px-6 text-center bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-900">
+        <div class="max-w-3xl mx-auto">
+            <span class="inline-block bg-rose-500/10 text-rose-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-3 border border-rose-500/20">⚡ Bulk Suite</span>
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Bulk Image <span class="text-rose-400">Processor</span></h1>
+            <p class="text-slate-400 text-sm md:text-base">Upload multiple images simultaneously, adjust common dimensions, and process them in a single batch.</p>
+        </div>
+    </section>
+
+    <!-- Tool Interface -->
+    <section class="py-10 px-6 max-w-3xl mx-auto w-full flex-grow">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-rose-400"></i> Batch Image Upload
+            </h2>
+            
+            <!-- File Input -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-slate-300 mb-2">Select Multiple Images</label>
+                <input type="file" id="imageInput" accept="image/*" multiple class="block w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-rose-600 file:text-white hover:file:bg-rose-500 cursor-pointer border border-slate-700 rounded-xl bg-slate-950 p-2"/>
+            </div>
+
+            <!-- Workspace -->
+            <div id="editorWorkspace" class="hidden space-y-6">
+                <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl flex justify-between items-center">
+                    <div>
+                        <p class="text-xs text-slate-400">Selected Files Count</p>
+                        <p id="fileCountText" class="text-lg font-bold text-rose-400">0 Files</p>
+                    </div>
+                    <button id="processAllBtn" class="bg-rose-600 hover:bg-rose-500 text-white font-semibold py-2.5 px-5 rounded-xl text-sm transition shadow-lg shadow-rose-600/20">Process All</button>
+                </div>
+
+                <div id="fileListContainer" class="space-y-2 max-h-60 overflow-y-auto pr-2">
+                    <!-- Dynamic file items will populate here -->
+                </div>
+            </div>
+
+            <div id="placeholderBox" class="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-2xl p-6 bg-slate-950/50 min-h-[180px]">
+                <p class="text-slate-500 text-sm"><i class="fa-regular fa-images mr-2 text-lg block mb-2"></i>Upload multiple images above to start batch processing</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 px-6 mt-auto text-center text-xs text-slate-500">
+        <p>&copy; 2026 DamnResize.in. All rights reserved.</p>
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const editorWorkspace = document.getElementById('editorWorkspace');
+        const placeholderBox = document.getElementById('placeholderBox');
+        const fileCountText = document.getElementById('fileCountText');
+        const fileListContainer = document.getElementById('fileListContainer');
+        const processAllBtn = document.getElementById('processAllBtn');
+
+        let selectedFiles = [];
+
+        imageInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            if (files.length > 0) {
+                selectedFiles = files;
+                fileCountText.innerText = `${files.length} Files Selected`;
+                fileListContainer.innerHTML = '';
+
+                files.forEach((file, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'flex justify-between items-center bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs';
+                    item.innerHTML = `<span class="text-slate-300 truncate max-w-[200px]">${file.name}</span> <span class="text-amber-400">${(file.size/1024).toFixed(1)} KB</span>`;
+                    fileListContainer.appendChild(item);
+                });
+
+                editorWorkspace.classList.remove('hidden');
+                placeholderBox.classList.add('hidden');
+            }
+        });
+
+        processAllBtn.addEventListener('click', () => {
+            if (selectedFiles.length === 0) return;
+            
+            selectedFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0);
+
+                        canvas.toBlob((blob) => {
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `processed_${file.name}`;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                        }, 'image/jpeg', 0.9);
+                    }
+                    img.src = event.target.result;
+                }
+                reader.readAsDataURL(file);
+            });
+
+            alert('Batch processing complete! All files are downloading.');
+        });
+    </script>
+</body>
+</html>

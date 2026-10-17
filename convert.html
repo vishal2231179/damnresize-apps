@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Online Image Format Converter - PNG, JPG & WebP | DamnResize.in</title>
+    <meta name="description" content="Convert images online between PNG, JPG, and WebP formats instantly for free. Fast, secure, and browser-based converter tool.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-white">
+
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="text-2xl font-black tracking-wider bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">DamnResize<span class="text-amber-400">.in</span></a>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
+                <a href="index.html" class="hover:text-amber-400 transition"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Header Section -->
+    <section class="py-12 px-6 text-center bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-900">
+        <div class="max-w-3xl mx-auto">
+            <span class="inline-block bg-amber-500/10 text-amber-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-3 border border-amber-500/20">⚡ Dedicated Converter Tool</span>
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Image Format Converter <span class="text-amber-400">Online</span></h1>
+            <p class="text-slate-400 text-sm md:text-base">Convert your images seamlessly between JPG, PNG, and WebP formats instantly in your browser.</p>
+        </div>
+    </section>
+
+    <!-- Converter Tool Interface -->
+    <section class="py-10 px-6 max-w-3xl mx-auto w-full flex-grow">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-file-arrow-down text-amber-400"></i> Upload & Convert Image
+            </h2>
+            
+            <!-- File Input -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-slate-300 mb-2">Select Image File</label>
+                <input type="file" id="imageInput" accept="image/*" class="block w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-amber-600 file:text-white hover:file:bg-amber-500 cursor-pointer border border-slate-700 rounded-xl bg-slate-950 p-2"/>
+            </div>
+
+            <!-- Workspace -->
+            <div id="editorWorkspace" class="hidden space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Select Target Format</label>
+                    <select id="formatSelect" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-amber-500">
+                        <option value="image/jpeg">JPG / JPEG</option>
+                        <option value="image/png">PNG</option>
+                        <option value="image/webp">WebP</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-2xl p-6 bg-slate-950/50 min-h-[180px]">
+                    <img id="imagePreview" class="max-h-60 rounded-lg shadow-md mb-2" alt="Converted Preview"/>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button id="convertBtn" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white font-semibold py-3 px-6 rounded-xl transition shadow-lg shadow-amber-600/20">Convert Format</button>
+                    <a id="downloadBtn" class="hidden flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl text-center transition shadow-lg shadow-emerald-600/20" download="converted_image.jpg"><i class="fa-solid fa-download mr-2"></i>Download Converted Image</a>
+                </div>
+            </div>
+
+            <div id="placeholderBox" class="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-2xl p-6 bg-slate-950/50 min-h-[180px]">
+                <p class="text-slate-500 text-sm"><i class="fa-regular fa-image mr-2 text-lg block mb-2"></i>Upload an image above to start converting</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 px-6 mt-auto text-center text-xs text-slate-500">
+        <p>&copy; 2026 DamnResize.in. All rights reserved.</p>
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const formatSelect = document.getElementById('formatSelect');
+        const imagePreview = document.getElementById('imagePreview');
+        const editorWorkspace = document.getElementById('editorWorkspace');
+        const placeholderBox = document.getElementById('placeholderBox');
+        const convertBtn = document.getElementById('convertBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        let loadedImage = null;
+
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    loadedImage = new Image();
+                    loadedImage.onload = function() {
+                        imagePreview.src = event.target.result;
+                        editorWorkspace.classList.remove('hidden');
+                        placeholderBox.classList.add('hidden');
+                        downloadBtn.classList.add('hidden');
+                    }
+                    loadedImage.src = event.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        convertBtn.addEventListener('click', () => {
+            if (!loadedImage) return;
+
+            const mimeType = formatSelect.value;
+            const extension = mimeType.split('/')[1];
+
+            const canvas = document.createElement('canvas');
+            canvas.width = loadedImage.width;
+            canvas.height = loadedImage.height;
+            const ctx = canvas.getContext('2d');
+
+            // If converting to JPEG, give white background in case source was transparent PNG
+            if (mimeType === 'image/jpeg') {
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            ctx.drawImage(loadedImage, 0, 0);
+
+            const convertedDataUrl = canvas.toDataURL(mimeType, 0.95);
+            imagePreview.src = convertedDataUrl;
+            
+            downloadBtn.href = convertedDataUrl;
+            downloadBtn.download = `damnresize_converted.${extension === 'jpeg' ? 'jpg' : extension}`;
+            downloadBtn.classList.remove('hidden');
+            
+            alert(`Image successfully converted to ${extension.toUpperCase()}`);
+        });
+    </script>
+</body>
+</html>

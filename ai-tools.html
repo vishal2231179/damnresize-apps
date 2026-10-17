@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Tools - Background Remover & Enhancer | DamnResize.in</title>
+    <meta name="description" content="Explore advanced AI-powered image tools online. Remove backgrounds, enhance photo quality, and upscale images for free.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-purple-500 selection:text-white">
+
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="text-2xl font-black tracking-wider bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">DamnResize<span class="text-amber-400">.in</span></a>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
+                <a href="index.html" class="hover:text-purple-400 transition"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Header Section -->
+    <section class="py-12 px-6 text-center bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-900">
+        <div class="max-w-3xl mx-auto">
+            <span class="inline-block bg-purple-500/10 text-purple-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-3 border border-purple-500/20">⚡ AI Suite</span>
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">AI Image Utilities <span class="text-purple-400">& Enhancer</span></h1>
+            <p class="text-slate-400 text-sm md:text-base">Smart automated tools for quick photo background fixes, color enhancements, and image detailing.</p>
+        </div>
+    </section>
+
+    <!-- Tool Interface -->
+    <section class="py-10 px-6 max-w-3xl mx-auto w-full flex-grow">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> AI Photo Studio
+            </h2>
+            
+            <!-- File Input -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-slate-300 mb-2">Upload Image for AI Processing</label>
+                <input type="file" id="imageInput" accept="image/*" class="block w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-500 cursor-pointer border border-slate-700 rounded-xl bg-slate-950 p-2"/>
+            </div>
+
+            <!-- Workspace -->
+            <div id="editorWorkspace" class="hidden space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <button id="enhanceBtn" class="bg-slate-950 border border-slate-800 hover:border-purple-500 p-4 rounded-2xl text-left transition group">
+                        <i class="fa-solid fa-circle-half-stroke text-purple-400 text-lg mb-2 block"></i>
+                        <h3 class="font-semibold text-white text-sm">Auto Contrast & Sharpen</h3>
+                        <p class="text-xs text-slate-400 mt-1">Boost clarity and color depth instantly.</p>
+                    </button>
+                    <button id="grayscaleBtn" class="bg-slate-950 border border-slate-800 hover:border-purple-500 p-4 rounded-2xl text-left transition group">
+                        <i class="fa-solid fa-ghost text-purple-400 text-lg mb-2 block"></i>
+                        <h3 class="font-semibold text-white text-sm">Pass-Photo B/W Filter</h3>
+                        <p class="text-xs text-slate-400 mt-1">Convert image to clean grayscale standard.</p>
+                    </button>
+                </div>
+
+                <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-2xl p-6 bg-slate-950/50 min-h-[180px]">
+                    <img id="imagePreview" class="max-h-60 rounded-lg shadow-md mb-2" alt="AI Preview"/>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a id="downloadBtn" class="hidden flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl text-center transition shadow-lg shadow-emerald-600/20" download="ai_processed_image.jpg"><i class="fa-solid fa-download mr-2"></i>Download Enhanced Image</a>
+                </div>
+            </div>
+
+            <div id="placeholderBox" class="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-2xl p-6 bg-slate-950/50 min-h-[180px]">
+                <p class="text-slate-500 text-sm"><i class="fa-regular fa-image mr-2 text-lg block mb-2"></i>Upload an image above to start AI processing</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 px-6 mt-auto text-center text-xs text-slate-500">
+        <p>&copy; 2026 DamnResize.in. All rights reserved.</p>
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const editorWorkspace = document.getElementById('editorWorkspace');
+        const placeholderBox = document.getElementById('placeholderBox');
+        const enhanceBtn = document.getElementById('enhanceBtn');
+        const grayscaleBtn = document.getElementById('grayscaleBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        let loadedImage = null;
+        let originalDataUrl = '';
+
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    originalDataUrl = event.target.result;
+                    loadedImage = new Image();
+                    loadedImage.onload = function() {
+                        imagePreview.src = originalDataUrl;
+                        editorWorkspace.classList.remove('hidden');
+                        placeholderBox.classList.add('hidden');
+                        downloadBtn.classList.remove('hidden');
+                        downloadBtn.href = originalDataUrl;
+                    }
+                    loadedImage.src = originalDataUrl;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        enhanceBtn.addEventListener('click', () => {
+            if (!loadedImage) return;
+            const canvas = document.createElement('canvas');
+            canvas.width = loadedImage.width;
+            canvas.height = loadedImage.height;
+            const ctx = canvas.getContext('2d');
+            ctx.filter = 'contrast(120%) saturate(110%)';
+            ctx.drawImage(loadedImage, 0, 0);
+
+            const res = canvas.toDataURL('image/jpeg', 0.95);
+            imagePreview.src = res;
+            downloadBtn.href = res;
+        });
+
+        grayscaleBtn.addEventListener('click', () => {
+            if (!loadedImage) return;
+            const canvas = document.createElement('canvas');
+            canvas.width = loadedImage.width;
+            canvas.height = loadedImage.height;
+            const ctx = canvas.getContext('2d');
+            ctx.filter = 'grayscale(100%)';
+            ctx.drawImage(loadedImage, 0, 0);
+
+            const res = canvas.toDataURL('image/jpeg', 0.95);
+            imagePreview.src = res;
+            downloadBtn.href = res;
+        });
+    </script>
+</body>
+</html>

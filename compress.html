@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Online Image Compressor - Reduce Image Size in KBs | DamnResize.in</title>
+    <meta name="description" content="Compress JPG, PNG, and WebP images online for free. Reduce file size in KBs without losing quality for Sarkari exam forms and web portals.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-emerald-500 selection:text-white">
+
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="text-2xl font-black tracking-wider bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">DamnResize<span class="text-amber-400">.in</span></a>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
+                <a href="index.html" class="hover:text-emerald-400 transition"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Header Section -->
+    <section class="py-12 px-6 text-center bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-900">
+        <div class="max-w-3xl mx-auto">
+            <span class="inline-block bg-emerald-500/10 text-emerald-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-3 border border-emerald-500/20">⚡ Dedicated Compressor Tool</span>
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Image Compressor <span class="text-emerald-400">Online</span></h1>
+            <p class="text-slate-400 text-sm md:text-base">Reduce your image file size in KBs instantly without losing visual quality. 100% secure & private.</p>
+        </div>
+    </section>
+
+    <!-- Compressor Tool Interface -->
+    <section class="py-10 px-6 max-w-3xl mx-auto w-full flex-grow">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-compress text-emerald-400"></i> Upload & Compress Image
+            </h2>
+            
+            <!-- File Input -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-slate-300 mb-2">Select Image (JPG, PNG, WebP)</label>
+                <input type="file" id="imageInput" accept="image/*" class="block w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-500 cursor-pointer border border-slate-700 rounded-xl bg-slate-950 p-2"/>
+            </div>
+
+            <!-- Workspace -->
+            <div id="editorWorkspace" class="hidden space-y-6">
+                <div class="grid grid-cols-2 gap-4 bg-slate-950 border border-slate-800 p-4 rounded-2xl text-center">
+                    <div>
+                        <p class="text-xs text-slate-400 mb-1">Original Size</p>
+                        <p id="originalSizeText" class="text-lg font-bold text-amber-400">0 KB</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 mb-1">Compressed Size</p>
+                        <p id="outputSizeText" class="text-lg font-bold text-emerald-400">0 KB</p>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-slate-300 font-medium">Compression Level</span>
+                        <span id="qualityVal" class="text-emerald-400 font-bold">80%</span>
+                    </div>
+                    <input type="range" id="qualityRange" min="5" max="95" value="80" class="w-full accent-emerald-500 cursor-pointer"/>
+                    <p class="text-xs text-slate-500 mt-1">Lower quality = Smaller file size in KBs.</p>
+                </div>
+
+                <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-2xl p-6 bg-slate-950/50 min-h-[180px]">
+                    <img id="imagePreview" class="max-h-60 rounded-lg shadow-md mb-2" alt="Compressed Preview"/>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a id="downloadBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl text-center transition shadow-lg shadow-emerald-600/20" download="compressed_image.jpg"><i class="fa-solid fa-download mr-2"></i>Download Compressed Image</a>
+                </div>
+            </div>
+
+            <div id="placeholderBox" class="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-2xl p-6 bg-slate-950/50 min-h-[180px]">
+                <p class="text-slate-500 text-sm"><i class="fa-regular fa-image mr-2 text-lg block mb-2"></i>Upload an image above to start compressing</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEO Content Section -->
+    <section class="py-12 px-6 max-w-4xl mx-auto text-slate-400 text-sm space-y-4 border-t border-slate-900">
+        <h3 class="text-lg font-semibold text-white">Why use DamnResize Image Compressor?</h3>
+        <p>When filling online application forms, government exams (like SSC, UPSC, Banking), or uploading profile pictures, portals often enforce strict size restrictions (e.g., under 50KB or 20KB). Our browser-based tool allows you to instantly dial down the image quality and file size securely without uploading your private documents to any remote server.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 px-6 mt-auto text-center text-xs text-slate-500">
+        <p>&copy; 2026 DamnResize.in. All rights reserved.</p>
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const qualityRange = document.getElementById('qualityRange');
+        const qualityVal = document.getElementById('qualityVal');
+        const imagePreview = document.getElementById('imagePreview');
+        const editorWorkspace = document.getElementById('editorWorkspace');
+        const placeholderBox = document.getElementById('placeholderBox');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const originalSizeText = document.getElementById('originalSizeText');
+        const outputSizeText = document.getElementById('outputSizeText');
+
+        let loadedImage = null;
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                originalSizeText.innerText = formatBytes(file.size);
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    loadedImage = new Image();
+                    loadedImage.onload = function() {
+                        imagePreview.src = event.target.result;
+                        editorWorkspace.classList.remove('hidden');
+                        placeholderBox.classList.add('hidden');
+                        compressImage();
+                    }
+                    loadedImage.src = event.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        qualityRange.addEventListener('input', (e) => {
+            qualityVal.innerText = e.target.value + '%';
+            compressImage();
+        });
+
+        function compressImage() {
+            if (!loadedImage) return;
+            const quality = parseInt(qualityRange.value) / 100;
+
+            const canvas = document.createElement('canvas');
+            canvas.width = loadedImage.width;
+            canvas.height = loadedImage.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(loadedImage, 0, 0);
+
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+            imagePreview.src = compressedDataUrl;
+            downloadBtn.href = compressedDataUrl;
+
+            const base64Str = compressedDataUrl.split(',')[1];
+            const computedBytes = Math.round((base64Str.length * 3) / 4);
+            outputSizeText.innerText = formatBytes(computedBytes);
+        }
+    </script>
+</body>
+</html>
