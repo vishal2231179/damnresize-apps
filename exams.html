@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
@@ -31,7 +30,7 @@
             <!-- Left: Logo -->
             <div class="flex items-center">
                 <a href="index.html" class="flex items-center group">
-                    <img src="damnresize-v4-dark.svg" alt="DamnResize.in Logo" class="h-14 md:h-16 w-auto object-contain group-hover:scale-105 transition">
+                    <img src="damnresize-v4-dark.png" alt="DamnResize.in Logo" class="h-14 md:h-16 w-auto object-contain group-hover:scale-105 transition">
                 </a>
             </div>
 
@@ -207,6 +206,37 @@
             reader.readAsDataURL(file);
         }
 
+        // Step-down downscale: big photos ko aadha-aadha karke chhota karta hai (sharp result)
+        function stepDown(img, targetW, targetH) {
+            let src = img, cw = img.width, ch = img.height;
+            while (cw / 2 > targetW && ch / 2 > targetH) {
+                const c = document.createElement('canvas');
+                c.width = Math.floor(cw / 2);
+                c.height = Math.floor(ch / 2);
+                const x = c.getContext('2d');
+                x.imageSmoothingEnabled = true;
+                x.imageSmoothingQuality = 'high';
+                x.drawImage(src, 0, 0, c.width, c.height);
+                src = c; cw = c.width; ch = c.height;
+            }
+            return src;
+        }
+
+        const toBlob = (canvas, q) =>
+            new Promise(res => canvas.toBlob(res, 'image/jpeg', q));
+
+        // Binary search: max KB limit ke andar sabse best quality dhoondta hai
+        async function compressBest(canvas, maxBytes) {
+            let lo = 0.1, hi = 0.98, best = null;
+            for (let i = 0; i < 8; i++) {
+                const mid = (lo + hi) / 2;
+                const blob = await toBlob(canvas, mid);
+                if (blob.size <= maxBytes) { best = blob; lo = mid; }
+                else { hi = mid; }
+            }
+            return best || await toBlob(canvas, 0.1);
+        }
+
         function processImage(type) {
             const file = rawFiles[type];
             if (!file) return;
@@ -215,46 +245,43 @@
             const cfg = examConfigs[examVal][type];
 
             const img = new Image();
-            img.onload = function() {
+            img.onload = async function () {
+                const W = cfg.width, H = cfg.height;
                 const canvas = document.createElement('canvas');
-                canvas.width = cfg.width;
-                canvas.height = cfg.height;
+                canvas.width = W;
+                canvas.height = H;
                 const ctx = canvas.getContext('2d');
-                
-                // Pure white background
                 ctx.fillStyle = '#FFFFFF';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillRect(0, 0, W, H);
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
 
-                // Maintain Aspect Ratio (Contain mode - no stretching or squishing)
-                const hRatio = canvas.width / img.width;
-                const vRatio = canvas.height / img.height;
-                const ratio = Math.min(hRatio, vRatio);
-                
-                const centerShiftX = (canvas.width - img.width * ratio) / 2;
-                const centerShiftY = (canvas.height - img.height * ratio) / 2;
+                // Photo: COVER (frame poora bharta hai, white patti nahi, no stretching)
+                // Signature: CONTAIN (poora signature dikhta hai, kuch cut nahi hota)
+                const useCover = (type === 'photo');
+                const scale = useCover
+                    ? Math.max(W / img.width, H / img.height)
+                    : Math.min(W / img.width, H / img.height);
 
-                ctx.drawImage(img, 0, 0, img.width, img.height, centerShiftX, centerShiftY, img.width * ratio, img.height * ratio);
+                const dw = img.width * scale;
+                const dh = img.height * scale;
+                const dx = (W - dw) / 2;
+                // Photo me face upar hota hai, isliye crop neeche se zyada karte hain
+                const dy = useCover ? (H - dh) * 0.3 : (H - dh) / 2;
 
-                // High fidelity compression loop to target exact KB limits without losing quality
-                let quality = 0.92;
-                let dataUrl = canvas.toDataURL('image/jpeg', quality);
+                const src = scale < 0.5 ? stepDown(img, dw, dh) : img;
+                ctx.drawImage(src, dx, dy, dw, dh);
 
-                let attempts = 0;
-                while (dataUrl.length * 0.75 > cfg.maxKb * 1024 && quality > 0.3 && attempts < 8) {
-                    quality -= 0.08;
-                    dataUrl = canvas.toDataURL('image/jpeg', quality);
-                    attempts++;
-                }
+                const blob = await compressBest(canvas, cfg.maxKb * 1024);
 
-                // Download result
                 const link = document.createElement('a');
                 link.download = `ready_${type}_${examVal}.jpg`;
-                link.href = dataUrl;
+                link.href = URL.createObjectURL(blob);
                 link.click();
-            }
+                setTimeout(() => URL.revokeObjectURL(link.href), 2000);
+            };
             img.src = URL.createObjectURL(file);
         }
     </script>
 </body>
 </html>
-
