@@ -3,10 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DamnResize - Sarkari Photo & Signature Resizer</title>
+    <title>DamnResize.in - Ultimate Image Toolkit & Sarkari Exam Tool</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col"> 
-  
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl font-black tracking-wider bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">DamnResize<span class="text-amber-400">.in</span></span>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
+                <a href="#tools" class="hover:text-indigo-400 transition">Tools</a>
+                <a href="#stamber" class="hover:text-indigo-400 transition">Sarkari Stamping</a>
+                <a href="#features" class="hover:text-indigo-400 transition">AI & More</a>
+            </nav>
+            <div>
+                <a href="#stamber" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-lg shadow-indigo-500/20">Get Started</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-16 px-6 text-center bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-900">
+        <div class="max-w-4xl mx-auto">
+            <span class="inline-block bg-indigo-500/10 text-indigo-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-4 border border-indigo-500/20">⚡ Lightning Fast & Secure Utility Hub</span>
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">Resize, Crop, Compress & Stamp <span class="bg-gradient-to-r from-indigo-400 to-pink-500 bg-clip-text text-transparent">Like a Boss.</span></h1>
+            <p class="text-slate-400 text-base md:text-lg mb-8 max-w-2xl mx-auto">The ultimate platform for Sarkari exam aspirants and creators. Resize photos, format signatures, and process images instantly inside your browser.</p>
+        </div>
+    </section>
+
+    <!-- Main Live Tool Section (Sarkari Stipper) -->
+    <section id="stamber" class="py-12 px-6 max-w-4xl mx-auto w-full">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <h2 class="text-2xl font-bold mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-stamp text-indigo-400"></i> Sarkari Photo & Signature Stamper
+            </h2>
+            <p class="text-slate-400 text-sm mb-6">Upload your photo or sign, add name and date stamp, and download instantly.</p>
+            
+            <!-- File Input -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-slate-300 mb-2">Select Image File</label>
+                <input type="file" id="imageInput" accept="image/*" class="block w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer border border-slate-700 rounded-xl bg-slate-950 p-2"/>
+            </div>
+
+            <!-- Stamp Inputs -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Candidate Name</label>
+                    <input type="text" id="candidateName" placeholder="e.g. VISHAL PRAJAPATI" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500"/>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Photo Date</label>
+                    <input type="date" id="photoDate" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500"/>
+                </div>
+            </div>
+
+            <!-- Preview Canvas -->
+            <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-2xl p-6 mb-6 bg-slate-950/50 min-h-[200px]">
+                <canvas id="outputCanvas" class="max-w-full shadow-md rounded-lg mb-4 hidden"></canvas>
+                <p id="placeholderText" class="text-slate-500 text-sm"><i class="fa-regular fa-image mr-2"></i>Preview will appear here after selecting an image</p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button id="processBtn" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-6 rounded-xl transition shadow-lg shadow-indigo-600/20">Stamp & Resize Now</button>
+                <a id="downloadBtn" class="hidden flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl text-center transition shadow-lg shadow-emerald-600/20" download="damnresize_stamped.jpg"><i class="fa-solid fa-download mr-2"></i>Download Image</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Categories & Cards Grid Section -->
+    <section id="tools" class="py-16 px-6 max-w-7xl mx-auto w-full">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold tracking-tight mb-3">Explore All Utility Tools</h2>
+            <p class="text-slate-400">Everything you need to manage, compress, crop and convert images in one place.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Card 1: Image Resizer -->
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
+                <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-expand text-xl"></i></div>
+                <h3 class="text-lg font-semibold mb-2">Image Resizer</h3>
+                <p class="text-slate-400 text-sm mb-4">Resize JPG, PNG or WebP images by exact dimensions or percentage.</p>
+                <ul class="text-xs text-slate-500 space-y-1">
+                    <li>• Bulk Resize</li>
+                    <li>• Resize PNG / JPG / WebP[cite: 13]</li>
+                </ul>
+            </div>
+
+            <!-- Card 2: Crop Image -->
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
+                <div class="w-12 h-12 bg-pink-500/10 rounded-xl flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-crop text-xl"></i></div>
+                <h3 class="text-lg font-semibold mb-2">Crop Image</h3>
+                <p class="text-slate-400 text-sm mb-4">Trim unwanted edges and focus on the core subject easily.</p>
+                <ul class="text-xs text-slate-500 space-y-1">
+                    <li>• Crop PNG & WebP[cite: 14]</li>
+                    <li>• Custom Aspect Ratios</li>
+                </ul>
+            </div>
+
+            <!-- Card 3: Image Compressor -->
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
+                <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-compress text-xl"></i></div>
+                <h3 class="text-lg font-semibold mb-2">Image Compressor</h3>
+                <p class="text-slate-400 text-sm mb-4">Reduce file size in KBs without losing quality for online portals.</p>
+                <ul class="text-xs text-slate-500 space-y-1">
+                    <li>• Compress JPEG & PNG[cite: 15]</li>
+                    <li>• Target KB Size Control</li>
+                </ul>
+            </div>
+
+            <!-- Card 4: Format Converter -->
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
+                <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center text-amber-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-file-arrow-down text-xl"></i></div>
+                <h3 class="text-lg font-semibold mb-2">Format Converter</h3>
+                <p class="text-slate-400 text-sm mb-4">Convert images seamlessly between popular and modern formats.</p>
+                <ul class="text-xs text-slate-500 space-y-1">
+                    <li>• HEIC to JPG[cite: 16]</li>
+                    <li>• WebP to PNG / JPG[cite: 16]</li>
+                </ul>
+            </div>
+
+            <!-- Card 5: AI Tools -->
+            <div id="features" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
+                <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-wand-magic-sparkles text-xl"></i></div>
+                <h3 class="text-lg font-semibold mb-2">AI Tools</h3>
+                <p class="text-slate-400 text-sm mb-4">Advanced AI utilities for quick background edits and image fixes.</p>
+                <ul class="text-xs text-slate-500 space-y-1">
+                    <li>• Remove Background[cite: 17]</li>
+                    <li>• AI Upscaler & Enhancer[cite: 17]</li>
+                </ul>
+            </div>
+
+            <!-- Card 6: Utility Extras -->
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
+                <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-toolbox text-xl"></i></div>
+                <h3 class="text-lg font-semibold mb-2">Utility Toolkit</h3>
+                <p class="text-slate-400 text-sm mb-4">Handy little web utilities for everyday editing tasks.</p>
+                <ul class="text-xs text-slate-500 space-y-1">
+                    <li>• Color Picker & Meme Gen[cite: 17]</li>
+                    <li>• Rotate & Flip Image[cite: 17]</li>
+                </ul>
+            </div>
+
+            <!-- Card 7: Bulk Processing -->
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
+                <div class="w-12 h-12 bg-rose-500/10 rounded-xl flex items-center justify-center text-rose-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-layer-group text-xl"></i></div>
+                <h3 class="text-lg font-semibold mb-2">Bulk Processing</h3>
+                <p class="text-slate-400 text-sm mb-4">Process multiple images simultaneously to save time.</p>
+                <ul class="text-xs text-slate-500 space-y-1">
+                    <li>• Multi-file Upload</li>
+                    <li>• Zip Download</li>
+                </ul>
+            </div>
+
+            <!-- Card 8: Secure & Private -->
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500/50 transition group">
+                <div class="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-shield-halved text-xl"></i></div>
+                <h3 class="text-lg font-semibold mb-2">100% Secure</h3>
+                <p class="text-slate-400 text-sm mb-4">Your files stay safe. Everything runs locally in your browser.</p>
+                <ul class="text-xs text-slate-500 space-y-1">
+                    <li>• Zero Server Uploads</li>
+                    <li>• Absolute Privacy</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-8 px-6 mt-auto text-center text-sm text-slate-500">
+        <p>&copy; 2026 DamnResize.in. Built with ⚡ for Creators & Aspirants.</p>
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const candidateNameInput = document.getElementById('candidateName');
+        const photoDateInput = document.getElementById('photoDate');
+        const processBtn = document.getElementById('processBtn');
+        const outputCanvas = document.getElementById('outputCanvas');
+        const placeholderText = document.getElementById('placeholderText');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        let uploadedImage = null;
+
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    uploadedImage = new Image();
+                    uploadedImage.onload = function() {
+                        placeholderText.classList.add('hidden');
+                        outputCanvas.classList.remove('hidden');
+                        drawCanvas();
+                    }
+                    uploadedImage.src = event.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function drawCanvas() {
+            if (!uploadedImage) return;
+            const ctx = outputCanvas.getContext('2d');
+            
+            outputCanvas.width = uploadedImage.width;
+            outputCanvas.height = uploadedImage.height + 60;
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, outputCanvas.width, outputCanvas.height);
+            ctx.drawImage(uploadedImage, 0, 0);
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+            ctx.fillRect(0, uploadedImage.height, outputCanvas.width, 60);
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = `bold ${Math.max(16, outputCanvas.width / 25)}px Arial`;
+            ctx.textAlign = 'center';
+            
+            const name = candidateNameInput.value.toUpperCase() || 'CANDIDATE NAME';
+            const date = photoDateInput.value ? new Date(photoDateInput.value).toLocaleDateString() : 'DD-MM-YYYY';
+            
+            ctx.fillText(name, outputCanvas.width / 2, uploadedImage.height + 23);
+            ctx.fillText(`DOB/Date: ${date}`, outputCanvas.width / 2, uploadedImage.height + 48);
+
+            downloadBtn.href = outputCanvas.toDataURL('image/jpeg', 0.9);
+            downloadBtn.classList.remove('hidden');
+        }
+
+        processBtn.addEventListener('click', () => {
+            if (!uploadedImage) {
+                alert('Please select an image first!');
+                return;
+            }
+            drawCanvas();
+        });
+    </script>
 </body>
 </html>
