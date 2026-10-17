@@ -1,0 +1,167 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerPoint to PDF Converter | DamnResize.in</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- JSZip for reading PPTX (which is a zipped xml format) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- jsPDF for generating PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { dark: { 900: '#0b0f19', 800: '#1e293b', 700: '#334155' } }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-3">
+        <div class="max-w-7xl mx-auto flex justify-between items-center relative">
+            <div class="flex items-center">
+                <a href="index.html" class="flex items-center group">
+                    <img src="damnresize-v4-dark.png" alt="DamnResize.in Logo" class="h-14 md:h-16 w-auto object-contain group-hover:scale-105 transition">
+                </a>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300 absolute left-1/2 -translate-x-1/2 items-center">
+                <a href="index.html" class="hover:text-indigo-400 transition">Home</a>
+                <a href="pdf-tools.html" class="text-indigo-400 font-semibold transition">PDF Tools</a>
+                <a href="exams.html" class="hover:text-indigo-400 transition">Govt Exams</a>
+                <a href="AddText.html" class="hover:text-indigo-400 transition">AddText</a>
+            </nav>
+            <div class="flex items-center">
+                <a href="pdf-tools.html" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-lg shadow-indigo-500/20">Back to PDF Suite</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl mx-auto px-4 py-12 w-full" id="ppt-to-pdf">
+        
+        <div class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent mb-3">
+                📊 PowerPoint to PDF Converter
+            </h1>
+            <p class="text-slate-400 text-sm md:text-base max-w-xl mx-auto">
+                Upload your PowerPoint presentation (.pptx) and convert slides instantly into a neat document PDF.
+            </p>
+        </div>
+
+        <!-- Upload Box -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl mb-8">
+            <div class="border-2 border-dashed border-slate-700 hover:border-orange-500 rounded-xl p-8 text-center cursor-pointer transition bg-slate-950/50" onclick="document.getElementById('pptInput').click()">
+                <input type="file" id="pptInput" accept=".pptx" class="hidden" onchange="handlePPTSelected(event)">
+                <div class="text-4xl mb-3">📑</div>
+                <p class="text-sm font-medium text-slate-300 mb-1" id="uploadText">Click to upload PPTX file or drag & drop here</p>
+                <p class="text-xs text-slate-500">Supports Microsoft PowerPoint (.pptx format)</p>
+            </div>
+
+            <!-- Action Section -->
+            <div id="actionSection" class="hidden mt-6 text-center">
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 mb-6 flex items-center justify-between">
+                    <span id="fileName" class="text-sm text-slate-300 font-mono"></span>
+                    <span class="text-xs bg-orange-500/10 text-orange-400 border border-orange-500/20 px-3 py-1 rounded-full">Ready to Convert</span>
+                </div>
+                
+                <button onclick="convertPPTToPDF()" id="convertBtn" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-semibold py-3.5 rounded-xl transition shadow-lg shadow-orange-500/20 text-base flex items-center justify-center gap-2">
+                    <span>⚡ Convert PowerPoint to PDF & Download</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-900/40 text-center py-6 text-xs text-slate-500 mt-12">
+        <p>&copy; 2026 DamnResize.in. All rights reserved. Secure Browser-based Presentation Converter.</p>
+    </footer>
+
+    <!-- Conversion Logic Script -->
+    <script>
+        let uploadedFile = null;
+        let slideTexts = [];
+
+        async function handlePPTSelected(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            uploadedFile = file;
+            document.getElementById('fileName').innerText = file.name;
+            document.getElementById('actionSection').classList.remove('hidden');
+            document.getElementById('uploadText').innerText = "Presentation loaded! Click below to convert.";
+
+            slideTexts = [];
+            try {
+                const zip = new JSZip();
+                const zipContent = await zip.loadAsync(file);
+                
+                // PPTX stores slides in ppt/slides/slide1.xml, slide2.xml etc.
+                let slideIndex = 1;
+                while (zipContent.file(`ppt/slides/slide${slideIndex}.xml`)) {
+                    const slideXml = await zipContent.file(`ppt/slides/slide${slideIndex}.xml`).async("string");
+                    
+                    // Simple regex to extract text inside <a:t> tags
+                    const matches = slideXml.match(/<a:t[^>]*>(.*?)<\/a:t>/g);
+                    let textContent = `--- Slide ${slideIndex} ---\n`;
+                    if (matches) {
+                        matches.forEach(m => {
+                            const cleanText = m.replace(/<\/?[^>]+(>|$)/g, "");
+                            textContent += cleanText + "\n";
+                        });
+                    }
+                    slideTexts.push(textContent);
+                    slideIndex++;
+                }
+            } catch (err) {
+                alert("Error reading PPTX file: " + err.message);
+            }
+        }
+
+        function convertPPTToPDF() {
+            if (!uploadedFile || slideTexts.length === 0) {
+                alert("Please wait or upload a valid PowerPoint file.");
+                return;
+            }
+
+            const btn = document.getElementById('convertBtn');
+            btn.innerText = "Generating PDF...";
+            btn.disabled = true;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFont("Helvetica", "normal");
+            doc.setFontSize(12);
+
+            for (let i = 0; i < slideTexts.length; i++) {
+                if (i > 0) doc.addPage();
+                
+                const splitText = doc.splitTextToSize(slideTexts[i], 180);
+                let yPos = 20;
+                
+                for (let j = 0; j < splitText.length; j++) {
+                    if (yPos > 280) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    doc.text(splitText[j], 15, yPos);
+                    yPos += 7;
+                }
+            }
+
+            const outputName = uploadedFile.name.replace(/\.[^/.]+$/, "") + "_damnresize.pdf";
+            doc.save(outputName);
+
+            btn.innerText = "⚡ Convert PowerPoint to PDF & Download";
+            btn.disabled = false;
+        }
+    </script>
+</body>
+</html>
