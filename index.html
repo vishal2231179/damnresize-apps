@@ -31,11 +31,11 @@
         <div class="max-w-4xl mx-auto">
             <span class="inline-block bg-indigo-500/10 text-indigo-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-4 border border-indigo-500/20">⚡ Lightning Fast & Secure Utility Hub</span>
             <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">Resize, Compress & Convert <span class="bg-gradient-to-r from-indigo-400 to-pink-500 bg-clip-text text-transparent">Like a Boss.</span></h1>
-            <p class="text-slate-400 text-base md:text-lg mb-8 max-w-2xl mx-auto">The ultimate platform for fast image processing. Resize photos, target precise KB/MB sizes, and convert formats instantly inside your browser.</p>
+            <p class="text-slate-400 text-base md:text-lg mb-8 max-w-2xl mx-auto">The ultimate platform for fast image processing. Drag & drop photos, use exam presets, and optimize KB/MB sizes instantly.</p>
         </div>
     </section>
 
-    <!-- Main Functional Tool Section (Home Resizer/Compressor) -->
+    <!-- Main Functional Tool Section (Home Resizer/Compressor with Drag & Drop) -->
     <section id="tool" class="py-12 px-6 max-w-3xl mx-auto w-full">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
             <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -43,9 +43,9 @@
             <h2 class="text-2xl font-bold mb-2 flex items-center gap-2">
                 <i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i> Quick Image Resizer & Compressor
             </h2>
-            <p class="text-slate-400 text-sm mb-6">Upload your image, check file sizes, customize dimensions & KB target, and download.</p>
+            <p class="text-slate-400 text-sm mb-6">Upload or drag & drop your image below, apply presets or custom dimensions, and download.</p>
             
-            <!-- Sarkari Exam Presets Buttons (Matched UI Style) -->
+            <!-- Sarkari Exam Presets Buttons -->
             <div class="mb-6">
                 <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">⚡ Quick Exam Presets (Click to Apply)</label>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -56,10 +56,12 @@
                 </div>
             </div>
 
-            <!-- File Input -->
-            <div class="mb-6">
-                <label class="block text-sm font-medium text-slate-300 mb-2">Select Image File</label>
-                <input type="file" id="imageInput" accept="image/*" class="block w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer border border-slate-700 rounded-xl bg-slate-950 p-2"/>
+            <!-- Drag & Drop Upload Dropzone -->
+            <div id="dropZone" class="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-2xl p-8 text-center cursor-pointer bg-slate-950/40 transition mb-6">
+                <i class="fa-solid fa-cloud-arrow-up text-3xl text-indigo-400 mb-3 block"></i>
+                <p class="text-sm font-medium text-slate-200 mb-1">Drag & Drop your image here, or <span class="text-indigo-400 underline">browse</span></p>
+                <p class="text-xs text-slate-500">Supports JPG, PNG, WebP</p>
+                <input type="file" id="imageInput" accept="image/*" class="hidden"/>
             </div>
 
             <!-- Image Info & Controls -->
@@ -75,7 +77,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
                     <div>
                         <label class="block text-sm font-medium text-slate-300 mb-1">Width (px)</label>
                         <input type="number" id="widthInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500"/>
@@ -84,6 +86,12 @@
                         <label class="block text-sm font-medium text-slate-300 mb-1">Height (px)</label>
                         <input type="number" id="heightInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500"/>
                     </div>
+                </div>
+
+                <!-- Aspect Ratio Lock Option -->
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="lockRatio" checked class="w-4 h-4 accent-indigo-500 rounded cursor-pointer"/>
+                    <label for="lockRatio" class="text-xs text-slate-300 cursor-pointer select-none">Lock Aspect Ratio (Keep proportions balanced)</label>
                 </div>
 
                 <div>
@@ -102,10 +110,6 @@
                     <button id="resizeBtn" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-6 rounded-xl transition shadow-lg shadow-indigo-600/20">Process & Apply</button>
                     <a id="downloadBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl text-center transition shadow-lg shadow-emerald-600/20" download="damnresize_output.jpg"><i class="fa-solid fa-download mr-2"></i>Download Compressed Image</a>
                 </div>
-            </div>
-
-            <div id="placeholderBox" class="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-2xl p-6 bg-slate-950/50 min-h-[200px]">
-                <p class="text-slate-500 text-sm"><i class="fa-regular fa-image mr-2 text-lg block mb-2"></i>Preview and file size stats will appear here after selecting an image</p>
             </div>
         </div>
     </section>
@@ -194,13 +198,14 @@
     <!-- Script Logic -->
     <script>
         const imageInput = document.getElementById('imageInput');
+        const dropZone = document.getElementById('dropZone');
         const widthInput = document.getElementById('widthInput');
         const heightInput = document.getElementById('heightInput');
+        const lockRatio = document.getElementById('lockRatio');
         const qualityRange = document.getElementById('qualityRange');
         const qualityVal = document.getElementById('qualityVal');
         const imagePreview = document.getElementById('imagePreview');
         const editorWorkspace = document.getElementById('editorWorkspace');
-        const placeholderBox = document.getElementById('placeholderBox');
         const resizeBtn = document.getElementById('resizeBtn');
         const downloadBtn = document.getElementById('downloadBtn');
         const originalSizeText = document.getElementById('originalSizeText');
@@ -208,6 +213,7 @@
         const presetBtns = document.querySelectorAll('.preset-btn');
 
         let loadedImage = null;
+        let originalAspect = 1;
 
         function formatBytes(bytes) {
             if (bytes === 0) return '0 Bytes';
@@ -217,9 +223,64 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
+        // Drag & Drop Handlers
+        dropZone.addEventListener('click', () => imageInput.click());
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-indigo-500'); });
+        dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('border-indigo-500'); });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-indigo-500');
+            if (e.dataTransfer.files.length > 0) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        imageInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            originalSizeText.innerText = formatBytes(file.size);
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                loadedImage = new Image();
+                loadedImage.onload = function() {
+                    originalAspect = loadedImage.width / loadedImage.height;
+                    widthInput.value = loadedImage.width;
+                    heightInput.value = loadedImage.height;
+                    imagePreview.src = event.target.result;
+                    editorWorkspace.classList.remove('hidden');
+                    dropZone.classList.add('hidden');
+                    updateProcessedImage();
+                }
+                loadedImage.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // Aspect Ratio Width/Height synchronization
+        widthInput.addEventListener('input', () => {
+            if (lockRatio.checked && loadedImage) {
+                const w = parseInt(widthInput.value);
+                if (w) heightInput.value = Math.round(w / originalAspect);
+            }
+            updateProcessedImage();
+        });
+
+        heightInput.addEventListener('input', () => {
+            if (lockRatio.checked && loadedImage) {
+                const h = parseInt(heightInput.value);
+                if (h) widthInput.value = Math.round(h * originalAspect);
+            }
+            updateProcessedImage();
+        });
+
         function applyPreset(w, h, btnElement) {
             widthInput.value = w;
             heightInput.value = h;
+            lockRatio.checked = false; // Disable ratio lock for custom rigid Sarkari exam dimensions
 
             presetBtns.forEach(btn => {
                 btn.classList.remove('border-indigo-500', 'bg-indigo-950/40');
@@ -232,27 +293,6 @@
                 updateProcessedImage();
             }
         }
-
-        imageInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                originalSizeText.innerText = formatBytes(file.size);
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    loadedImage = new Image();
-                    loadedImage.onload = function() {
-                        widthInput.value = loadedImage.width;
-                        heightInput.value = loadedImage.height;
-                        imagePreview.src = event.target.result;
-                        editorWorkspace.classList.remove('hidden');
-                        placeholderBox.classList.add('hidden');
-                        updateProcessedImage();
-                    }
-                    loadedImage.src = event.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
 
         qualityRange.addEventListener('input', (e) => {
             qualityVal.innerText = e.target.value + '%';
