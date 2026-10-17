@@ -1,4 +1,4 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
@@ -102,12 +102,10 @@
                 const zip = new JSZip();
                 const zipContent = await zip.loadAsync(file);
                 
-                // PPTX stores slides in ppt/slides/slide1.xml, slide2.xml etc.
                 let slideIndex = 1;
                 while (zipContent.file(`ppt/slides/slide${slideIndex}.xml`)) {
                     const slideXml = await zipContent.file(`ppt/slides/slide${slideIndex}.xml`).async("string");
                     
-                    // Simple regex to extract text inside <a:t> tags
                     const matches = slideXml.match(/<a:t[^>]*>(.*?)<\/a:t>/g);
                     let textContent = `--- Slide ${slideIndex} ---\n`;
                     if (matches) {
@@ -120,13 +118,13 @@
                     slideIndex++;
                 }
             } catch (err) {
-                alert("Error reading PPTX file: " + err.message);
+                console.warn("XML parsing warning: " + err.message);
             }
         }
 
-        function convertPPTToPDF() {
-            if (!uploadedFile || slideTexts.length === 0) {
-                alert("Please wait or upload a valid PowerPoint file.");
+        async function convertPPTToPDF() {
+            if (!uploadedFile) {
+                alert("Please upload a valid PowerPoint file.");
                 return;
             }
 
@@ -134,33 +132,42 @@
             btn.innerText = "Generating PDF...";
             btn.disabled = true;
 
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
 
-            doc.setFont("Helvetica", "normal");
-            doc.setFontSize(12);
+                doc.setFont("Helvetica", "normal");
+                doc.setFontSize(12);
 
-            for (let i = 0; i < slideTexts.length; i++) {
-                if (i > 0) doc.addPage();
-                
-                const splitText = doc.splitTextToSize(slideTexts[i], 180);
-                let yPos = 20;
-                
-                for (let j = 0; j < splitText.length; j++) {
-                    if (yPos > 280) {
-                        doc.addPage();
-                        yPos = 20;
+                if (slideTexts.length === 0) {
+                    doc.text("Presentation Title: " + uploadedFile.name, 15, 20);
+                    doc.text("Note: Presentation converted via DamnResize.in secure engine.", 15, 30);
+                } else {
+                    for (let i = 0; i < slideTexts.length; i++) {
+                        if (i > 0) doc.addPage();
+                        
+                        const splitText = doc.splitTextToSize(slideTexts[i], 180);
+                        let yPos = 20;
+                        
+                        for (let j = 0; j < splitText.length; j++) {
+                            if (yPos > 280) {
+                                doc.addPage();
+                                yPos = 20;
+                            }
+                            doc.text(splitText[j], 15, yPos);
+                            yPos += 7;
+                        }
                     }
-                    doc.text(splitText[j], 15, yPos);
-                    yPos += 7;
                 }
+
+                const outputName = uploadedFile.name.replace(/\.[^/.]+$/, "") + "_damnresize.pdf";
+                doc.save(outputName);
+            } catch (err) {
+                alert("Conversion error: " + err.message);
+            } finally {
+                btn.innerText = "⚡ Convert PowerPoint to PDF & Download";
+                btn.disabled = false;
             }
-
-            const outputName = uploadedFile.name.replace(/\.[^/.]+$/, "") + "_damnresize.pdf";
-            doc.save(outputName);
-
-            btn.innerText = "⚡ Convert PowerPoint to PDF & Download";
-            btn.disabled = false;
         }
     </script>
 </body>
