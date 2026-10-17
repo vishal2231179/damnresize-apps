@@ -46,15 +46,15 @@
             <p class="text-slate-400 text-sm mb-6">Upload or drag & drop your image below, apply presets or custom dimensions, and download.</p>
             
             <!-- Sarkari Exam Presets Buttons -->
-            <div class="mb-6">
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">⚡ Quick Exam Presets (Click to Apply)</label>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <button type="button" onclick="applyPreset(350, 450, this)" class="preset-btn bg-slate-950 border border-slate-800 hover:border-indigo-500 py-3 px-3 rounded-2xl text-xs font-medium text-slate-300 transition text-center flex items-center justify-center min-h-[50px]">SSC Photo<br>(3.5x4.5cm)</button>
-                    <button type="button" onclick="applyPreset(350, 150, this)" class="preset-btn bg-slate-950 border border-slate-800 hover:border-indigo-500 py-3 px-3 rounded-2xl text-xs font-medium text-slate-300 transition text-center flex items-center justify-center min-h-[50px]">SSC Signature</button>
-                    <button type="button" onclick="applyPreset(413, 531, this)" class="preset-btn bg-slate-950 border border-slate-800 hover:border-indigo-500 py-3 px-3 rounded-2xl text-xs font-medium text-slate-300 transition text-center flex items-center justify-center min-h-[50px]">UPSC Photo</button>
-                    <button type="button" onclick="applyPreset(400, 200, this)" class="preset-btn bg-slate-950 border border-slate-800 hover:border-indigo-500 py-3 px-3 rounded-2xl text-xs font-medium text-slate-300 transition text-center flex items-center justify-center min-h-[50px]">IBPS / Banking<br>Sign</button>
-                </div>
-            </div>
+         <div class="mb-6">
+    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">⚡ Quick Exam Presets (Click to Apply / Toggle to Reset)</label>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <button type="button" onclick="togglePreset(350, 450, this)" class="preset-btn bg-slate-950 border border-slate-800 hover:border-indigo-500 py-3 px-3 rounded-2xl text-xs font-medium text-slate-300 transition text-center flex items-center justify-center min-h-[50px]">SSC Photo<br>(3.5x4.5cm)</button>
+        <button type="button" onclick="togglePreset(350, 150, this)" class="preset-btn bg-slate-950 border border-slate-800 hover:border-indigo-500 py-3 px-3 rounded-2xl text-xs font-medium text-slate-300 transition text-center flex items-center justify-center min-h-[50px]">SSC Signature</button>
+        <button type="button" onclick="togglePreset(413, 531, this)" class="preset-btn bg-slate-950 border border-slate-800 hover:border-indigo-500 py-3 px-3 rounded-2xl text-xs font-medium text-slate-300 transition text-center flex items-center justify-center min-h-[50px]">UPSC Photo</button>
+        <button type="button" onclick="togglePreset(400, 200, this)" class="preset-btn bg-slate-950 border border-slate-800 hover:border-indigo-500 py-3 px-3 rounded-2xl text-xs font-medium text-slate-300 transition text-center flex items-center justify-center min-h-[50px]">IBPS / Banking<br>Sign</button>
+    </div>
+</div>
 
             <!-- Drag & Drop Upload Dropzone -->
             <div id="dropZone" class="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-2xl p-8 text-center cursor-pointer bg-slate-950/40 transition mb-6">
@@ -196,6 +196,7 @@
     </footer>
 
     <!-- Script Logic -->
+    <!-- Script Logic -->
     <script>
         const imageInput = document.getElementById('imageInput');
         const dropZone = document.getElementById('dropZone');
@@ -214,6 +215,7 @@
 
         let loadedImage = null;
         let originalAspect = 1;
+        let activePresetBtn = null;
 
         function formatBytes(bytes) {
             if (bytes === 0) return '0 Bytes';
@@ -243,6 +245,7 @@
 
         function handleFile(file) {
             originalSizeText.innerText = formatBytes(file.size);
+            activePresetBtn = null; // Reset preset selection on new file upload
             const reader = new FileReader();
             reader.onload = function(event) {
                 loadedImage = new Image();
@@ -277,21 +280,42 @@
             updateProcessedImage();
         });
 
-        function applyPreset(w, h, btnElement) {
-            widthInput.value = w;
-            heightInput.value = h;
-            lockRatio.checked = false; // Disable ratio lock for custom rigid Sarkari exam dimensions
+        function togglePreset(w, h, btnElement) {
+            if (!loadedImage) {
+                alert('Please upload an image first!');
+                return;
+            }
 
+            // Agar wahi button dobara click hua hai, toh unselect/reset kar do
+            if (activePresetBtn === btnElement) {
+                btnElement.classList.remove('border-indigo-500', 'bg-indigo-950/40');
+                btnElement.classList.add('border-slate-800');
+                activePresetBtn = null;
+
+                // Reset to original image dimensions
+                widthInput.value = loadedImage.width;
+                heightInput.value = loadedImage.height;
+                lockRatio.checked = true;
+                updateProcessedImage();
+                return;
+            }
+
+            // Baaki saare buttons se highlight hatao
             presetBtns.forEach(btn => {
                 btn.classList.remove('border-indigo-500', 'bg-indigo-950/40');
                 btn.classList.add('border-slate-800');
             });
+
+            // Naye button ko highlight karo
             btnElement.classList.remove('border-slate-800');
             btnElement.classList.add('border-indigo-500', 'bg-indigo-950/40');
+            activePresetBtn = btnElement;
 
-            if (loadedImage) {
-                updateProcessedImage();
-            }
+            widthInput.value = w;
+            heightInput.value = h;
+            lockRatio.checked = false; 
+
+            updateProcessedImage();
         }
 
         qualityRange.addEventListener('input', (e) => {
