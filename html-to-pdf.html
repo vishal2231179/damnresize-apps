@@ -1,0 +1,129 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML to PDF Converter | DamnResize.in</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- html2pdf.js library for converting HTML directly to PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { dark: { 900: '#0b0f19', 800: '#1e293b', 700: '#334155' } }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-3">
+        <div class="max-w-7xl mx-auto flex justify-between items-center relative">
+            <div class="flex items-center">
+                <a href="index.html" class="flex items-center group">
+                    <img src="damnresize-v4-dark.png" alt="DamnResize.in Logo" class="h-14 md:h-16 w-auto object-contain group-hover:scale-105 transition">
+                </a>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300 absolute left-1/2 -translate-x-1/2 items-center">
+                <a href="index.html" class="hover:text-indigo-400 transition">Home</a>
+                <a href="pdf-tools.html" class="text-indigo-400 font-semibold transition">PDF Tools</a>
+                <a href="exams.html" class="hover:text-indigo-400 transition">Govt Exams</a>
+                <a href="AddText.html" class="hover:text-indigo-400 transition">AddText</a>
+            </nav>
+            <div class="flex items-center">
+                <a href="pdf-tools.html" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-lg shadow-indigo-500/20">Back to PDF Suite</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl mx-auto px-4 py-12 w-full" id="html-to-pdf">
+        
+        <div class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-yellow-400 to-amber-400 bg-clip-text text-transparent mb-3">
+                🌐 HTML to PDF Converter
+            </h1>
+            <p class="text-slate-400 text-sm md:text-base max-w-xl mx-auto">
+                Paste your HTML code or upload an HTML file to instantly render and download it as a professional PDF document.
+            </p>
+        </div>
+
+        <!-- Converter Box -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl mb-8">
+            
+            <div class="mb-6">
+                <label class="block text-sm font-semibold text-slate-300 mb-2">Paste HTML Code or Content:</label>
+                <textarea id="htmlInput" rows="8" placeholder="<h1>Hello World</h1><p>Type or paste your HTML markup here...</p>" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-sm text-slate-200 font-mono focus:outline-none focus:border-yellow-500 transition">&lt;h1 style=&quot;color: #4f46e5;&quot;&gt;DamnResize.in Document&lt;/h1&gt;
+&lt;p&gt;This is a sample HTML document converted directly to PDF inside your browser.&lt;/p&gt;
+&lt;hr style=&quot;margin: 20px 0; border: 0; border-top: 1px solid #ccc;&quot;&gt;
+&lt;p&gt;&lt;b&gt;Features:&lt;/b&gt; Fast, secure, and fully client-side rendering!&lt;/p&gt;</textarea>
+            </div>
+
+            <!-- Preview Render Target (Hidden or styled container) -->
+            <div class="mb-6">
+                <label class="block text-sm font-semibold text-slate-300 mb-2">Live Preview Area:</label>
+                <div id="renderPreview" class="bg-white text-slate-900 p-6 rounded-xl border border-slate-700 min-h-[120px]">
+                    <h1 style="color: #4f46e5;">DamnResize.in Document</h1>
+                    <p>This is a sample HTML document converted directly to PDF inside your browser.</p>
+                    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ccc;">
+                    <p><b>Features:</b> Fast, secure, and fully client-side rendering!</p>
+                </div>
+            </div>
+
+            <button onclick="convertHTMLToPDF()" id="convertBtn" class="w-full bg-yellow-600 hover:bg-yellow-500 text-slate-950 font-bold py-3.5 rounded-xl transition shadow-lg shadow-yellow-500/20 text-base flex items-center justify-center gap-2">
+                <span>⚡ Convert HTML to PDF & Download</span>
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-900/40 text-center py-6 text-xs text-slate-500 mt-12">
+        <p>&copy; 2026 DamnResize.in. All rights reserved. Secure Browser-based HTML Rendering Engine.</p>
+    </footer>
+
+    <!-- Conversion Logic Script -->
+    <script>
+        const textarea = document.getElementById('htmlInput');
+        const preview = document.getElementById('renderPreview');
+
+        // Live update preview when user types HTML code
+        textarea.addEventListener('input', function() {
+            preview.innerHTML = textarea.value;
+        });
+
+        function convertHTMLToPDF() {
+            const htmlContent = textarea.value;
+            if (!htmlContent.trim()) {
+                alert("Please enter some HTML code to convert.");
+                return;
+            }
+
+            const btn = document.getElementById('convertBtn');
+            btn.innerText = "Rendering PDF...";
+            btn.disabled = true;
+
+            const opt = {
+                margin:       10,
+                filename:     'document_damnresize.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().from(preview).set(opt).save().then(() => {
+                btn.innerText = "⚡ Convert HTML to PDF & Download";
+                btn.disabled = false;
+            }).catch(err => {
+                alert("Error generating PDF: " + err.message);
+                btn.innerText = "⚡ Convert HTML to PDF & Download";
+                btn.disabled = false;
+            });
+        }
+    </script>
+</body>
+</html>
