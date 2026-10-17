@@ -13,17 +13,22 @@
 
     <!-- Navbar -->
       <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <a href="index.html" class="flex items-center gap-3 group">
-                    <img src="damnresize-v4-dark.svg" alt="DamnResize.in Logo" class="h-12 md:h-14 w-auto object-contain group-hover:scale-105 transition">
+        <div class="max-w-7xl mx-auto flex justify-between items-center relative">
+            <!-- Left: Logo -->
+            <div class="flex items-center">
+                <a href="index.html" class="flex items-center group">
+                    <img src="damnresize-v4-dark.png" alt="DamnResize.in Logo" class="h-12 md:h-14 w-auto object-contain group-hover:scale-105 transition">
                 </a>
             </div>
-            <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
+ 
+            <!-- Center: Navigation Elements -->
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300 absolute left-1/2 -translate-x-1/2">
                 <a href="index.html" class="hover:text-indigo-400 transition">Home</a>
                 <a href="#tools" class="hover:text-indigo-400 transition">All Utilities</a>
             </nav>
-            <div>
+ 
+            <!-- Right: Get Started Button -->
+            <div class="flex items-center">
                 <a href="#tool" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-lg shadow-indigo-500/20">Get Started</a>
             </div>
         </div>
