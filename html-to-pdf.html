@@ -5,18 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HTML to PDF Converter | DamnResize.in</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- jsPDF Library -->
+    <!-- jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: { dark: { 900: '#0b0f19', 800: '#1e293b', 700: '#334155' } }
-                }
-            }
-        }
-    </script>
+    <!-- html2canvas: browser-rendered HTML screenshot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
 
@@ -42,36 +34,36 @@
 
     <!-- Main Content -->
     <main class="flex-grow max-w-4xl mx-auto px-4 py-12 w-full" id="html-to-pdf">
-        
+
         <div class="text-center mb-10">
             <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-yellow-400 to-amber-400 bg-clip-text text-transparent mb-3">
                 🌐 HTML to PDF Converter
             </h1>
             <p class="text-slate-400 text-sm md:text-base max-w-xl mx-auto">
-                Paste your HTML code or markup to instantly render and download it as a professional PDF document.
+                Paste your HTML code (with CSS, fonts and colors) to render it exactly and download it as a PDF.
             </p>
         </div>
 
         <!-- Converter Box -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl mb-8">
-            
+
             <div class="mb-6">
                 <label class="block text-sm font-semibold text-slate-300 mb-2">Paste HTML Code or Content:</label>
-                <textarea id="htmlInput" rows="8" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-sm text-slate-200 font-mono focus:outline-none focus:border-yellow-500 transition">&lt;h1 style=&quot;color: #4f46e5;&quot;&gt;DamnResize.in Document&lt;/h1&gt;
-&lt;p&gt;This is a sample HTML document converted directly to PDF inside your browser.&lt;/p&gt;
-&lt;hr style=&quot;margin: 20px 0; border: 0; border-top: 1px solid #ccc;&quot;&gt;
-&lt;p&gt;&lt;b&gt;Features:&lt;/b&gt; Fast, secure, and fully client-side rendering!&lt;/p&gt;</textarea>
+                <textarea id="htmlInput" rows="10" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-sm text-slate-200 font-mono focus:outline-none focus:border-yellow-500 transition">&lt;style&gt;
+  body { font-family: Georgia, serif; color: #1e293b; }
+  h1 { color: #4f46e5; border-bottom: 3px solid #fbbf24; padding-bottom: 8px; }
+  .box { background: #fef3c7; padding: 16px; border-radius: 8px; }
+&lt;/style&gt;
+&lt;h1&gt;DamnResize.in Document&lt;/h1&gt;
+&lt;div class="box"&gt;&lt;b&gt;Features:&lt;/b&gt; Fast, secure, and fully client-side rendering!&lt;/div&gt;
+&lt;hr&gt;
+&lt;p&gt;This document keeps its own fonts, colors and layout.&lt;/p&gt;</textarea>
             </div>
 
-            <!-- Preview Render Target -->
+            <!-- Live Preview (isolated iframe so CSS does not leak into this page) -->
             <div class="mb-6">
-                <label class="block text-sm font-semibold text-slate-300 mb-2">Live Preview Area:</label>
-                <div id="renderPreview" class="bg-white text-slate-900 p-6 rounded-xl border border-slate-700 min-h-[120px]">
-                    <h1 style="color: #4f46e5;">DamnResize.in Document</h1>
-                    <p>This is a sample HTML document converted directly to PDF inside your browser.</p>
-                    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ccc;">
-                    <p><b>Features:</b> Fast, secure, and fully client-side rendering!</p>
-                </div>
+                <label class="block text-sm font-semibold text-slate-300 mb-2">Live Preview:</label>
+                <iframe id="previewFrame" class="w-full h-96 bg-white rounded-xl border border-slate-700"></iframe>
             </div>
 
             <button type="button" id="convertBtn" class="w-full bg-yellow-600 hover:bg-yellow-500 text-slate-950 font-bold py-3.5 rounded-xl transition shadow-lg shadow-yellow-500/20 text-base cursor-pointer">
@@ -86,19 +78,90 @@
         <p>&copy; 2026 DamnResize.in. All rights reserved. Secure Browser-based HTML Rendering Engine.</p>
     </footer>
 
-    <!-- Conversion Logic Script -->
     <script>
+        const PX_W = 794;            // A4 width at 96 dpi
+        const PAGE_W_MM = 210;
+        const PAGE_H_MM = 297;
+
         const textarea = document.getElementById('htmlInput');
-        const preview = document.getElementById('renderPreview');
+        const previewFrame = document.getElementById('previewFrame');
         const convertBtn = document.getElementById('convertBtn');
+        const BTN_TEXT = "⚡ Convert HTML to PDF & Download";
 
-        textarea.addEventListener('input', function() {
-            preview.innerHTML = textarea.value;
-        });
+        // Wrap a fragment in a full document; keep full documents as they are
+        function buildDoc(src) {
+            if (/<html[\s>]/i.test(src)) return src;
+            return `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:32px;font-family:Arial,Helvetica,sans-serif;color:#0f172a;background:#ffffff;">${src}</body></html>`;
+        }
 
-        convertBtn.addEventListener('click', function() {
-            const htmlContent = textarea.value;
-            if (!htmlContent.trim()) {
+        function updatePreview() {
+            previewFrame.srcdoc = buildDoc(textarea.value);
+        }
+        textarea.addEventListener('input', updatePreview);
+        updatePreview();
+
+        // Render the HTML in a hidden iframe and return a canvas screenshot
+        async function renderToCanvas(src) {
+            const frame = document.createElement('iframe');
+            frame.style.cssText = `position:fixed;left:-10000px;top:0;width:${PX_W}px;height:1123px;border:0;background:#fff;`;
+            document.body.appendChild(frame);
+            try {
+                await new Promise((resolve) => {
+                    frame.onload = resolve;
+                    frame.srcdoc = buildDoc(src);
+                });
+                const doc = frame.contentDocument;
+                // Give CDN scripts (e.g. Tailwind) and web fonts time to apply
+                await new Promise(r => setTimeout(r, 600));
+                if (doc.fonts && doc.fonts.ready) await doc.fonts.ready;
+
+                const height = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight, 1123);
+                frame.style.height = height + 'px';
+
+                return await html2canvas(doc.body, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    width: PX_W,
+                    height: height,
+                    windowWidth: PX_W,
+                    windowHeight: height,
+                    scrollX: 0,
+                    scrollY: 0
+                });
+            } finally {
+                frame.remove();
+            }
+        }
+
+        // Slice the tall screenshot into A4 pages
+        function canvasToPdf(canvas, filename) {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ unit: 'mm', format: 'a4' });
+            const pxPerMm = canvas.width / PAGE_W_MM;
+            const pageHpx = Math.floor(PAGE_H_MM * pxPerMm);
+            let y = 0;
+            let first = true;
+
+            while (y < canvas.height) {
+                const sliceH = Math.min(pageHpx, canvas.height - y);
+                const slice = document.createElement('canvas');
+                slice.width = canvas.width;
+                slice.height = sliceH;
+                slice.getContext('2d').drawImage(canvas, 0, y, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
+
+                if (!first) pdf.addPage();
+                first = false;
+                pdf.addImage(slice.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, PAGE_W_MM, sliceH / pxPerMm);
+                y += pageHpx;
+            }
+            pdf.save(filename);
+        }
+
+        convertBtn.addEventListener('click', async function () {
+            const src = textarea.value;
+            if (!src.trim()) {
                 alert("Please enter some HTML code to convert.");
                 return;
             }
@@ -107,40 +170,12 @@
             convertBtn.disabled = true;
 
             try {
-                const tempDiv = document.createElement("div");
-                tempDiv.innerHTML = htmlContent;
-                const plainText = tempDiv.innerText || tempDiv.textContent;
-
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-
-                // Custom Styling / Colors applied directly in PDF generation
-                doc.setTextColor(79, 70, 229); // Indigo Accent Color (#4f46e5)
-                doc.setFont("Helvetica", "bold");
-                doc.setFontSize(16);
-                doc.text("DamnResize.in HTML Export", 14, 20);
-
-                doc.setTextColor(30, 41, 59); // Dark Slate Body Color (#1e293b)
-                doc.setFont("Helvetica", "normal");
-                doc.setFontSize(11);
-                
-                const splitText = doc.splitTextToSize(plainText, 180);
-                let yPos = 32;
-
-                for (let i = 0; i < splitText.length; i++) {
-                    if (yPos > 280) {
-                        doc.addPage();
-                        yPos = 20;
-                    }
-                    doc.text(splitText[i], 14, yPos);
-                    yPos += 7;
-                }
-
-                doc.save("document_damnresize.pdf");
+                const canvas = await renderToCanvas(src);
+                canvasToPdf(canvas, 'document_damnresize.pdf');
             } catch (err) {
                 alert("Error generating PDF: " + err.message);
             } finally {
-                convertBtn.innerText = "⚡ Convert HTML to PDF & Download";
+                convertBtn.innerText = BTN_TEXT;
                 convertBtn.disabled = false;
             }
         });
