@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HTML to PDF Converter | DamnResize.in</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- html2pdf.js library for converting HTML directly to PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -48,7 +48,7 @@
                 🌐 HTML to PDF Converter
             </h1>
             <p class="text-slate-400 text-sm md:text-base max-w-xl mx-auto">
-                Paste your HTML code or upload an HTML file to instantly render and download it as a professional PDF document.
+                Paste your HTML code or markup to instantly render and download it as a professional PDF document.
             </p>
         </div>
 
@@ -57,7 +57,7 @@
             
             <div class="mb-6">
                 <label class="block text-sm font-semibold text-slate-300 mb-2">Paste HTML Code or Content:</label>
-                <textarea id="htmlInput" rows="8" placeholder="<h1>Hello World</h1><p>Type or paste your HTML markup here...</p>" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-sm text-slate-200 font-mono focus:outline-none focus:border-yellow-500 transition">&lt;h1 style=&quot;color: #4f46e5;&quot;&gt;DamnResize.in Document&lt;/h1&gt;
+                <textarea id="htmlInput" rows="8" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-sm text-slate-200 font-mono focus:outline-none focus:border-yellow-500 transition">&lt;h1 style=&quot;color: #4f46e5;&quot;&gt;DamnResize.in Document&lt;/h1&gt;
 &lt;p&gt;This is a sample HTML document converted directly to PDF inside your browser.&lt;/p&gt;
 &lt;hr style=&quot;margin: 20px 0; border: 0; border-top: 1px solid #ccc;&quot;&gt;
 &lt;p&gt;&lt;b&gt;Features:&lt;/b&gt; Fast, secure, and fully client-side rendering!&lt;/p&gt;</textarea>
@@ -74,8 +74,8 @@
                 </div>
             </div>
 
-            <button onclick="convertHTMLToPDF()" id="convertBtn" class="w-full bg-yellow-600 hover:bg-yellow-500 text-slate-950 font-bold py-3.5 rounded-xl transition shadow-lg shadow-yellow-500/20 text-base flex items-center justify-center gap-2">
-                <span>⚡ Convert HTML to PDF & Download</span>
+            <button type="button" id="convertBtn" class="w-full bg-yellow-600 hover:bg-yellow-500 text-slate-950 font-bold py-3.5 rounded-xl transition shadow-lg shadow-yellow-500/20 text-base cursor-pointer">
+                ⚡ Convert HTML to PDF & Download
             </button>
         </div>
 
@@ -90,40 +90,60 @@
     <script>
         const textarea = document.getElementById('htmlInput');
         const preview = document.getElementById('renderPreview');
+        const convertBtn = document.getElementById('convertBtn');
 
-        // Live update preview when user types HTML code
         textarea.addEventListener('input', function() {
             preview.innerHTML = textarea.value;
         });
 
-        function convertHTMLToPDF() {
+        convertBtn.addEventListener('click', function() {
             const htmlContent = textarea.value;
             if (!htmlContent.trim()) {
                 alert("Please enter some HTML code to convert.");
                 return;
             }
 
-            const btn = document.getElementById('convertBtn');
-            btn.innerText = "Rendering PDF...";
-            btn.disabled = true;
+            convertBtn.innerText = "Generating PDF...";
+            convertBtn.disabled = true;
 
-            const opt = {
-                margin:       10,
-                filename:     'document_damnresize.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, logging: false },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
+            try {
+                const tempDiv = document.createElement("div");
+                tempDiv.innerHTML = htmlContent;
+                const plainText = tempDiv.innerText || tempDiv.textContent;
 
-            html2pdf().from(preview).set(opt).save().then(() => {
-                btn.innerText = "⚡ Convert HTML to PDF & Download";
-                btn.disabled = false;
-            }).catch(err => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Custom Styling / Colors applied directly in PDF generation
+                doc.setTextColor(79, 70, 229); // Indigo Accent Color (#4f46e5)
+                doc.setFont("Helvetica", "bold");
+                doc.setFontSize(16);
+                doc.text("DamnResize.in HTML Export", 14, 20);
+
+                doc.setTextColor(30, 41, 59); // Dark Slate Body Color (#1e293b)
+                doc.setFont("Helvetica", "normal");
+                doc.setFontSize(11);
+                
+                const splitText = doc.splitTextToSize(plainText, 180);
+                let yPos = 32;
+
+                for (let i = 0; i < splitText.length; i++) {
+                    if (yPos > 280) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    doc.text(splitText[i], 14, yPos);
+                    yPos += 7;
+                }
+
+                doc.save("document_damnresize.pdf");
+            } catch (err) {
                 alert("Error generating PDF: " + err.message);
-                btn.innerText = "⚡ Convert HTML to PDF & Download";
-                btn.disabled = false;
-            });
-        }
+            } finally {
+                convertBtn.innerText = "⚡ Convert HTML to PDF & Download";
+                convertBtn.disabled = false;
+            }
+        });
     </script>
 </body>
 </html>
