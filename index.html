@@ -118,6 +118,31 @@
         </div>
     </section>
 
+    <div class="px-6 pb-4">
+        <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-center shadow-lg shadow-slate-950/40">
+                <div class="mb-2 text-xl text-emerald-400">✓</div>
+                <div class="text-sm font-semibold text-slate-100">No signup</div>
+                <div class="text-xs text-slate-400">Use instantly</div>
+            </div>
+            <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-center shadow-lg shadow-slate-950/40">
+                <div class="mb-2 text-xl text-cyan-400">🔒</div>
+                <div class="text-sm font-semibold text-slate-100">Private by default</div>
+                <div class="text-xs text-slate-400">Files stay in-browser</div>
+            </div>
+            <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-center shadow-lg shadow-slate-950/40">
+                <div class="mb-2 text-xl text-indigo-400">⚡</div>
+                <div class="text-sm font-semibold text-slate-100">Fast processing</div>
+                <div class="text-xs text-slate-400">Quick downloads</div>
+            </div>
+            <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-center shadow-lg shadow-slate-950/40">
+                <div class="mb-2 text-xl text-amber-400">💡</div>
+                <div class="text-sm font-semibold text-slate-100">Free access</div>
+                <div class="text-xs text-slate-400">No hidden cost</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Functional Tool Section (Home Resizer/Compressor with Drag & Drop) -->
     <section id="tool" class="py-12 px-6 max-w-3xl mx-auto w-full">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
@@ -201,7 +226,8 @@
 <!-- Professional Clickable SEO Cards Section -->
 <section id="tools" class="py-16 px-6 max-w-7xl mx-auto w-full">
     <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold tracking-tight mb-3">Explore All Utility & PDF Tools</h2>
+        <span class="inline-flex items-center rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-indigo-300">Fast & secure</span>
+        <h2 class="mt-4 text-3xl font-bold tracking-tight mb-3">Explore All Utility & PDF Tools</h2>
         <p class="text-slate-400">Click on any tool below to access dedicated pages optimized for performance.</p>
     </div>
 
@@ -209,107 +235,115 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
         
         <!-- Card 1: Image Resizer -->
-        <a href="resizer.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
-            <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-expand text-xl"></i></div>
-            <h3 class="text-lg font-semibold mb-2 text-white">Image Resizer</h3>
-            <p class="text-slate-400 text-sm mb-4">Resize JPG, PNG or WebP images by exact dimensions or percentage.</p>
-            <span class="text-xs text-indigo-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        <a href="resizer.html" class="group flex h-full flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900 p-6 transition hover:-translate-y-1 hover:border-indigo-500">
+            <div>
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400 transition group-hover:scale-110"><i class="fa-solid fa-expand text-xl"></i></div>
+                <h3 class="mb-2 text-lg font-semibold text-white">Image Resizer</h3>
+                <p class="mb-4 text-sm text-slate-400">Resize JPG, PNG or WebP images by exact dimensions or percentage.</p>
+            </div>
+            <span class="text-xs font-semibold text-indigo-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
         </a>
 
         <!-- Card 2: Crop Image -->
-        <a href="crop.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
-            <div class="w-12 h-12 bg-pink-500/10 rounded-xl flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-crop text-xl"></i></div>
-            <h3 class="text-lg font-semibold mb-2 text-white">Crop Image</h3>
-            <p class="text-slate-400 text-sm mb-4">Trim unwanted edges and focus on the core subject easily.</p>
-            <span class="text-xs text-pink-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        <a href="crop.html" class="group flex h-full flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900 p-6 transition hover:-translate-y-1 hover:border-indigo-500">
+            <div>
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-pink-500/10 text-pink-400 transition group-hover:scale-110"><i class="fa-solid fa-crop text-xl"></i></div>
+                <h3 class="mb-2 text-lg font-semibold text-white">Crop Image</h3>
+                <p class="mb-4 text-sm text-slate-400">Trim unwanted edges and focus on the core subject easily.</p>
+            </div>
+            <span class="text-xs font-semibold text-pink-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
         </a>
 
         <!-- Card 3: Image Compressor -->
-        <a href="compress.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
-            <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-compress text-xl"></i></div>
-            <h3 class="text-lg font-semibold mb-2 text-white">Image Compressor</h3>
-            <p class="text-slate-400 text-sm mb-4">Reduce file size in KBs without losing quality for web portals.</p>
-            <span class="text-xs text-emerald-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        <a href="compress.html" class="group flex h-full flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900 p-6 transition hover:-translate-y-1 hover:border-indigo-500">
+            <div>
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 transition group-hover:scale-110"><i class="fa-solid fa-compress text-xl"></i></div>
+                <h3 class="mb-2 text-lg font-semibold text-white">Image Compressor</h3>
+                <p class="mb-4 text-sm text-slate-400">Reduce file size in KBs without losing quality for web portals.</p>
+            </div>
+            <span class="text-xs font-semibold text-emerald-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
         </a>
 
         <!-- Card 4: Format Converter -->
-        <a href="convert.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
-            <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center text-amber-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-file-arrow-down text-xl"></i></div>
-            <h3 class="text-lg font-semibold mb-2 text-white">Format Converter</h3>
-            <p class="text-slate-400 text-sm mb-4">Convert images seamlessly between popular and modern formats.</p>
-            <span class="text-xs text-amber-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        <a href="convert.html" class="group flex h-full flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900 p-6 transition hover:-translate-y-1 hover:border-indigo-500">
+            <div>
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 transition group-hover:scale-110"><i class="fa-solid fa-file-arrow-down text-xl"></i></div>
+                <h3 class="mb-2 text-lg font-semibold text-white">Format Converter</h3>
+                <p class="mb-4 text-sm text-slate-400">Convert images seamlessly between popular and modern formats.</p>
+            </div>
+            <span class="text-xs font-semibold text-amber-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
         </a>
 
         <!-- Card 5: AI Tools -->
-        <a href="ImageGenerator.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
-            <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-wand-magic-sparkles text-xl"></i></div>
-            <h3 class="text-lg font-semibold mb-2 text-white">AI Tools</h3>
-            <p class="text-slate-400 text-sm mb-4">Advanced AI utilities for quick background edits and image fixes.</p>
-            <span class="text-xs text-purple-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        <a href="ImageGenerator.html" class="group flex h-full flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900 p-6 transition hover:-translate-y-1 hover:border-indigo-500">
+            <div>
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/10 text-purple-400 transition group-hover:scale-110"><i class="fa-solid fa-wand-magic-sparkles text-xl"></i></div>
+                <h3 class="mb-2 text-lg font-semibold text-white">AI Tools</h3>
+                <p class="mb-4 text-sm text-slate-400">Advanced AI utilities for quick background edits and image fixes.</p>
+            </div>
+            <span class="text-xs font-semibold text-purple-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
         </a>
 
         <!-- Card 6: Utility Extras -->
-        <a href="utilities.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
-            <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-toolbox text-xl"></i></div>
-            <h3 class="text-lg font-semibold mb-2 text-white">Utility Toolkit</h3>
-            <p class="text-slate-400 text-sm mb-4">Handy little web utilities for everyday editing tasks.</p>
-            <span class="text-xs text-blue-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        <a href="utilities.html" class="group flex h-full flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900 p-6 transition hover:-translate-y-1 hover:border-indigo-500">
+            <div>
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400 transition group-hover:scale-110"><i class="fa-solid fa-toolbox text-xl"></i></div>
+                <h3 class="mb-2 text-lg font-semibold text-white">Utility Toolkit</h3>
+                <p class="mb-4 text-sm text-slate-400">Handy little web utilities for everyday editing tasks.</p>
+            </div>
+            <span class="text-xs font-semibold text-blue-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
         </a>
 
         <!-- Card 7: Bulk Processing -->
-        <a href="bulk.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
-            <div class="w-12 h-12 bg-rose-500/10 rounded-xl flex items-center justify-center text-rose-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-layer-group text-xl"></i></div>
-            <h3 class="text-lg font-semibold mb-2 text-white">Bulk Processing</h3>
-            <p class="text-slate-400 text-sm mb-4">Process multiple images simultaneously to save time.</p>
-            <span class="text-xs text-rose-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        <a href="bulk.html" class="group flex h-full flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900 p-6 transition hover:-translate-y-1 hover:border-indigo-500">
+            <div>
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-rose-500/10 text-rose-400 transition group-hover:scale-110"><i class="fa-solid fa-layer-group text-xl"></i></div>
+                <h3 class="mb-2 text-lg font-semibold text-white">Bulk Processing</h3>
+                <p class="mb-4 text-sm text-slate-400">Process multiple images simultaneously to save time.</p>
+            </div>
+            <span class="text-xs font-semibold text-rose-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
         </a>
 
         <!-- Card 8: Secure & Private -->
-        <a href="privacy.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
-            <div class="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-shield-halved text-xl"></i></div>
-            <h3 class="text-lg font-semibold mb-2 text-white">100% Secure</h3>
-            <p class="text-slate-400 text-sm mb-4">Your files stay safe. Everything runs locally in your browser.</p>
-            <span class="text-xs text-cyan-400 font-semibold flex items-center gap-1">Learn More <i class="fa-solid fa-arrow-right"></i></span>
+        <a href="privacy.html" class="group flex h-full flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900 p-6 transition hover:-translate-y-1 hover:border-indigo-500">
+            <div>
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400 transition group-hover:scale-110"><i class="fa-solid fa-shield-halved text-xl"></i></div>
+                <h3 class="mb-2 text-lg font-semibold text-white">100% Secure</h3>
+                <p class="mb-4 text-sm text-slate-400">Your files stay safe. Everything runs locally in your browser.</p>
+            </div>
+            <span class="text-xs font-semibold text-cyan-400">Learn More <i class="fa-solid fa-arrow-right"></i></span>
         </a>
 
         <!-- Card 9: Govt Exam Photo -->
-        <a href="exams.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
-            <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-landmark text-xl"></i></div>
-            <h3 class="text-lg font-semibold mb-2 text-white">Govt Exam Photo</h3>
-            <p class="text-slate-400 text-sm mb-4">Auto-resize photos & signatures for SSC, Banking, UPSC & UP Police.</p>
-            <span class="text-xs text-indigo-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        <a href="exams.html" class="group flex h-full flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900 p-6 transition hover:-translate-y-1 hover:border-indigo-500">
+            <div>
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400 transition group-hover:scale-110"><i class="fa-solid fa-landmark text-xl"></i></div>
+                <h3 class="mb-2 text-lg font-semibold text-white">Govt Exam Photo</h3>
+                <p class="mb-4 text-sm text-slate-400">Auto-resize photos & signatures for SSC, Banking, UPSC & UP Police.</p>
+            </div>
+            <span class="text-xs font-semibold text-indigo-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
         </a>
 
         <!-- Card 10: Photo Add Text / Stamper -->
-        <a href="AddText.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
-            <div class="w-12 h-12 bg-pink-500/10 rounded-xl flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-signature text-xl"></i></div>
-            <h3 class="text-lg font-semibold mb-2 text-white">Photo Name & Date Stamper</h3>
-            <p class="text-slate-400 text-sm mb-4">Add custom name and photo capture date stamps with live slider adjustments.</p>
-            <span class="text-xs text-pink-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        <a href="AddText.html" class="group flex h-full flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900 p-6 transition hover:-translate-y-1 hover:border-indigo-500">
+            <div>
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-pink-500/10 text-pink-400 transition group-hover:scale-110"><i class="fa-solid fa-signature text-xl"></i></div>
+                <h3 class="mb-2 text-lg font-semibold text-white">Photo Name & Date Stamper</h3>
+                <p class="mb-4 text-sm text-slate-400">Add custom name and photo capture date stamps with live slider adjustments.</p>
+            </div>
+            <span class="text-xs font-semibold text-pink-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
         </a>
 
         
- <!-- AI Image Studio & Background Remover Card -->
-<!-- AI Image Studio Card -->
-<a href="ImageGenerator.html"
-   class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-purple-500 transition group block">
-    
-    <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition">
-        <i class="fa-solid fa-wand-magic-sparkles text-xl"></i>
-    </div>
-
-    <h3 class="text-lg font-semibold mb-2 text-white">
-        AI Image Studio
-    </h3>
-
-    <p class="text-slate-400 text-sm mb-4">
-        Remove backgrounds and enhance images instantly with AI-powered tools.
-    </p>
-
-    <span class="text-xs text-purple-400 font-semibold flex items-center gap-1">
-        Open Tool <i class="fa-solid fa-arrow-right"></i>
-    </span>
-</a>
+        <!-- AI Image Studio & Background Remover Card -->
+        <a href="ImageGenerator.html" class="group flex h-full flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900 p-6 transition hover:-translate-y-1 hover:border-purple-500">
+            <div>
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/10 text-purple-400 transition group-hover:scale-110"><i class="fa-solid fa-wand-magic-sparkles text-xl"></i></div>
+                <h3 class="mb-2 text-lg font-semibold text-white">AI Image Studio</h3>
+                <p class="mb-4 text-sm text-slate-400">Remove backgrounds and enhance images instantly with AI-powered tools.</p>
+            </div>
+            <span class="text-xs font-semibold text-purple-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
 
 
 
@@ -423,8 +457,36 @@
     
 
     <!-- Footer -->
-    <footer class="bg-slate-900 border-t border-slate-800 py-8 px-6 mt-auto text-center text-sm text-slate-500">
-        <p>&copy; 2026 DamnResize.in. Built with ⚡ for Creators & Aspirants.</p>
+    <footer class="bg-slate-900 border-t border-slate-800 py-10 px-6 mt-auto">
+        <div class="max-w-6xl mx-auto grid gap-8 md:grid-cols-3 text-left">
+            <div>
+                <div class="mb-3 flex items-center gap-3">
+                    <img src="damnresize-v4-dark.svg" alt="DamnResize.in" class="h-10 w-auto" />
+                </div>
+                <p class="text-sm text-slate-400">Fast browser-based image and PDF tools for resizing, cropping, converting, and document prep.</p>
+            </div>
+            <div>
+                <h4 class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-300">Quick links</h4>
+                <ul class="space-y-2 text-sm text-slate-400">
+                    <li><a href="resizer.html" class="hover:text-indigo-300">Image Resizer</a></li>
+                    <li><a href="compress.html" class="hover:text-indigo-300">Image Compressor</a></li>
+                    <li><a href="convert.html" class="hover:text-indigo-300">Format Converter</a></li>
+                    <li><a href="exams.html" class="hover:text-indigo-300">Govt Exam Photo</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-300">Why users trust us</h4>
+                <ul class="space-y-2 text-sm text-slate-400">
+                    <li>Browser-first workflow</li>
+                    <li>No software installation</li>
+                    <li>Private and secure processing</li>
+                    <li>Free utility access</li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-8 border-t border-slate-800 pt-5 text-center text-sm text-slate-500">
+            <p>&copy; 2026 DamnResize.in. Built with ⚡ for creators, students, and professionals.</p>
+        </div>
     </footer>
 
     <!-- Script Logic -->
