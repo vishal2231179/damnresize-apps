@@ -1,0 +1,159 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="navigation.js" defer></script>
+    <title>Excel to PDF Converter | DamnResize.in</title>
+    <meta name="description" content="Convert Excel spreadsheets to PDF online. Create a shareable PDF from your spreadsheet with this browser-based Excel to PDF tool.">
+    <link rel="canonical" href="https://damnresize.in/excel-to-pdf.html">
+    <link rel="icon" href="/damnresize-favicon.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- SheetJS (xlsx) for reading Excel files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- jsPDF and AutoTable plugin for generating PDF tables -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { dark: { 900: '#0b0f19', 800: '#1e293b', 700: '#334155' } }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-3">
+        <div class="max-w-7xl mx-auto flex justify-between items-center relative">
+            <div class="flex items-center">
+                <a href="index.html" class="flex items-center group">
+                    <img src="damnresize-v4-dark.svg" alt="DamnResize.in Logo" class="h-14 md:h-16 w-auto object-contain group-hover:scale-105 transition">
+                </a>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300 absolute left-1/2 -translate-x-1/2 items-center">
+                <a href="index.html" class="hover:text-indigo-400 transition">Home</a>
+                <a href="index.html#tools" class="text-indigo-400 font-semibold transition">PDF Tools</a>
+                <a href="exams.html" class="hover:text-indigo-400 transition">Govt Exam Photo</a>
+                <a href="AddText.html" class="hover:text-indigo-400 transition">AddText</a>
+            </nav>
+            <div class="flex items-center">
+                <a href="index.html#tools" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-lg shadow-indigo-500/20">Back to PDF Suite</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl mx-auto px-4 py-12 w-full" id="excel-to-pdf">
+        
+        <div class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent mb-3">
+                📈 Excel to PDF Converter
+            </h1>
+            <p class="text-slate-400 text-sm md:text-base max-w-xl mx-auto">
+                Upload your Excel spreadsheet (.xlsx, .xls) and convert data sheets into neat printable PDF tables.
+            </p>
+        </div>
+
+        <!-- Upload Box -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl mb-8">
+            <div class="border-2 border-dashed border-slate-700 hover:border-emerald-500 rounded-xl p-8 text-center cursor-pointer transition bg-slate-950/50" onclick="document.getElementById('excelInput').click()">
+                <input type="file" id="excelInput" accept=".xlsx, .xls" class="hidden" onchange="handleExcelSelected(event)">
+                <div class="text-4xl mb-3">📊</div>
+                <p class="text-sm font-medium text-slate-300 mb-1" id="uploadText">Click to upload Excel file or drag & drop here</p>
+                <p class="text-xs text-slate-500">Supports Microsoft Excel (.xlsx, .xls formats)</p>
+            </div>
+
+            <!-- Action Section -->
+            <div id="actionSection" class="hidden mt-6 text-center">
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 mb-6 flex items-center justify-between">
+                    <span id="fileName" class="text-sm text-slate-300 font-mono"></span>
+                    <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full">Ready to Convert</span>
+                </div>
+                
+                <button onclick="convertExcelToPDF()" id="convertBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3.5 rounded-xl transition shadow-lg shadow-emerald-500/20 text-base flex items-center justify-center gap-2">
+                    <span>⚡ Convert Excel to PDF & Download</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-900/40 text-center py-6 text-xs text-slate-500 mt-12">
+        <p>&copy; 2026 DamnResize.in. All rights reserved. Secure Browser-based Spreadsheet Converter.</p>
+    </footer>
+
+    <!-- Conversion Logic Script -->
+    <script>
+        let uploadedFile = null;
+        let excelRows = [];
+        let excelHeaders = [];
+
+        function handleExcelSelected(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            uploadedFile = file;
+            document.getElementById('fileName').innerText = file.name;
+            document.getElementById('actionSection').classList.remove('hidden');
+            document.getElementById('uploadText').innerText = "Spreadsheet loaded! Click below to convert.";
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                
+                // Get first sheet name and convert to JSON
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                if (jsonData.length > 0) {
+                    excelHeaders = jsonData[0];
+                    excelRows = jsonData.slice(1);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function convertExcelToPDF() {
+            if (!uploadedFile || excelRows.length === 0) {
+                alert("Please wait or upload a valid Excel file with data.");
+                return;
+            }
+
+            const btn = document.getElementById('convertBtn');
+            btn.innerText = "Generating PDF Table...";
+            btn.disabled = true;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFont("Helvetica", "bold");
+            doc.setFontSize(14);
+            doc.text(`Spreadsheet: ${uploadedFile.name}`, 14, 15);
+
+            // Generate AutoTable
+            doc.autoTable({
+                head: [excelHeaders],
+                body: excelRows,
+                startY: 22,
+                theme: 'grid',
+                headStyles: { fillColor: [16, 185, 129] }, // Emerald color theme
+                styles: { fontSize: 9, cellPadding: 3 }
+            });
+
+            const outputName = uploadedFile.name.replace(/\.[^/.]+$/, "") + "_damnresize.pdf";
+            doc.save(outputName);
+
+            btn.innerText = "⚡ Convert Excel to PDF & Download";
+            btn.disabled = false;
+        }
+    </script>
+</body>
+</html>

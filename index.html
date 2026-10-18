@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="navigation.js" defer></script>
+    <title>Free Online Image Tools | DamnResize.in</title>
+    <meta name="description" content="Resize, compress, crop and convert images online for free. Convert PDFs and prepare exam photos with browser-based tools that keep image files on your device.">
+    <link rel="canonical" href="https://damnresize.in/">
+    <link rel="icon" href="/damnresize-favicon.svg" type="image/svg+xml">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DamnResize.in">
+    <meta property="og:title" content="Free Online Image Tools | DamnResize.in">
+    <meta property="og:description" content="Resize, compress, crop and convert images online for free. Convert PDFs and prepare exam photos with browser-based tools.">
+    <meta property="og:url" content="https://damnresize.in/">
+    <meta name="twitter:card" content="summary">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "DamnResize.in",
+            "url": "https://damnresize.in/"
+        }
+    </script>
+    <meta name="google-site-verification" content="wE8QfZgrTVuVhfUbH17HYIKSlzlm39ED3otzymCGg9s" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+
+    <!-- Navbar -->
+       <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-3">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-x-4 gap-y-1 relative">
+            <!-- Left: Logo -->
+            <div class="flex items-center"> 
+                <a href="index.html" class="flex items-center group">
+                    <img src="damnresize-v4-dark.svg" alt="DamnResize.in Logo" class="h-14 md:h-16 w-auto object-contain group-hover:scale-105 transition">
+                </a>
+            </div>
+ 
+            <!-- Center: Navigation Elements -->
+            <nav aria-label="Main navigation" class="order-last flex w-full flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs font-medium text-slate-300 sm:gap-x-3 sm:text-sm xl:order-none xl:w-auto xl:flex-nowrap xl:gap-x-4 xl:absolute xl:left-1/2 xl:-translate-x-1/2">
+                <a href="index.html" data-nav-link class="rounded-lg px-2 py-1 transition hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300">Home</a>
+                <a href="index.html#tools" data-nav-link class="rounded-lg px-2 py-1 transition hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300">All Tools</a>
+                <a href="ImageGenerator.html" data-nav-link class="rounded-lg px-2 py-1 transition hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300">AI Image Studio</a>
+                <a href="document-scanner.html" data-nav-link class="site-nav-scan"><span class="site-nav-item-icon icon-cyan" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 0 1 1-1h2m10 0h2a1 1 0 0 1 1 1v2M4 17v2a1 1 0 0 0 1 1h2m10 0h2a1 1 0 0 0 1-1v-2"></path><path d="M7 9h10v7H7zM9 12h6m-6 2h4"></path></svg></span><span>Scan to PDF</span></a>
+                <details class="relative group py-1" data-nav-group>
+                    <summary class="flex cursor-pointer list-none items-center gap-1 rounded-lg px-2 py-1 transition hover:text-indigo-300 group-open:bg-indigo-500/10 group-open:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">
+                        Govt Exam Photo
+                        <svg class="h-4 w-4 transition-transform group-hover:rotate-180 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="absolute left-1/2 top-full z-50 hidden w-[90vw] max-w-[300px] -translate-x-1/2 grid-cols-1 gap-2 rounded-2xl border border-slate-800 bg-slate-900 p-4 shadow-2xl group-hover:grid group-open:grid">
+                        <a href="exams.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-indigo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M8 10h.01M12 10h.01M16 10h.01"></path></svg></span>Govt Exam Photo</a>
+                        <a href="AddText.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-pink" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10.5-10.5a2.12 2.12 0 0 0-4-4L4 16v4Z"></path><path d="m13.5 6.5 4 4M12 20h8"></path></svg></span>Add Text</a>
+                    </div>
+                </details>
+
+                <details class="relative group py-1" data-nav-group>
+                    <summary class="flex cursor-pointer list-none items-center gap-1 rounded-lg px-2 py-1 transition hover:text-indigo-300 group-open:bg-indigo-500/10 group-open:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">
+                        Image Tools
+                        <svg class="h-4 w-4 transition-transform group-hover:rotate-180 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="absolute left-1/2 top-full z-50 hidden w-[90vw] max-w-[440px] -translate-x-1/2 grid-cols-2 gap-2 rounded-2xl border border-slate-800 bg-slate-900 p-4 shadow-2xl group-hover:grid group-open:grid">
+                        <a href="resizer.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-indigo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3m8 0h3a2 2 0 0 0 2-2v-3M8 8 3 3m13 5 5-5M8 16l-5 5m13-5 5 5"></path></svg></span>Image Resizer</a>
+                        <a href="crop.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-pink" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12a3 3 0 0 0 3 3h12M3 6h12a3 3 0 0 1 3 3v12"></path></svg></span>Crop Image</a>
+                        <a href="compress.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-emerald" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M3 3l6 6m12-6-6 6M8 21H5a2 2 0 0 1-2-2v-3m13 5h3a2 2 0 0 0 2-2v-3m-6-3 6 6m-12-6-6 6"></path></svg></span>Image Compressor</a>
+                        <a href="convert.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6m-8 3v7m-3-3 3 3 3-3"></path></svg></span>Format Converter</a>
+                        <a href="utilities.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 7 17 4a3 3 0 0 1 4 4l-3 3M10 17l-3 3a3 3 0 0 1-4-4l3-3m3-3 5-5m-3 11 5-5"></path><path d="m8 8 8 8"></path></svg></span>Utility Toolkit</a>
+                        <a href="bulk.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-rose" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7l10-5Z"></path><path d="m2 12 10 5 10-5M2 17l10 5 10-5"></path></svg></span>Bulk Processing</a>
+                        <a href="privacy.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-cyan" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path><path d="m9 12 2 2 4-4"></path></svg></span>Privacy &amp; Security</a>
+                    </div>
+                </details>
+
+                <details class="relative group py-1" data-nav-group>
+                    <summary class="flex cursor-pointer list-none items-center gap-1 rounded-lg px-2 py-1 transition hover:text-indigo-300 group-open:bg-indigo-500/10 group-open:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">
+                        PDF Tools
+                        <svg class="h-4 w-4 transition-transform group-hover:rotate-180 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="absolute left-1/2 top-full z-50 hidden w-[90vw] max-w-[550px] -translate-x-1/2 grid-cols-2 gap-6 rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl group-hover:grid group-open:grid">
+                        <div>
+                            <p class="mb-3 text-xs font-bold uppercase tracking-wider text-indigo-400">Convert to PDF</p>
+                            <div class="space-y-2">
+                                <a href="jpg-to-pdf.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-xs text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="8.5" cy="9" r="1.5"></circle><path d="m21 15-5-5L5 20"></path></svg></span>JPG to PDF</a>
+                                <a href="word-to-pdf.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-xs text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l5 5v13H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"></path><path d="M14 3v5h5M8 13h8M8 17h8"></path></svg></span>WORD to PDF</a>
+                                <a href="ppt-to-pdf.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-xs text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"></rect><path d="M12 17v4m-4 0h8M8 13V9m4 4V6m4 7v-5"></path></svg></span>POWERPOINT to PDF</a>
+                                <a href="excel-to-pdf.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-xs text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-emerald" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M4 9h16M4 15h16M10 3v18M16 3v18"></path></svg></span>EXCEL to PDF</a>
+                                <a href="html-to-pdf.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-xs text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-yellow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18m0-18a15 15 0 0 0 0 18"></path></svg></span>HTML to PDF</a>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="mb-3 text-xs font-bold uppercase tracking-wider text-purple-400">Convert from PDF</p>
+                            <div class="space-y-2">
+                                <a href="pdf-to-jpg.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-xs text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="8.5" cy="9" r="1.5"></circle><path d="m21 15-5-5L5 20"></path></svg></span>PDF to JPG</a>
+                                <a href="pdf-to-word.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-xs text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l5 5v13H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"></path><path d="M14 3v5h5M8 13h8M8 17h8"></path></svg></span>PDF to WORD</a>
+                                <a href="pdf-to-ppt.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-xs text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"></rect><path d="M12 17v4m-4 0h8M8 13V9m4 4V6m4 7v-5"></path></svg></span>PDF to POWERPOINT</a>
+                                <a href="pdf-to-excel.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-xs text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-emerald" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M4 9h16M4 15h16M10 3v18M16 3v18"></path></svg></span>PDF to EXCEL</a>
+                                <a href="pdf-to-pdfa.html" data-nav-link class="flex items-center gap-2.5 rounded-xl p-2 text-xs text-slate-300 transition hover:bg-slate-800/80 hover:text-indigo-300 aria-[current=page]:bg-indigo-500/10 aria-[current=page]:text-indigo-300"><span class="site-nav-item-icon icon-indigo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path><path d="m9 12 2 2 4-4"></path></svg></span>PDF to PDF/A</a>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </nav>
+ 
+            <!-- Right: Get Started Button -->
+            <div class="flex items-center">
+                <a href="exams.html" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-lg shadow-indigo-500/20">Get Started</a>
+            </div>
+        </div>
+    </header> 
+
+    <!-- Hero Section -->
+    <section class="py-16 px-6 text-center bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-900">
+        <div class="max-w-4xl mx-auto">
+            <span class="inline-block bg-indigo-500/10 text-indigo-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-4 border border-indigo-500/20">⚡ Lightning Fast & Secure Utility Hub</span>
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">Resize, Compress & Convert <span class="bg-gradient-to-r from-indigo-400 to-pink-500 bg-clip-text text-transparent">Like a Boss.</span></h1>
+            <p class="text-slate-400 text-base md:text-lg mb-8 max-w-2xl mx-auto">The ultimate platform for fast image processing. Drag & drop photos, use exam presets, and optimize KB/MB sizes instantly.</p>
+        </div>
+    </section>
+
+    <!-- Main Functional Tool Section (Home Resizer/Compressor with Drag & Drop) -->
+    <section id="tool" class="py-12 px-6 max-w-3xl mx-auto w-full">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <h2 class="text-2xl font-bold mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i> Quick Image Resizer & Compressor
+            </h2>
+            <p class="text-slate-400 text-sm mb-6">Upload or drag & drop your image below, apply presets or custom dimensions, and download.</p>
+            
+            <!-- Sarkari Exam Presets Buttons -->
+         <div class="mb-6">
+    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">⚡ Quick Exam Presets (Click to Apply / Toggle to Reset)</label>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <button type="button" onclick="togglePreset(350, 450, this)" class="preset-btn bg-slate-950 border border-slate-800 hover:border-indigo-500 py-3 px-3 rounded-2xl text-xs font-medium text-slate-300 transition text-center flex items-center justify-center min-h-[50px]">SSC Photo<br>(3.5x4.5cm)</button>
+        <button type="button" onclick="togglePreset(350, 150, this)" class="preset-btn bg-slate-950 border border-slate-800 hover:border-indigo-500 py-3 px-3 rounded-2xl text-xs font-medium text-slate-300 transition text-center flex items-center justify-center min-h-[50px]">SSC Signature</button>
+        <button type="button" onclick="togglePreset(413, 531, this)" class="preset-btn bg-slate-950 border border-slate-800 hover:border-indigo-500 py-3 px-3 rounded-2xl text-xs font-medium text-slate-300 transition text-center flex items-center justify-center min-h-[50px]">UPSC Photo</button>
+        <button type="button" onclick="togglePreset(400, 200, this)" class="preset-btn bg-slate-950 border border-slate-800 hover:border-indigo-500 py-3 px-3 rounded-2xl text-xs font-medium text-slate-300 transition text-center flex items-center justify-center min-h-[50px]">IBPS / Banking<br>Sign</button>
+    </div>
+</div>
+
+            <!-- Drag & Drop Upload Dropzone -->
+            <div id="dropZone" class="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-2xl p-8 text-center cursor-pointer bg-slate-950/40 transition mb-6">
+                <i class="fa-solid fa-cloud-arrow-up text-3xl text-indigo-400 mb-3 block"></i>
+                <p class="text-sm font-medium text-slate-200 mb-1">Drag & Drop your image here, or <span class="text-indigo-400 underline">browse</span></p>
+                <p class="text-xs text-slate-500">Supports JPG, JPEG, PNG, WebP etc.</p>
+                <input type="file" id="imageInput" accept="image/*" class="hidden"/>
+            </div>
+
+            <!-- Image Info & Controls -->
+            <div id="editorWorkspace" class="hidden space-y-6">
+                <div class="grid grid-cols-2 gap-4 bg-slate-950 border border-slate-800 p-4 rounded-2xl text-center">
+                    <div>
+                        <p class="text-xs text-slate-400 mb-1">Original Size</p>
+                        <p id="originalSizeText" class="text-lg font-bold text-amber-400">0 KB</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 mb-1">Estimated Output Size</p>
+                        <p id="outputSizeText" class="text-lg font-bold text-emerald-400">0 KB</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Width (px)</label>
+                        <input type="number" id="widthInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500"/>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Height (px)</label>
+                        <input type="number" id="heightInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500"/>
+                    </div>
+                </div>
+
+                <!-- Aspect Ratio Lock Option -->
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="lockRatio" checked class="w-4 h-4 accent-indigo-500 rounded cursor-pointer"/>
+                    <label for="lockRatio" class="text-xs text-slate-300 cursor-pointer select-none">Lock Aspect Ratio (Keep proportions balanced)</label>
+                </div>
+
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-slate-300 font-medium">Compression Quality</span>
+                        <span id="qualityVal" class="text-indigo-400 font-bold">90%</span>
+                    </div>
+                    <input type="range" id="qualityRange" min="10" max="100" value="90" class="w-full accent-indigo-500 cursor-pointer"/>
+                </div>
+
+                <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-2xl p-6 bg-slate-950/50 min-h-[200px]">
+                    <img id="imagePreview" class="max-h-64 rounded-lg shadow-md mb-4" alt="Preview"/>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button id="resizeBtn" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-6 rounded-xl transition shadow-lg shadow-indigo-600/20">Process & Apply</button>
+                    <a id="downloadBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl text-center transition shadow-lg shadow-emerald-600/20" download="damnresize_output.jpg"><i class="fa-solid fa-download mr-2"></i>Download Compressed Image</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Clickable SEO Cards Section -->
+<!-- Professional Clickable SEO Cards Section -->
+<section id="tools" class="py-16 px-6 max-w-7xl mx-auto w-full">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold tracking-tight mb-3">Explore All Utility & PDF Tools</h2>
+        <p class="text-slate-400">Click on any tool below to access dedicated pages optimized for performance.</p>
+    </div>
+
+    <!-- 1. General Utilities Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        
+        <!-- Card 1: Image Resizer -->
+        <a href="resizer.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
+            <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-expand text-xl"></i></div>
+            <h3 class="text-lg font-semibold mb-2 text-white">Image Resizer</h3>
+            <p class="text-slate-400 text-sm mb-4">Resize JPG, PNG or WebP images by exact dimensions or percentage.</p>
+            <span class="text-xs text-indigo-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        <!-- Card 2: Crop Image -->
+        <a href="crop.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
+            <div class="w-12 h-12 bg-pink-500/10 rounded-xl flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-crop text-xl"></i></div>
+            <h3 class="text-lg font-semibold mb-2 text-white">Crop Image</h3>
+            <p class="text-slate-400 text-sm mb-4">Trim unwanted edges and focus on the core subject easily.</p>
+            <span class="text-xs text-pink-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        <!-- Card 3: Image Compressor -->
+        <a href="compress.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
+            <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-compress text-xl"></i></div>
+            <h3 class="text-lg font-semibold mb-2 text-white">Image Compressor</h3>
+            <p class="text-slate-400 text-sm mb-4">Reduce file size in KBs without losing quality for web portals.</p>
+            <span class="text-xs text-emerald-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        <!-- Card 4: Format Converter -->
+        <a href="convert.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
+            <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center text-amber-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-file-arrow-down text-xl"></i></div>
+            <h3 class="text-lg font-semibold mb-2 text-white">Format Converter</h3>
+            <p class="text-slate-400 text-sm mb-4">Convert images seamlessly between popular and modern formats.</p>
+            <span class="text-xs text-amber-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        <!-- Card 5: AI Tools -->
+        <a href="ImageGenerator.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
+            <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-wand-magic-sparkles text-xl"></i></div>
+            <h3 class="text-lg font-semibold mb-2 text-white">AI Tools</h3>
+            <p class="text-slate-400 text-sm mb-4">Advanced AI utilities for quick background edits and image fixes.</p>
+            <span class="text-xs text-purple-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        <!-- Card 6: Utility Extras -->
+        <a href="utilities.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
+            <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-toolbox text-xl"></i></div>
+            <h3 class="text-lg font-semibold mb-2 text-white">Utility Toolkit</h3>
+            <p class="text-slate-400 text-sm mb-4">Handy little web utilities for everyday editing tasks.</p>
+            <span class="text-xs text-blue-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        <!-- Card 7: Bulk Processing -->
+        <a href="bulk.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
+            <div class="w-12 h-12 bg-rose-500/10 rounded-xl flex items-center justify-center text-rose-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-layer-group text-xl"></i></div>
+            <h3 class="text-lg font-semibold mb-2 text-white">Bulk Processing</h3>
+            <p class="text-slate-400 text-sm mb-4">Process multiple images simultaneously to save time.</p>
+            <span class="text-xs text-rose-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        <!-- Card 8: Secure & Private -->
+        <a href="privacy.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
+            <div class="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-shield-halved text-xl"></i></div>
+            <h3 class="text-lg font-semibold mb-2 text-white">100% Secure</h3>
+            <p class="text-slate-400 text-sm mb-4">Your files stay safe. Everything runs locally in your browser.</p>
+            <span class="text-xs text-cyan-400 font-semibold flex items-center gap-1">Learn More <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        <!-- Card 9: Govt Exam Photo -->
+        <a href="exams.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
+            <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-landmark text-xl"></i></div>
+            <h3 class="text-lg font-semibold mb-2 text-white">Govt Exam Photo</h3>
+            <p class="text-slate-400 text-sm mb-4">Auto-resize photos & signatures for SSC, Banking, UPSC & UP Police.</p>
+            <span class="text-xs text-indigo-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        <!-- Card 10: Photo Add Text / Stamper -->
+        <a href="AddText.html" class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-indigo-500 transition group block">
+            <div class="w-12 h-12 bg-pink-500/10 rounded-xl flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-signature text-xl"></i></div>
+            <h3 class="text-lg font-semibold mb-2 text-white">Photo Name & Date Stamper</h3>
+            <p class="text-slate-400 text-sm mb-4">Add custom name and photo capture date stamps with live slider adjustments.</p>
+            <span class="text-xs text-pink-400 font-semibold flex items-center gap-1">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+
+        
+ <!-- AI Image Studio & Background Remover Card -->
+<!-- AI Image Studio Card -->
+<a href="ImageGenerator.html"
+   class="bg-slate-900 border border-slate-800 p-6 rounded-2xl hover:border-purple-500 transition group block">
+    
+    <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition">
+        <i class="fa-solid fa-wand-magic-sparkles text-xl"></i>
+    </div>
+
+    <h3 class="text-lg font-semibold mb-2 text-white">
+        AI Image Studio
+    </h3>
+
+    <p class="text-slate-400 text-sm mb-4">
+        Remove backgrounds and enhance images instantly with AI-powered tools.
+    </p>
+
+    <span class="text-xs text-purple-400 font-semibold flex items-center gap-1">
+        Open Tool <i class="fa-solid fa-arrow-right"></i>
+    </span>
+</a>
+
+
+
+
+        
+
+    </div>
+
+    <!-- 2. CONVERT TO PDF SECTION (Individual Cards) -->
+    <div class="mb-14">
+        <h3 class="text-xl font-bold text-slate-200 mb-6 border-b border-slate-800 pb-3 flex items-center gap-2">
+            <span>📄</span> CONVERT TO PDF
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <a href="jpg-to-pdf.html" class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 shadow-xl flex items-center gap-4 group">
+                <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center text-amber-400 justify-center group-hover:scale-110 transition"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="8.5" cy="9" r="1.5"></circle><path d="m21 15-5-5L5 20"></path></svg></div>
+                <div>
+                    <h4 class="text-base font-semibold text-slate-200 group-hover:text-indigo-400 transition">JPG to PDF</h4>
+                    <p class="text-xs text-slate-400 mt-0.5">Convert JPG, PNG images to high-res PDF.</p>
+                </div>
+            </a>
+
+            <a href="word-to-pdf.html" class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 shadow-xl flex items-center gap-4 group">
+                <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center text-blue-400 justify-center group-hover:scale-110 transition"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l5 5v13H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"></path><path d="M14 3v5h5M8 13h8M8 17h8"></path></svg></div>
+                <div>
+                    <h4 class="text-base font-semibold text-slate-200 group-hover:text-indigo-400 transition">WORD to PDF</h4>
+                    <p class="text-xs text-slate-400 mt-0.5">Transform DOC, DOCX files securely into PDF.</p>
+                </div>
+            </a>
+
+            <a href="ppt-to-pdf.html" class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 shadow-xl flex items-center gap-4 group">
+                <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center text-orange-400 justify-center group-hover:scale-110 transition"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"></rect><path d="M12 17v4m-4 0h8M8 13V9m4 4V6m4 7v-5"></path></svg></div>
+                <div>
+                    <h4 class="text-base font-semibold text-slate-200 group-hover:text-indigo-400 transition">POWERPOINT to PDF</h4>
+                    <p class="text-xs text-slate-400 mt-0.5">Convert PPT presentations into clean PDFs.</p>
+                </div>
+            </a>
+
+            <a href="excel-to-pdf.html" class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 shadow-xl flex items-center gap-4 group">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center text-emerald-400 justify-center group-hover:scale-110 transition"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M4 9h16M4 15h16M10 3v18M16 3v18"></path></svg></div>
+                <div>
+                    <h4 class="text-base font-semibold text-slate-200 group-hover:text-indigo-400 transition">EXCEL to PDF</h4>
+                    <p class="text-xs text-slate-400 mt-0.5">Spreadsheets to neat printable PDF sheets.</p>
+                </div>
+            </a>
+
+            <a href="html-to-pdf.html" class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 shadow-xl flex items-center gap-4 group">
+                <div class="w-12 h-12 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center text-yellow-400 justify-center group-hover:scale-110 transition"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18m0-18a15 15 0 0 0 0 18"></path></svg></div>
+                <div>
+                    <h4 class="text-base font-semibold text-slate-200 group-hover:text-indigo-400 transition">HTML to PDF</h4>
+                    <p class="text-xs text-slate-400 mt-0.5">Save web pages or HTML codes as documents.</p>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- 3. CONVERT FROM PDF SECTION (Individual Cards) -->
+    <div>
+        <h3 class="text-xl font-bold text-slate-200 mb-6 border-b border-slate-800 pb-3 flex items-center gap-2">
+            <span>📑</span> CONVERT FROM PDF
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <a href="pdf-to-jpg.html" class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 shadow-xl flex items-center gap-4 group">
+                <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center text-amber-400 justify-center group-hover:scale-110 transition"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="8.5" cy="9" r="1.5"></circle><path d="m21 15-5-5L5 20"></path></svg></div>
+                <div>
+                    <h4 class="text-base font-semibold text-slate-200 group-hover:text-indigo-400 transition">PDF to JPG</h4>
+                    <p class="text-xs text-slate-400 mt-0.5">Extract pages into high-quality image files.</p>
+                </div>
+            </a>
+
+            <a href="pdf-to-word.html" class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 shadow-xl flex items-center gap-4 group">
+                <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center text-blue-400 justify-center group-hover:scale-110 transition"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l5 5v13H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"></path><path d="M14 3v5h5M8 13h8M8 17h8"></path></svg></div>
+                <div>
+                    <h4 class="text-base font-semibold text-slate-200 group-hover:text-indigo-400 transition">PDF to WORD</h4>
+                    <p class="text-xs text-slate-400 mt-0.5">Convert PDF documents into editable Word files.</p>
+                </div>
+            </a>
+
+            <a href="pdf-to-ppt.html" class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 shadow-xl flex items-center gap-4 group">
+                <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center text-orange-400 justify-center group-hover:scale-110 transition"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"></rect><path d="M12 17v4m-4 0h8M8 13V9m4 4V6m4 7v-5"></path></svg></div>
+                <div>
+                    <h4 class="text-base font-semibold text-slate-200 group-hover:text-indigo-400 transition">PDF to POWERPOINT</h4>
+                    <p class="text-xs text-slate-400 mt-0.5">Turn PDFs into editable PPT presentations.</p>
+                </div>
+            </a>
+
+            <a href="pdf-to-excel.html" class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 shadow-xl flex items-center gap-4 group">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center text-emerald-400 justify-center group-hover:scale-110 transition"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M4 9h16M4 15h16M10 3v18M16 3v18"></path></svg></div>
+                <div>
+                    <h4 class="text-base font-semibold text-slate-200 group-hover:text-indigo-400 transition">PDF to EXCEL</h4>
+                    <p class="text-xs text-slate-400 mt-0.5">Extract tabular data directly into Excel sheets.</p>
+                </div>
+            </a>
+
+            <a href="pdf-to-pdfa.html" class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 shadow-xl flex items-center gap-4 group">
+                <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center text-indigo-400 justify-center group-hover:scale-110 transition"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path><path d="m9 12 2 2 4-4"></path></svg></div>
+                <div>
+                    <h4 class="text-base font-semibold text-slate-200 group-hover:text-indigo-400 transition">PDF to PDF/A</h4>
+                    <p class="text-xs text-slate-400 mt-0.5">Standardize documents for long-term archiving.</p>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+</section>
+
+    
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-8 px-6 mt-auto text-center text-sm text-slate-500">
+        <p>&copy; 2026 DamnResize.in. Built with ⚡ for Creators & Aspirants.</p>
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const dropZone = document.getElementById('dropZone');
+        const widthInput = document.getElementById('widthInput');
+        const heightInput = document.getElementById('heightInput');
+        const lockRatio = document.getElementById('lockRatio');
+        const qualityRange = document.getElementById('qualityRange');
+        const qualityVal = document.getElementById('qualityVal');
+        const imagePreview = document.getElementById('imagePreview');
+        const editorWorkspace = document.getElementById('editorWorkspace');
+        const resizeBtn = document.getElementById('resizeBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const originalSizeText = document.getElementById('originalSizeText');
+        const outputSizeText = document.getElementById('outputSizeText');
+        const presetBtns = document.querySelectorAll('.preset-btn');
+
+        let loadedImage = null;
+        let originalAspect = 1;
+        let activePresetBtn = null;
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Drag & Drop Handlers
+        dropZone.addEventListener('click', () => imageInput.click());
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-indigo-500'); });
+        dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('border-indigo-500'); });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-indigo-500');
+            if (e.dataTransfer.files.length > 0) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        imageInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            originalSizeText.innerText = formatBytes(file.size);
+            activePresetBtn = null; // Reset preset selection on new file upload
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                loadedImage = new Image();
+                loadedImage.onload = function() {
+                    originalAspect = loadedImage.width / loadedImage.height;
+                    widthInput.value = loadedImage.width;
+                    heightInput.value = loadedImage.height;
+                    imagePreview.src = event.target.result;
+                    editorWorkspace.classList.remove('hidden');
+                    dropZone.classList.add('hidden');
+                    updateProcessedImage();
+                }
+                loadedImage.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // Aspect Ratio Width/Height synchronization
+        widthInput.addEventListener('input', () => {
+            if (lockRatio.checked && loadedImage) {
+                const w = parseInt(widthInput.value);
+                if (w) heightInput.value = Math.round(w / originalAspect);
+            }
+            updateProcessedImage();
+        });
+
+        heightInput.addEventListener('input', () => {
+            if (lockRatio.checked && loadedImage) {
+                const h = parseInt(heightInput.value);
+                if (h) widthInput.value = Math.round(h * originalAspect);
+            }
+            updateProcessedImage();
+        });
+
+        function togglePreset(w, h, btnElement) {
+            if (!loadedImage) {
+                alert('Please upload an image first!');
+                return;
+            }
+
+            // Agar wahi button dobara click hua hai, toh unselect/reset kar do
+            if (activePresetBtn === btnElement) {
+                btnElement.classList.remove('border-indigo-500', 'bg-indigo-950/40');
+                btnElement.classList.add('border-slate-800');
+                activePresetBtn = null;
+
+                // Reset to original image dimensions
+                widthInput.value = loadedImage.width;
+                heightInput.value = loadedImage.height;
+                lockRatio.checked = true;
+                updateProcessedImage();
+                return;
+            }
+
+            // Baaki saare buttons se highlight hatao
+            presetBtns.forEach(btn => {
+                btn.classList.remove('border-indigo-500', 'bg-indigo-950/40');
+                btn.classList.add('border-slate-800');
+            });
+
+            // Naye button ko highlight karo
+            btnElement.classList.remove('border-slate-800');
+            btnElement.classList.add('border-indigo-500', 'bg-indigo-950/40');
+            activePresetBtn = btnElement;
+
+            widthInput.value = w;
+            heightInput.value = h;
+            lockRatio.checked = false; 
+
+            updateProcessedImage();
+        }
+
+        qualityRange.addEventListener('input', (e) => {
+            qualityVal.innerText = e.target.value + '%';
+            updateProcessedImage();
+        });
+
+        function updateProcessedImage() {
+            if (!loadedImage) return;
+            const targetWidth = parseInt(widthInput.value) || loadedImage.width;
+            const targetHeight = parseInt(heightInput.value) || loadedImage.height;
+            const quality = parseInt(qualityRange.value) / 100;
+
+            const canvas = document.createElement('canvas');
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(loadedImage, 0, 0, targetWidth, targetHeight);
+
+            const resizedDataUrl = canvas.toDataURL('image/jpeg', quality);
+            imagePreview.src = resizedDataUrl;
+            downloadBtn.href = resizedDataUrl;
+
+            const base64Str = resizedDataUrl.split(',')[1];
+            const computedBytes = Math.round((base64Str.length * 3) / 4);
+            outputSizeText.innerText = formatBytes(computedBytes);
+        }
+
+        resizeBtn.addEventListener('click', () => {
+            updateProcessedImage();
+            alert('Image processed and optimized successfully!');
+        });
+    </script>
+</body>
+</html>

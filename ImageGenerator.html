@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="navigation.js" defer></script>
+    <title>Passport Photo Background Remover & Editor | DamnResize.in</title>
+    <meta name="description" content="Remove and replace a passport photo background online. Refine edges, choose a solid background, and create passport-size photos in your browser.">
+    <link rel="canonical" href="https://damnresize.in/ImageGenerator.html">
+    <link rel="icon" href="/damnresize-favicon.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { dark: { 900: '#0b0f19', 800: '#1e293b', 700: '#334155' } }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-purple-500 selection:text-white">
+
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-3">
+        <div class="max-w-7xl mx-auto flex justify-between items-center relative">
+            <div class="flex items-center">
+                <a href="index.html" class="flex items-center group">
+                    <img src="damnresize-v4-dark.svg" alt="DamnResize.in Logo" class="h-14 md:h-16 w-auto object-contain group-hover:scale-105 transition">
+                </a>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300 absolute left-1/2 -translate-x-1/2 items-center">
+                <a href="index.html" class="hover:text-purple-400 transition">Home</a>
+                <a href="index.html#tools" class="hover:text-purple-400 transition">PDF Tools</a>
+                <a href="exams.html" class="hover:text-purple-400 transition">Govt Exam Photo</a>
+                <a href="AddText.html" class="hover:text-purple-400 transition">AddText</a>
+            </nav>
+            <div class="flex items-center">
+                <a href="index.html" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-lg shadow-purple-500/20">Back to Home</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-6xl mx-auto px-4 py-10 w-full">
+        <div class="text-center mb-8">
+            <span class="inline-block bg-purple-500/10 text-purple-300 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-3 border border-purple-500/20">Passport Photo Studio</span>
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-3">Remove & Replace Photo Background</h1>
+            <p class="text-slate-400 text-sm md:text-base max-w-2xl mx-auto">Remove the original background, choose a clean solid color, and download a passport-size photo. AI runs on your device and refines edge colors to help reduce halos around hair and clothing.</p>
+        </div>
+
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 md:p-8 shadow-xl" aria-label="Passport photo editor">
+            <label id="dropZone" for="imageInput" class="block border-2 border-dashed border-slate-700 hover:border-purple-500 rounded-xl p-7 text-center cursor-pointer transition bg-slate-950/50 mb-6">
+                <input type="file" id="imageInput" accept="image/jpeg,image/png,image/webp" class="sr-only">
+                <span class="text-4xl mb-3 block" aria-hidden="true">🖼️</span>
+                <span class="text-sm font-medium text-slate-200 block mb-1" id="uploadText">Choose or drop a passport photo</span>
+                <span class="text-xs text-slate-500">JPG, PNG or WebP · Maximum 20 MB</span>
+            </label>
+
+            <div id="editorSection" class="hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-4">
+                        <div class="flex items-center justify-between gap-3 mb-3">
+                            <h2 class="font-semibold text-slate-200">Original Photo</h2>
+                            <button id="changePhotoBtn" type="button" class="text-xs text-purple-300 hover:text-purple-200 underline">Change photo</button>
+                        </div>
+                        <div class="min-h-64 flex items-center justify-center rounded-lg bg-slate-900 overflow-hidden">
+                            <img id="sourcePreview" alt="Uploaded original photo" class="max-h-80 max-w-full object-contain">
+                        </div>
+                        <p id="fileInfo" class="text-xs text-slate-500 mt-3 break-all"></p>
+                    </div>
+
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-4">
+                        <div class="flex items-center justify-between gap-3 mb-3">
+                            <h2 class="font-semibold text-slate-200">Passport Photo Preview</h2>
+                            <span id="outputDimensions" class="text-xs text-slate-400">413 × 531 px</span>
+                        </div>
+                        <div class="min-h-64 flex items-center justify-center rounded-lg bg-slate-900 overflow-hidden">
+                            <canvas id="outputPreview" aria-label="Passport photo preview. Use the edge brush to erase any remaining background." class="hidden max-h-80 max-w-full rounded-lg touch-none"></canvas>
+                            <p id="previewPlaceholder" class="text-xs text-slate-500 text-center px-4">Remove the background to preview your finished photo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <fieldset>
+                        <legend class="block text-sm font-semibold text-slate-200 mb-3">Solid background color</legend>
+                        <div class="flex flex-wrap gap-3" id="colorOptions">
+                            <button type="button" data-color="#ffffff" aria-label="White background" aria-pressed="true" class="color-swatch selected bg-white"></button>
+                            <button type="button" data-color="#dbeafe" aria-label="Light blue background" aria-pressed="false" class="color-swatch bg-blue-100"></button>
+                            <button type="button" data-color="#e5e7eb" aria-label="Light gray background" aria-pressed="false" class="color-swatch bg-gray-200"></button>
+                            <button type="button" data-color="#fca5a5" aria-label="Light red background" aria-pressed="false" class="color-swatch bg-red-300"></button>
+                            <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+                                Custom
+                                <input id="customColor" type="color" value="#ffffff" aria-label="Choose custom background color" class="w-9 h-9 rounded-lg bg-slate-900 border border-slate-700 cursor-pointer">
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <div>
+                        <label for="photoSize" class="block text-sm font-semibold text-slate-200 mb-3">Output size</label>
+                        <select id="photoSize" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-500">
+                            <option value="413x531">Passport portrait · 413 × 531 px</option>
+                            <option value="600x600">Square photo · 600 × 600 px</option>
+                        </select>
+                        <p class="text-xs text-slate-500 mt-2">The complete subject is fitted into the selected size without cropping.</p>
+                    </div>
+                </div>
+
+                <p id="statusMessage" role="status" aria-live="polite" class="hidden mt-5 rounded-xl border px-4 py-3 text-sm"></p>
+                <div id="refineControls" class="hidden mt-6 rounded-xl border border-slate-800 bg-slate-950 p-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <div>
+                            <h2 class="text-sm font-semibold text-slate-200">Clean up photo edges</h2>
+                            <p class="text-xs text-slate-500 mt-1">Brush over leftover background on the preview. Use Reset to restore the AI cutout.</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button id="eraseToggle" type="button" aria-pressed="false" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3 py-2 rounded-lg transition">Erase background</button>
+                            <button id="resetRefinements" type="button" class="text-slate-400 hover:text-white text-xs underline">Reset</button>
+                        </div>
+                    </div>
+                    <label for="brushSize" class="flex items-center gap-3 mt-4 text-xs text-slate-400">
+                        Brush size
+                        <input id="brushSize" type="range" min="6" max="48" value="20" class="flex-1 accent-purple-500">
+                        <span id="brushSizeValue" class="w-10 text-right">20 px</span>
+                    </label>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                    <button id="processBtn" type="button" class="flex-1 bg-purple-600 hover:bg-purple-500 disabled:opacity-60 disabled:cursor-wait text-white font-semibold py-3.5 px-5 rounded-xl transition shadow-lg shadow-purple-500/20">
+                        Remove Background & Create Photo
+                    </button>
+                    <a id="downloadLink" class="hidden sm:flex items-center justify-center bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3.5 px-5 rounded-xl text-sm transition">Download Passport Photo</a>
+                </div>
+            </div>
+        </section>
+
+        <p class="text-center text-xs text-slate-500 mt-5">Background removal runs on your device. The AI model is downloaded from IMG.LY the first time you process a photo.</p>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-900/40 text-center py-6 text-xs text-slate-500 mt-12">
+        <p>&copy; 2026 DamnResize.in. All rights reserved. Secure Browser-based AI Studio.</p>
+    </footer>
+
+    <style>
+        .color-swatch { width: 2.25rem; height: 2.25rem; border-radius: 0.65rem; border: 2px solid #475569; }
+        .color-swatch.selected { outline: 2px solid #c084fc; outline-offset: 2px; }
+        #outputPreview { background-color: #fff; }
+        #downloadLink { display: inline-flex; }
+        #downloadLink.hidden { display: none; }
+        @media (max-width: 639px) { #downloadLink { width: 100%; } }
+    </style>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const dropZone = document.getElementById('dropZone');
+        const editorSection = document.getElementById('editorSection');
+        const sourcePreview = document.getElementById('sourcePreview');
+        const outputPreview = document.getElementById('outputPreview');
+        const previewPlaceholder = document.getElementById('previewPlaceholder');
+        const processBtn = document.getElementById('processBtn');
+        const downloadLink = document.getElementById('downloadLink');
+        const statusMessage = document.getElementById('statusMessage');
+        const refineControls = document.getElementById('refineControls');
+        const eraseToggle = document.getElementById('eraseToggle');
+        const resetRefinements = document.getElementById('resetRefinements');
+        const brushSize = document.getElementById('brushSize');
+        const brushSizeValue = document.getElementById('brushSizeValue');
+        const photoSize = document.getElementById('photoSize');
+        const outputDimensions = document.getElementById('outputDimensions');
+        const customColor = document.getElementById('customColor');
+        let selectedFile = null;
+        let foregroundBlob = null;
+        let sourceUrl = null;
+        let outputUrl = null;
+        let backgroundColor = '#ffffff';
+        let removeBackground = null;
+        let eraseEnabled = false;
+        let eraseStrokes = [];
+        let activeEraseStroke = null;
+        let activePointerId = null;
+
+        function showStatus(message, isError = false) {
+            statusMessage.textContent = message;
+            statusMessage.className = `mt-5 rounded-xl border px-4 py-3 text-sm ${isError ? 'border-red-500/30 bg-red-500/10 text-red-300' : 'border-purple-500/30 bg-purple-500/10 text-purple-200'}`;
+        }
+
+        function clearOutput() {
+            foregroundBlob = null;
+            if (outputUrl) URL.revokeObjectURL(outputUrl);
+            outputUrl = null;
+            outputPreview.removeAttribute('src');
+            outputPreview.classList.add('hidden');
+            outputPreview.width = 0;
+            outputPreview.height = 0;
+            previewPlaceholder.classList.remove('hidden');
+            refineControls.classList.add('hidden');
+            eraseEnabled = false;
+            eraseToggle.setAttribute('aria-pressed', 'false');
+            eraseToggle.textContent = 'Erase background';
+            eraseStrokes = [];
+            downloadLink.removeAttribute('href');
+            downloadLink.classList.add('hidden');
+        }
+
+        function loadPhoto(file) {
+            if (!file) return;
+            if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+                selectedFile = null;
+                editorSection.classList.add('hidden');
+                clearOutput();
+                showStatus('Please choose a JPG, PNG or WebP image.', true);
+                return;
+            }
+            if (file.size > 20 * 1024 * 1024) {
+                selectedFile = null;
+                editorSection.classList.add('hidden');
+                clearOutput();
+                showStatus('This image is larger than 20 MB. Please choose a smaller photo.', true);
+                return;
+            }
+
+            selectedFile = file;
+            eraseStrokes = [];
+            if (sourceUrl) URL.revokeObjectURL(sourceUrl);
+            sourceUrl = URL.createObjectURL(file);
+            sourcePreview.src = sourceUrl;
+            document.getElementById('fileInfo').textContent = `${file.name} · ${(file.size / 1024 / 1024).toFixed(2)} MB`;
+            document.getElementById('uploadText').textContent = 'Photo selected — choose a background and create your passport photo';
+            editorSection.classList.remove('hidden');
+            statusMessage.classList.add('hidden');
+            clearOutput();
+        }
+
+        function getOutputSize() {
+            const [width, height] = photoSize.value.split('x').map(Number);
+            return { width, height };
+        }
+
+        function exportPassportPhoto() {
+            const canvas = document.createElement('canvas');
+            canvas.width = outputPreview.width;
+            canvas.height = outputPreview.height;
+            const context = canvas.getContext('2d');
+            if (!context) throw new Error('Your browser could not create the download image.');
+            context.fillStyle = backgroundColor;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(outputPreview, 0, 0);
+            return new Promise((resolve, reject) => {
+                canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error('Could not export the finished photo.')), 'image/jpeg', 0.95);
+            });
+        }
+
+        async function updateDownload() {
+            const photoBlob = await exportPassportPhoto();
+            if (outputUrl) URL.revokeObjectURL(outputUrl);
+            outputUrl = URL.createObjectURL(photoBlob);
+            downloadLink.href = outputUrl;
+            downloadLink.download = `${selectedFile.name.replace(/\.[^.]+$/, '')}_passport.jpg`;
+            downloadLink.classList.remove('hidden');
+        }
+
+        async function refineForegroundEdges(maskBlob, sourceFile) {
+            const [maskImage, sourceImage] = await Promise.all([
+                createImageBitmap(maskBlob),
+                createImageBitmap(sourceFile)
+            ]);
+            try {
+                const { width, height } = maskImage;
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const context = canvas.getContext('2d', { willReadFrequently: true });
+                if (!context) throw new Error('Your browser could not refine the photo edges.');
+
+                context.drawImage(maskImage, 0, 0);
+                const mask = context.getImageData(0, 0, width, height).data;
+                context.clearRect(0, 0, width, height);
+                context.drawImage(sourceImage, 0, 0, width, height);
+                const image = context.getImageData(0, 0, width, height);
+                const pixels = image.data;
+                const radius = 3;
+
+                for (let y = 0; y < height; y += 1) {
+                    for (let x = 0; x < width; x += 1) {
+                        const index = (y * width + x) * 4;
+                        const alpha = mask[index + 3];
+                        pixels[index + 3] = alpha;
+                        if (alpha < 72 || alpha > 244) continue;
+
+                        let red = 0;
+                        let green = 0;
+                        let blue = 0;
+                        let totalWeight = 0;
+                        for (let offsetY = -radius; offsetY <= radius; offsetY += 1) {
+                            const sampleY = y + offsetY;
+                            if (sampleY < 0 || sampleY >= height) continue;
+                            for (let offsetX = -radius; offsetX <= radius; offsetX += 1) {
+                                if (offsetX === 0 && offsetY === 0) continue;
+                                const sampleX = x + offsetX;
+                                if (sampleX < 0 || sampleX >= width) continue;
+                                const sampleIndex = (sampleY * width + sampleX) * 4;
+                                if (mask[sampleIndex + 3] > 8) continue;
+
+                                const weight = 1 / (offsetX * offsetX + offsetY * offsetY);
+                                red += pixels[sampleIndex] * weight;
+                                green += pixels[sampleIndex + 1] * weight;
+                                blue += pixels[sampleIndex + 2] * weight;
+                                totalWeight += weight;
+                            }
+                        }
+                        if (!totalWeight) continue;
+
+                        const opacity = alpha / 255;
+                        const blend = Math.min(1, (1 - opacity) * 1.5);
+                        const background = [red / totalWeight, green / totalWeight, blue / totalWeight];
+                        for (let channel = 0; channel < 3; channel += 1) {
+                            const original = pixels[index + channel];
+                            const unblended = (original - background[channel] * (1 - opacity)) / opacity;
+                            const cleaned = Math.max(0, Math.min(255, unblended));
+                            pixels[index + channel] = original * (1 - blend) + cleaned * blend;
+                        }
+                    }
+                }
+
+                context.putImageData(image, 0, 0);
+                return await new Promise((resolve, reject) => {
+                    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error('Could not refine the photo edges.')), 'image/png');
+                });
+            } finally {
+                maskImage.close();
+                sourceImage.close();
+            }
+        }
+
+        async function renderPassportPhoto() {
+            if (!foregroundBlob) return;
+            const { width, height } = getOutputSize();
+            outputDimensions.textContent = `${width} × ${height} px`;
+            const foreground = await createImageBitmap(foregroundBlob);
+            outputPreview.width = width;
+            outputPreview.height = height;
+            const context = outputPreview.getContext('2d');
+            if (!context) throw new Error('Your browser could not create the photo canvas.');
+
+            context.clearRect(0, 0, width, height);
+            outputPreview.style.backgroundColor = backgroundColor;
+            const scale = Math.min(width / foreground.width, height / foreground.height);
+            const drawWidth = foreground.width * scale;
+            const drawHeight = foreground.height * scale;
+            context.drawImage(foreground, (width - drawWidth) / 2, (height - drawHeight) / 2, drawWidth, drawHeight);
+            foreground.close();
+            replayEraseStrokes();
+            outputPreview.classList.remove('hidden');
+            previewPlaceholder.classList.add('hidden');
+            refineControls.classList.remove('hidden');
+            await updateDownload();
+        }
+
+        function replayEraseStrokes() {
+            if (!outputPreview.width || !outputPreview.height) return;
+            const context = outputPreview.getContext('2d');
+            context.save();
+            context.globalCompositeOperation = 'destination-out';
+            for (const stroke of eraseStrokes) {
+                if (!stroke.points.length) continue;
+                context.beginPath();
+                context.lineCap = 'round';
+                context.lineJoin = 'round';
+                context.lineWidth = stroke.size * outputPreview.width;
+                context.moveTo(stroke.points[0].x * outputPreview.width, stroke.points[0].y * outputPreview.height);
+                if (stroke.points.length === 1) {
+                    context.lineTo(stroke.points[0].x * outputPreview.width, stroke.points[0].y * outputPreview.height);
+                } else {
+                    for (const point of stroke.points.slice(1)) {
+                        context.lineTo(point.x * outputPreview.width, point.y * outputPreview.height);
+                    }
+                }
+                context.stroke();
+            }
+            context.restore();
+        }
+
+        function pointerPosition(event) {
+            const rect = outputPreview.getBoundingClientRect();
+            return {
+                x: Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)),
+                y: Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height))
+            };
+        }
+
+        imageInput.addEventListener('change', (event) => loadPhoto(event.target.files[0]));
+        document.getElementById('changePhotoBtn').addEventListener('click', () => {
+            imageInput.value = '';
+            imageInput.click();
+        });
+
+        for (const eventName of ['dragenter', 'dragover']) {
+            dropZone.addEventListener(eventName, (event) => {
+                event.preventDefault();
+                dropZone.classList.add('border-purple-500', 'bg-purple-500/5');
+            });
+        }
+        for (const eventName of ['dragleave', 'drop']) {
+            dropZone.addEventListener(eventName, (event) => {
+                event.preventDefault();
+                dropZone.classList.remove('border-purple-500', 'bg-purple-500/5');
+            });
+        }
+        dropZone.addEventListener('drop', (event) => loadPhoto(event.dataTransfer.files[0]));
+
+        document.getElementById('colorOptions').addEventListener('click', (event) => {
+            const swatch = event.target.closest('[data-color]');
+            if (!swatch) return;
+            backgroundColor = swatch.dataset.color;
+            customColor.value = backgroundColor;
+            document.querySelectorAll('.color-swatch').forEach((button) => {
+                const selected = button === swatch;
+                button.classList.toggle('selected', selected);
+                button.setAttribute('aria-pressed', String(selected));
+            });
+            if (foregroundBlob) renderPassportPhoto().catch((error) => showStatus(error.message, true));
+        });
+        customColor.addEventListener('input', () => {
+            backgroundColor = customColor.value;
+            document.querySelectorAll('.color-swatch').forEach((button) => {
+                button.classList.remove('selected');
+                button.setAttribute('aria-pressed', 'false');
+            });
+            if (foregroundBlob) renderPassportPhoto().catch((error) => showStatus(error.message, true));
+        });
+        photoSize.addEventListener('change', () => {
+            const { width, height } = getOutputSize();
+            outputDimensions.textContent = `${width} × ${height} px`;
+            if (foregroundBlob) renderPassportPhoto().catch((error) => showStatus(error.message, true));
+        });
+
+        eraseToggle.addEventListener('click', () => {
+            eraseEnabled = !eraseEnabled;
+            eraseToggle.setAttribute('aria-pressed', String(eraseEnabled));
+            eraseToggle.textContent = eraseEnabled ? 'Done refining' : 'Erase background';
+            outputPreview.classList.toggle('cursor-crosshair', eraseEnabled);
+            outputPreview.classList.toggle('cursor-default', !eraseEnabled);
+            showStatus(eraseEnabled ? 'Brush over any leftover background in the preview. Your changes are included in the download.' : 'Edge refinements are saved in your passport photo.');
+        });
+        brushSize.addEventListener('input', () => {
+            brushSizeValue.textContent = `${brushSize.value} px`;
+        });
+        resetRefinements.addEventListener('click', () => {
+            eraseStrokes = [];
+            if (foregroundBlob) {
+                renderPassportPhoto().then(() => showStatus('AI cutout restored. You can refine the edges again if needed.'))
+                    .catch((error) => showStatus(error.message, true));
+            }
+        });
+        outputPreview.addEventListener('pointerdown', (event) => {
+            if (!eraseEnabled || !foregroundBlob) return;
+            event.preventDefault();
+            outputPreview.setPointerCapture(event.pointerId);
+            activePointerId = event.pointerId;
+            activeEraseStroke = {
+                size: Number(brushSize.value) / outputPreview.getBoundingClientRect().width,
+                points: [pointerPosition(event)]
+            };
+            eraseStrokes.push(activeEraseStroke);
+            replayEraseStrokes();
+        });
+        outputPreview.addEventListener('pointermove', (event) => {
+            if (event.pointerId !== activePointerId || !activeEraseStroke) return;
+            activeEraseStroke.points.push(pointerPosition(event));
+            replayEraseStrokes();
+        });
+        const finishEraseStroke = (event) => {
+            if (event.pointerId !== activePointerId || !activeEraseStroke) return;
+            activePointerId = null;
+            activeEraseStroke = null;
+            updateDownload().then(() => showStatus('Edge cleanup saved in your download.'))
+                .catch((error) => showStatus(error.message, true));
+        };
+        outputPreview.addEventListener('pointerup', finishEraseStroke);
+        outputPreview.addEventListener('pointercancel', finishEraseStroke);
+
+        processBtn.addEventListener('click', async () => {
+            if (!selectedFile) {
+                showStatus('Choose a photo before processing.', true);
+                return;
+            }
+            processBtn.disabled = true;
+            downloadLink.classList.add('hidden');
+            processBtn.textContent = 'Loading background removal model...';
+            showStatus('Preparing the background removal model. The first run may take a little longer.');
+
+            try {
+                if (!removeBackground) {
+                    const library = await import('https://esm.sh/@imgly/background-removal@1.4.5?bundle');
+                    removeBackground = library.default || library.removeBackground;
+                    if (typeof removeBackground !== 'function') {
+                        throw new Error('The background removal library did not load correctly. Please refresh and try again.');
+                    }
+                }
+                processBtn.textContent = 'Removing background...';
+                const result = await removeBackground(selectedFile, {
+                    model: 'medium',
+                    publicPath: 'https://staticimgly.com/@imgly/background-removal-data/1.4.5/dist/',
+                    proxyToWorker: false,
+                    output: { format: 'image/png', quality: 1, type: 'foreground' },
+                    progress: (key, current, total) => {
+                        if (total > 0) showStatus(`Removing background · ${Math.round((current / total) * 100)}%`);
+                    }
+                });
+                if (!(result instanceof Blob) || result.size === 0) {
+                    throw new Error('Background removal returned an empty image. Please try another photo.');
+                }
+                showStatus('Cleaning up hair and edge colors on your device.');
+                foregroundBlob = await refineForegroundEdges(result, selectedFile);
+                await renderPassportPhoto();
+                showStatus('Passport photo is ready. Change the background color or size, then download.');
+            } catch (error) {
+                console.error('Passport photo background removal failed:', error);
+                showStatus(`Could not process this photo: ${error.message || 'Unknown error'}`, true);
+            } finally {
+                processBtn.disabled = false;
+                processBtn.textContent = 'Remove Background & Create Photo';
+            }
+        });
+
+        window.addEventListener('beforeunload', () => {
+            if (sourceUrl) URL.revokeObjectURL(sourceUrl);
+            if (outputUrl) URL.revokeObjectURL(outputUrl);
+        });
+    </script>
+</body>
+</html>

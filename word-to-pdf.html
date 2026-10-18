@@ -1,0 +1,157 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="navigation.js" defer></script>
+    <title>Word to PDF Converter | DamnResize.in</title>
+    <meta name="description" content="Convert Word documents to PDF online. Turn DOC and DOCX files into shareable PDF documents with this browser-based converter.">
+    <link rel="canonical" href="https://damnresize.in/word-to-pdf.html">
+    <link rel="icon" href="/damnresize-favicon.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Mammoth.js for reading Word (.docx) files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <!-- jsPDF for generating PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { dark: { 900: '#0b0f19', 800: '#1e293b', 700: '#334155' } }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-3">
+        <div class="max-w-7xl mx-auto flex justify-between items-center relative">
+            <div class="flex items-center">
+                <a href="index.html" class="flex items-center group">
+                    <img src="damnresize-v4-dark.svg" alt="DamnResize.in Logo" class="h-14 md:h-16 w-auto object-contain group-hover:scale-105 transition">
+                </a>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300 absolute left-1/2 -translate-x-1/2 items-center">
+                <a href="index.html" class="hover:text-indigo-400 transition">Home</a>
+                <a href="index.html#tools" class="text-indigo-400 font-semibold transition">PDF Tools</a>
+                <a href="exams.html" class="hover:text-indigo-400 transition">Govt Exam Photo</a>
+                <a href="AddText.html" class="hover:text-indigo-400 transition">AddText</a>
+            </nav>
+            <div class="flex items-center">
+                <a href="index.html#tools" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-lg shadow-indigo-500/20">Back to PDF Suite</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl mx-auto px-4 py-12 w-full" id="word-to-pdf">
+        
+        <div class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent mb-3">
+                📝 WORD to PDF Converter
+            </h1>
+            <p class="text-slate-400 text-sm md:text-base max-w-xl mx-auto">
+                Upload your Word document (.docx) and convert it securely into a professional, clean PDF file instantly.
+            </p>
+        </div>
+
+        <!-- Upload Box -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl mb-8">
+            <div class="border-2 border-dashed border-slate-700 hover:border-blue-500 rounded-xl p-8 text-center cursor-pointer transition bg-slate-950/50" onclick="document.getElementById('wordInput').click()">
+                <input type="file" id="wordInput" accept=".docx" class="hidden" onchange="handleWordSelected(event)">
+                <div class="text-4xl mb-3">📄</div>
+                <p class="text-sm font-medium text-slate-300 mb-1" id="uploadText">Click to upload Word file or drag & drop here</p>
+                <p class="text-xs text-slate-500">Supports Microsoft Word (.docx format)</p>
+            </div>
+
+            <!-- Action Section -->
+            <div id="actionSection" class="hidden mt-6 text-center">
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 mb-6 flex items-center justify-between">
+                    <span id="fileName" class="text-sm text-slate-300 font-mono"></span>
+                    <span class="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1 rounded-full">Ready to Convert</span>
+                </div>
+                
+                <button onclick="convertWordToPDF()" id="convertBtn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3.5 rounded-xl transition shadow-lg shadow-blue-500/20 text-base flex items-center justify-center gap-2">
+                    <span>⚡ Convert Word to PDF & Download</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-900/40 text-center py-6 text-xs text-slate-500 mt-12">
+        <p>&copy; 2026 DamnResize.in. All rights reserved. Secure Browser-based Document Processing.</p>
+    </footer>
+
+    <!-- Conversion Logic Script -->
+    <script>
+        let uploadedFile = null;
+        let extractedText = "";
+
+        function handleWordSelected(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            uploadedFile = file;
+            document.getElementById('fileName').innerText = file.name;
+            document.getElementById('actionSection').classList.remove('hidden');
+            document.getElementById('uploadText').innerText = "File uploaded successfully! Click below to convert.";
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const arrayBuffer = event.target.result;
+                mammoth.extractRawText({ arrayBuffer: arrayBuffer })
+                    .then(function(result) {
+                        extractedText = result.value; // Extracted raw text from docx
+                    })
+                    .catch(function(err) {
+                        alert("Error reading Word file: " + err.message);
+                    });
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function convertWordToPDF() {
+            if (!uploadedFile || !extractedText) {
+                alert("Please wait while the file is being processed.");
+                return;
+            }
+
+            const btn = document.getElementById('convertBtn');
+            btn.innerText = "Generating PDF...";
+            btn.disabled = true;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFont("Helvetica", "normal");
+            doc.setFontSize(12);
+
+            // Split text to fit page width automatically
+            const splitText = doc.splitTextToSize(extractedText, 180);
+            
+            let yPos = 20;
+            const pageHeight = doc.internal.pageSize.getHeight();
+
+            for (let i = 0; i < splitText.length; i++) {
+                if (yPos > pageHeight - 20) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                doc.text(splitText[i], 15, yPos);
+                yPos += 7; // Line spacing
+            }
+
+            const outputName = uploadedFile.name.replace(/\.[^/.]+$/, "") + "_damnresize.pdf";
+            doc.save(outputName);
+
+            btn.innerText = "⚡ Convert Word to PDF & Download";
+            btn.disabled = false;
+        }
+    </script>
+</body>
+</html>

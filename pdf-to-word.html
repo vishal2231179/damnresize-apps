@@ -1,0 +1,160 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="navigation.js" defer></script>
+    <title>PDF to WORD Converter | DamnResize.in</title>
+    <meta name="description" content="Convert PDF files to editable Word documents online. Extract document content with this browser-based PDF to Word tool.">
+    <link rel="canonical" href="https://damnresize.in/pdf-to-word.html">
+    <link rel="icon" href="/damnresize-favicon.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PDF.js for reading PDF text content -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <!-- html-docx-js to generate real Word documents (.docx) from HTML/Text -->
+    <script src="https://cdn.jsdelivr.net/npm/html-docx-js@0.3.1/dist/html-docx.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { dark: { 900: '#0b0f19', 800: '#1e293b', 700: '#334155' } }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-3">
+        <div class="max-w-7xl mx-auto flex justify-between items-center relative">
+            <div class="flex items-center">
+                <a href="index.html" class="flex items-center group">
+                    <img src="damnresize-v4-dark.svg" alt="DamnResize.in Logo" class="h-14 md:h-16 w-auto object-contain group-hover:scale-105 transition">
+                </a>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300 absolute left-1/2 -translate-x-1/2 items-center">
+                <a href="index.html" class="hover:text-indigo-400 transition">Home</a>
+                <a href="index.html#tools" class="text-indigo-400 font-semibold transition">PDF Tools</a>
+                <a href="exams.html" class="hover:text-indigo-400 transition">Govt Exam Photo</a>
+                <a href="AddText.html" class="hover:text-indigo-400 transition">AddText</a>
+            </nav>
+            <div class="flex items-center">
+                <a href="index.html#tools" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-lg shadow-indigo-500/20">Back to PDF Suite</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl mx-auto px-4 py-12 w-full" id="pdf-to-word">
+        
+        <div class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent mb-3">
+                📝 PDF to WORD Converter
+            </h1>
+            <p class="text-slate-400 text-sm md:text-base max-w-xl mx-auto">
+                Upload your PDF document and convert its contents into an editable Word document (.docx format) instantly.
+            </p>
+        </div>
+
+        <!-- Upload Box -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl mb-8">
+            <div class="border-2 border-dashed border-slate-700 hover:border-blue-500 rounded-xl p-8 text-center cursor-pointer transition bg-slate-950/50" onclick="document.getElementById('pdfInput').click()">
+                <input type="file" id="pdfInput" accept=".pdf" class="hidden" onchange="handlePDFSelected(event)">
+                <div class="text-4xl mb-3">📄</div>
+                <p class="text-sm font-medium text-slate-300 mb-1" id="uploadText">Click to upload PDF file or drag & drop here</p>
+                <p class="text-xs text-slate-500">Supports text-based PDF documents</p>
+            </div>
+
+            <!-- Action Section -->
+            <div id="actionSection" class="hidden mt-6 text-center">
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 mb-6 flex items-center justify-between">
+                    <span id="fileName" class="text-sm text-slate-300 font-mono"></span>
+                    <span class="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1 rounded-full">Ready to Convert</span>
+                </div>
+                
+                <button onclick="convertPDFToWord()" id="convertBtn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3.5 rounded-xl transition shadow-lg shadow-blue-500/20 text-base flex items-center justify-center gap-2">
+                    <span>⚡ Convert PDF to Word & Download</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-900/40 text-center py-6 text-xs text-slate-500 mt-12">
+        <p>&copy; 2026 DamnResize.in. All rights reserved. Secure Browser-based Document Converter.</p>
+    </footer>
+
+    <!-- Conversion Logic Script -->
+    <script>
+        let uploadedFileArray = null;
+        let originalFileName = "";
+
+        function handlePDFSelected(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            originalFileName = file.name.replace(/\.[^/.]+$/, "");
+            document.getElementById('fileName').innerText = file.name;
+            document.getElementById('actionSection').classList.remove('hidden');
+            document.getElementById('uploadText').innerText = "PDF loaded successfully! Click below to convert.";
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedFileArray = new Uint8Array(e.target.result);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        async function convertPDFToWord() {
+            if (!uploadedFileArray) {
+                alert("Please upload a PDF file first.");
+                return;
+            }
+
+            const btn = document.getElementById('convertBtn');
+            btn.innerText = "Extracting & Formatting...";
+            btn.disabled = true;
+
+            try {
+                const loadingTask = pdfjsLib.getDocument({ data: uploadedFileArray });
+                const pdfDoc = await loadingTask.promise;
+                const numPages = pdfDoc.numPages;
+
+                let htmlContent = `<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>`;
+
+                for (let i = 1; i <= numPages; i++) {
+                    const page = await pdfDoc.getPage(i);
+                    const textContent = await page.getTextContent();
+                    
+                    htmlContent += `<h3>Page ${i}</h3>`;
+                    textContent.items.forEach(item => {
+                        htmlContent += `<p>${item.str}</p>`;
+                    });
+                    htmlContent += `<br>`;
+                }
+                htmlContent += `</body></html>`;
+
+                // Generate Word document blob using html-docx-js
+                const converted = htmlDocx.asBlob(htmlContent);
+
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(converted);
+                link.download = `${originalFileName}_damnresize.docx`;
+                link.click();
+
+                btn.innerText = "⚡ Convert PDF to Word & Download";
+                btn.disabled = false;
+            } catch (err) {
+                alert("Error converting PDF to Word: " + err.message);
+                btn.innerText = "⚡ Convert PDF to Word & Download";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
