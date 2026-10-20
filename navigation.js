@@ -477,5 +477,5 @@ document.head.append(navigationStyles);
     window.setTimeout(() => {
         intro.classList.add('is-leaving');
         window.setTimeout(() => intro.remove(), 400);
-    }, 1050);
+    }, 1600);
 })();
