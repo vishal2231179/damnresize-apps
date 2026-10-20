@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="navigation.js" defer></script>
     <title>Free Online Image Tools | DamnResize.in</title>
-    <meta name="description" content="Resize, compress, crop and convert images online for free. Convert PDFs and prepare exam photos with browser-based tools that keep image files on your device.">
+    <meta name="description" content="Resize, compress, crop and convert images online for free. Prepare exam photos and signatures, and explore image and PDF tools in one place.">
     <link rel="canonical" href="https://damnresize.in/">
     <link rel="icon" href="/favicon.png" type="image/png" sizes="96x96">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="DamnResize.in">
     <meta property="og:title" content="Free Online Image Tools | DamnResize.in">
-    <meta property="og:description" content="Resize, compress, crop and convert images online for free. Convert PDFs and prepare exam photos with browser-based tools.">
+    <meta property="og:description" content="Resize, compress, crop and convert images online for free. Prepare exam photos and signatures, and explore image and PDF tools in one place.">
     <meta property="og:url" content="https://damnresize.in/">
     <meta name="twitter:card" content="summary">
     <script type="application/ld+json">
@@ -25,6 +25,122 @@
     <meta name="google-site-verification" content="wE8QfZgrTVuVhfUbH17HYIKSlzlm39ED3otzymCGg9s" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .guide-ticker {
+            padding: 1.55rem 1rem 0.8rem;
+            border-bottom: 1px solid #1e293b;
+            background:
+                radial-gradient(ellipse at center, rgb(99 102 241 / 0.12), transparent 68%),
+                #0f172a;
+        }
+        .guide-ticker-inner {
+            display: grid;
+            width: min(100%, 52rem);
+            grid-template-columns: auto minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0 auto;
+        }
+        .guide-ticker-mark {
+            display: grid;
+            width: 2rem;
+            height: 2rem;
+            place-items: center;
+            border: 1px solid rgb(129 140 248 / 0.25);
+            border-radius: 0.75rem;
+            background: rgb(99 102 241 / 0.12);
+            color: #a5b4fc;
+            font-size: 0.85rem;
+        }
+        .guide-ticker-content {
+            min-width: 0;
+            text-align: center;
+        }
+        .guide-ticker-kicker {
+            margin: 0 0 0.1rem;
+            color: #a5b4fc;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            line-height: 1rem;
+            overflow: hidden;
+            text-transform: uppercase;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .guide-ticker-link {
+            display: -webkit-box;
+            max-width: 100%;
+            overflow: hidden;
+            color: #f8fafc;
+            font-size: 0.8rem;
+            font-weight: 600;
+            line-height: 1.25rem;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            text-decoration: none;
+        }
+        .guide-ticker-link:hover { color: #a5b4fc; text-decoration: underline; text-underline-offset: 3px; }
+        .guide-ticker-link:focus-visible {
+            border-radius: 0.25rem;
+            outline: 2px solid #818cf8;
+            outline-offset: 4px;
+        }
+        .guide-ticker-detail {
+            margin: 0.05rem 0 0;
+            overflow: hidden;
+            color: #94a3b8;
+            font-size: 0.68rem;
+            line-height: 1rem;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .guide-ticker-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .guide-ticker-control {
+            display: grid;
+            width: 1.8rem;
+            height: 1.8rem;
+            place-items: center;
+            border: 1px solid #334155;
+            border-radius: 0.65rem;
+            background: rgb(15 23 42 / 0.75);
+            color: #cbd5e1;
+            font-size: 0.75rem;
+            transition: border-color 150ms ease, color 150ms ease, background-color 150ms ease;
+        }
+        .guide-ticker-control:hover {
+            border-color: #818cf8;
+            background: rgb(99 102 241 / 0.12);
+            color: #e0e7ff;
+        }
+        .guide-ticker-control:focus-visible {
+            outline: 2px solid #818cf8;
+            outline-offset: 2px;
+        }
+        .guide-ticker-text.is-entering { animation: guide-ticker-enter 450ms ease both; }
+        @keyframes guide-ticker-enter {
+            0% { opacity: 0; transform: translateY(0.45rem); filter: blur(3px); }
+            65% { opacity: 1; filter: blur(0); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 520px) {
+            .guide-ticker { padding: 0.65rem 0.75rem; }
+            .guide-ticker-inner { grid-template-columns: auto minmax(0, 1fr) auto; gap: 0.45rem; }
+            .guide-ticker-mark { width: 1.75rem; height: 1.75rem; font-size: 0.75rem; }
+            .guide-ticker-kicker { font-size: 0.52rem; letter-spacing: 0.06em; }
+            .guide-ticker-link { font-size: 0.7rem; line-height: 0.95rem; }
+            .guide-ticker-detail { font-size: 0.6rem; }
+            .guide-ticker-controls { gap: 0.2rem; }
+            .guide-ticker-control { width: 1.55rem; height: 1.55rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .guide-ticker-text.is-entering { animation: none; }
+        }
+    </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
 
@@ -108,6 +224,24 @@
             </div>
         </div>
     </header> 
+
+    <section class="guide-ticker" id="guideTicker" aria-label="Featured reading">
+        <div class="guide-ticker-inner">
+            <span class="guide-ticker-mark" aria-hidden="true">✦</span>
+            <div class="guide-ticker-content">
+                <p class="guide-ticker-kicker">Not sure? Start here · 1 quick guide</p>
+                <a class="guide-ticker-link" id="guideTickerLink" href="ssc-photo-signature-guide.html#before-you-start">
+                    <span class="guide-ticker-text" id="guideTickerText">SSC photo upload rejected? Check these things before you submit</span>
+                </a>
+                <p class="guide-ticker-detail" id="guideTickerDetail">A simple checklist before you upload · About 4 min</p>
+            </div>
+            <div class="guide-ticker-controls" role="group" aria-label="Guide highlight controls">
+                <button class="guide-ticker-control" id="guideTickerPrevious" type="button" aria-label="Show previous guide highlight">←</button>
+                <button class="guide-ticker-control" id="guideTickerPause" type="button" aria-label="Pause guide highlights" aria-pressed="false">Ⅱ</button>
+                <button class="guide-ticker-control" id="guideTickerNext" type="button" aria-label="Show next guide highlight">→</button>
+            </div>
+        </div>
+    </section>
 
     <!-- Hero Section -->
     <section class="py-16 px-6 text-center bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-900">
@@ -251,7 +385,7 @@
                 <h3 class="mb-2 text-lg font-semibold text-white">Image Resizer</h3>
                 <p class="mb-4 text-sm text-slate-400">Resize JPG, PNG or WebP images by exact dimensions or percentage.</p>
             </div>
-            <span class="text-xs font-semibold text-indigo-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+            <span class="inline-flex items-center gap-2 self-start rounded-lg border border-indigo-400/30 bg-indigo-500/10 px-3 py-2 text-xs font-semibold text-indigo-300 transition group-hover:border-indigo-400/60 group-hover:bg-indigo-500 group-hover:text-white">Open Tool <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-0.5"></i></span>
         </a>
 
         <!-- Card 2: Crop Image -->
@@ -261,7 +395,7 @@
                 <h3 class="mb-2 text-lg font-semibold text-white">Crop Image</h3>
                 <p class="mb-4 text-sm text-slate-400">Trim unwanted edges and focus on the core subject easily.</p>
             </div>
-            <span class="text-xs font-semibold text-pink-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+            <span class="inline-flex items-center gap-2 self-start rounded-lg border border-pink-400/30 bg-pink-500/10 px-3 py-2 text-xs font-semibold text-pink-300 transition group-hover:border-pink-400/60 group-hover:bg-pink-500 group-hover:text-white">Open Tool <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-0.5"></i></span>
         </a>
 
         <!-- Card 3: Image Compressor -->
@@ -271,7 +405,7 @@
                 <h3 class="mb-2 text-lg font-semibold text-white">Image Compressor</h3>
                 <p class="mb-4 text-sm text-slate-400">Reduce image file size while balancing compression and visual quality.</p>
             </div>
-            <span class="text-xs font-semibold text-emerald-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+            <span class="inline-flex items-center gap-2 self-start rounded-lg border border-emerald-400/30 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-300 transition group-hover:border-emerald-400/60 group-hover:bg-emerald-500 group-hover:text-white">Open Tool <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-0.5"></i></span>
         </a>
 
         <!-- Card 4: Format Converter -->
@@ -281,7 +415,7 @@
                 <h3 class="mb-2 text-lg font-semibold text-white">Format Converter</h3>
                 <p class="mb-4 text-sm text-slate-400">Convert images seamlessly between popular and modern formats.</p>
             </div>
-            <span class="text-xs font-semibold text-amber-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+            <span class="inline-flex items-center gap-2 self-start rounded-lg border border-amber-400/30 bg-amber-500/10 px-3 py-2 text-xs font-semibold text-amber-300 transition group-hover:border-amber-400/60 group-hover:bg-amber-500 group-hover:text-white">Open Tool <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-0.5"></i></span>
         </a>
 
         <!-- Card 6: Utility Extras -->
@@ -291,7 +425,7 @@
                 <h3 class="mb-2 text-lg font-semibold text-white">Utility Toolkit</h3>
                 <p class="mb-4 text-sm text-slate-400">Handy little web utilities for everyday editing tasks.</p>
             </div>
-            <span class="text-xs font-semibold text-blue-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+            <span class="inline-flex items-center gap-2 self-start rounded-lg border border-blue-400/30 bg-blue-500/10 px-3 py-2 text-xs font-semibold text-blue-300 transition group-hover:border-blue-400/60 group-hover:bg-blue-500 group-hover:text-white">Open Tool <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-0.5"></i></span>
         </a>
 
         <!-- Card 7: Bulk Processing -->
@@ -301,17 +435,7 @@
                 <h3 class="mb-2 text-lg font-semibold text-white">Bulk Processing</h3>
                 <p class="mb-4 text-sm text-slate-400">Process multiple images simultaneously to save time.</p>
             </div>
-            <span class="text-xs font-semibold text-rose-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
-        </a>
-
-        <!-- Card 8: Secure & Private -->
-        <a href="privacy.html" class="group flex h-full flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900 p-6 transition hover:-translate-y-1 hover:border-indigo-500">
-            <div>
-                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400 transition group-hover:scale-110"><i class="fa-solid fa-shield-halved text-xl"></i></div>
-                <h3 class="mb-2 text-lg font-semibold text-white">Privacy & Security</h3>
-                <p class="mb-4 text-sm text-slate-400">Review how files are handled across our different tools.</p>
-            </div>
-            <span class="text-xs font-semibold text-cyan-400">Learn More <i class="fa-solid fa-arrow-right"></i></span>
+            <span class="inline-flex items-center gap-2 self-start rounded-lg border border-rose-400/30 bg-rose-500/10 px-3 py-2 text-xs font-semibold text-rose-300 transition group-hover:border-rose-400/60 group-hover:bg-rose-500 group-hover:text-white">Open Tool <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-0.5"></i></span>
         </a>
 
         <!-- Card 9: Govt Exam Photo -->
@@ -321,7 +445,7 @@
                 <h3 class="mb-2 text-lg font-semibold text-white">Govt Exam Photo</h3>
                 <p class="mb-4 text-sm text-slate-400">Auto-resize photos & signatures for SSC, Banking, UPSC & UP Police.</p>
             </div>
-            <span class="text-xs font-semibold text-indigo-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+            <span class="inline-flex items-center gap-2 self-start rounded-lg border border-indigo-400/30 bg-indigo-500/10 px-3 py-2 text-xs font-semibold text-indigo-300 transition group-hover:border-indigo-400/60 group-hover:bg-indigo-500 group-hover:text-white">Open Tool <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-0.5"></i></span>
         </a>
 
         <!-- Card 10: Photo Add Text / Stamper -->
@@ -331,7 +455,7 @@
                 <h3 class="mb-2 text-lg font-semibold text-white">Photo Name & Date Stamper</h3>
                 <p class="mb-4 text-sm text-slate-400">Add custom name and photo capture date stamps with live slider adjustments.</p>
             </div>
-            <span class="text-xs font-semibold text-pink-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+            <span class="inline-flex items-center gap-2 self-start rounded-lg border border-pink-400/30 bg-pink-500/10 px-3 py-2 text-xs font-semibold text-pink-300 transition group-hover:border-pink-400/60 group-hover:bg-pink-500 group-hover:text-white">Open Tool <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-0.5"></i></span>
         </a>
 
         
@@ -342,9 +466,18 @@
                 <h3 class="mb-2 text-lg font-semibold text-white">AI Image Studio</h3>
                 <p class="mb-4 text-sm text-slate-400">Remove backgrounds and enhance images instantly with AI-powered tools.</p>
             </div>
-            <span class="text-xs font-semibold text-purple-400">Open Tool <i class="fa-solid fa-arrow-right"></i></span>
+            <span class="inline-flex items-center gap-2 self-start rounded-lg border border-purple-400/30 bg-purple-500/10 px-3 py-2 text-xs font-semibold text-purple-300 transition group-hover:border-purple-400/60 group-hover:bg-purple-500 group-hover:text-white">Open Tool <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-0.5"></i></span>
         </a>
 
+        <!-- Privacy & Security -->
+        <a href="privacy.html" class="group flex h-full flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900 p-6 transition hover:-translate-y-1 hover:border-cyan-500">
+            <div>
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400 transition group-hover:scale-110"><i class="fa-solid fa-shield-halved text-xl"></i></div>
+                <h3 class="mb-2 text-lg font-semibold text-white">Privacy & Security</h3>
+                <p class="mb-4 text-sm text-slate-400">Review how files are handled across our different tools.</p>
+            </div>
+            <span class="inline-flex items-center gap-2 self-start rounded-lg border border-cyan-400/30 bg-cyan-500/10 px-3 py-2 text-xs font-semibold text-cyan-300 transition group-hover:border-cyan-400/60 group-hover:bg-cyan-500 group-hover:text-white">Learn More <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-0.5"></i></span>
+        </a>
 
 
 
@@ -488,6 +621,98 @@
             <p>&copy; 2026 DamnResize.in. Built with ⚡ for creators, students, and professionals.</p>
         </div>
     </footer>
+
+    <script>
+        (() => {
+            const ticker = document.getElementById('guideTicker');
+            const text = document.getElementById('guideTickerText');
+            const link = document.getElementById('guideTickerLink');
+            const detail = document.getElementById('guideTickerDetail');
+            const pauseButton = document.getElementById('guideTickerPause');
+            const previousButton = document.getElementById('guideTickerPrevious');
+            const nextButton = document.getElementById('guideTickerNext');
+            if (!ticker || !text || !link || !detail || !pauseButton || !previousButton || !nextButton) return;
+
+            const headlines = [
+                {
+                    text: 'SSC photo upload rejected? Check these things before you submit',
+                    detail: 'Common upload problems, explained simply',
+                    href: 'ssc-photo-signature-guide.html#before-you-start'
+                },
+                {
+                    text: 'Not sure which photo size to use for your SSC form?',
+                    detail: 'Find the right dimensions in the current notice',
+                    href: 'ssc-photo-signature-guide.html#check-the-notice'
+                },
+                {
+                    text: 'Is your signature ready to upload?',
+                    detail: 'A quick check for crop, clarity, and file size',
+                    href: 'ssc-photo-signature-guide.html#check-the-notice'
+                },
+                {
+                    text: 'Before you submit, run through this 5-point checklist',
+                    detail: 'Catch simple photo and signature mistakes first',
+                    href: 'ssc-photo-signature-guide.html#final-checklist'
+                },
+                {
+                    text: 'A resize tool can help—but can it guarantee acceptance?',
+                    detail: 'Know what the tool does and what you still need to check',
+                    href: 'ssc-photo-signature-guide.html#why-can-an-upload-be-rejected'
+                }
+            ];
+            let current = 0;
+            let timer;
+            let isPaused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (isPaused) {
+                pauseButton.setAttribute('aria-pressed', 'true');
+                pauseButton.setAttribute('aria-label', 'Play guide highlights');
+                pauseButton.textContent = '▶';
+            }
+
+            const showHeadline = (index) => {
+                current = (index + headlines.length) % headlines.length;
+                text.textContent = headlines[current].text;
+                detail.textContent = headlines[current].detail;
+                link.href = headlines[current].href;
+                text.classList.remove('is-entering');
+                void text.offsetWidth;
+                text.classList.add('is-entering');
+            };
+            const stopRotation = () => window.clearInterval(timer);
+            const startRotation = () => {
+                stopRotation();
+                if (!isPaused && !ticker.matches(':hover') && !ticker.contains(document.activeElement)) {
+                    timer = window.setInterval(() => {
+                        showHeadline(current + 1);
+                    }, 4500);
+                }
+            };
+
+            ticker.addEventListener('mouseenter', stopRotation);
+            ticker.addEventListener('mouseleave', startRotation);
+            ticker.addEventListener('focusin', stopRotation);
+            ticker.addEventListener('focusout', (event) => {
+                if (!ticker.contains(event.relatedTarget)) startRotation();
+            });
+            previousButton.addEventListener('click', () => {
+                showHeadline(current - 1);
+                startRotation();
+            });
+            nextButton.addEventListener('click', () => {
+                showHeadline(current + 1);
+                startRotation();
+            });
+            pauseButton.addEventListener('click', () => {
+                isPaused = !isPaused;
+                pauseButton.setAttribute('aria-pressed', String(isPaused));
+                pauseButton.setAttribute('aria-label', isPaused ? 'Play guide highlights' : 'Pause guide highlights');
+                pauseButton.textContent = isPaused ? '▶' : 'Ⅱ';
+                if (isPaused) stopRotation();
+                else startRotation();
+            });
+            startRotation();
+        })();
+    </script>
 
     <!-- Script Logic -->
     <script>

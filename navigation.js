@@ -5,7 +5,7 @@
     header.className = 'site-header';
     header.innerHTML = `
         <div class="site-nav-shell">
-            <a href="/" class="site-logo" aria-label="DamnResize.in home">
+            <a href="index.html" class="site-logo" aria-label="DamnResize.in home">
                 <img src="damnresize-v4-dark.svg" alt="DamnResize.in Logo">
             </a>
             <button class="site-nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="site-navigation">
@@ -13,8 +13,8 @@
                 <svg class="site-nav-close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke-width="2" stroke-linecap="round"></path></svg>
             </button>
             <nav class="site-navigation" id="site-navigation" aria-label="Main navigation">
-                <a href="/" data-nav-link>Home</a>
-                <a href="/#tools" data-nav-link>All Tools</a>
+                <a href="index.html" data-nav-link>Home</a>
+                <a href="index.html#tools" data-nav-link>All Tools</a>
                 <a href="ImageGenerator.html" data-nav-link>AI Image Studio</a>
                 <a href="document-scanner.html" data-nav-link class="site-nav-scan">
                     <span class="site-nav-item-icon icon-cyan" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 0 1 1-1h2m10 0h2a1 1 0 0 1 1 1v2M4 17v2a1 1 0 0 0 1 1h2m10 0h2a1 1 0 0 0 1-1v-2"></path><path d="M7 9h10v7H7zM9 12h6m-6 2h4"></path></svg></span>
@@ -44,7 +44,6 @@
                         <a href="convert.html" data-nav-link><span class="site-nav-item-icon icon-amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6m-8 3v7m-3-3 3 3 3-3"></path></svg></span>Format Converter</a>
                         <a href="utilities.html" data-nav-link><span class="site-nav-item-icon icon-blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 7 17 4a3 3 0 0 1 4 4l-3 3M10 17l-3 3a3 3 0 0 1-4-4l3-3m3-3 5-5m-3 11 5-5"></path><path d="m8 8 8 8"></path></svg></span>Utility Toolkit</a>
                         <a href="bulk.html" data-nav-link><span class="site-nav-item-icon icon-rose" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7l10-5Z"></path><path d="m2 12 10 5 10-5M2 17l10 5 10-5"></path></svg></span>Bulk Processing</a>
-                        <a href="privacy.html" data-nav-link><span class="site-nav-item-icon icon-cyan" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"></path><path d="m9 12 2 2 4-4"></path></svg></span>Privacy &amp; Security</a>
                     </div>
                 </div>
                 <div class="site-nav-dropdown" data-nav-group>
