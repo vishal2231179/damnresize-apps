@@ -28,7 +28,6 @@
     <style>
         .guide-ticker {
             padding: 1.55rem 1rem 0.8rem;
-            border-bottom: 1px solid #1e293b;
             background:
                 radial-gradient(ellipse at center, rgb(99 102 241 / 0.12), transparent 68%),
                 #0f172a;
@@ -128,14 +127,25 @@
             100% { opacity: 1; transform: translateY(0); }
         }
         @media (max-width: 520px) {
-            .guide-ticker { padding: 0.65rem 0.75rem; }
-            .guide-ticker-inner { grid-template-columns: auto minmax(0, 1fr) auto; gap: 0.45rem; }
-            .guide-ticker-mark { width: 1.75rem; height: 1.75rem; font-size: 0.75rem; }
+            .guide-ticker {
+                margin-top: 0;
+                padding: 1.25rem 1rem;
+                border: 0;
+            }
+            .guide-ticker-inner {
+                grid-template-columns: minmax(0, 1fr);
+                justify-items: center;
+                gap: 0.5rem;
+            }
+            .guide-ticker-mark { display: none; }
             .guide-ticker-kicker { font-size: 0.52rem; letter-spacing: 0.06em; }
             .guide-ticker-link { font-size: 0.7rem; line-height: 0.95rem; }
             .guide-ticker-detail { font-size: 0.6rem; }
-            .guide-ticker-controls { gap: 0.2rem; }
+            .guide-ticker-controls { justify-content: center; gap: 0.35rem; }
             .guide-ticker-control { width: 1.55rem; height: 1.55rem; }
+        }
+        @media (min-width: 521px) {
+            .guide-ticker { padding-bottom: 1.5rem; }
         }
         @media (prefers-reduced-motion: reduce) {
             .guide-ticker-text.is-entering { animation: none; }
