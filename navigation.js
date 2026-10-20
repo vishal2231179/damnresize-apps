@@ -359,6 +359,85 @@ navigationStyles.textContent = `
         .site-nav-pdf-menu { width: min(90vw, 34.375rem); gap: 1.25rem; padding: 1.5rem; }
     }
     .site-nav-scan:hover { color: #67e8f9; }
+    .site-intro {
+        position: fixed;
+        inset: 0;
+        z-index: 2147483000;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        background:
+            radial-gradient(ellipse at center, rgb(49 46 129 / 0.34), transparent 42%),
+            #080d1b;
+        opacity: 1;
+        transition: opacity 380ms ease, visibility 380ms ease;
+    }
+    .site-intro.is-leaving {
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .site-intro-glow {
+        position: absolute;
+        width: min(76vw, 30rem);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: rgb(79 70 229 / 0.16);
+        filter: blur(70px);
+        animation: site-intro-glow 1.2s ease-out both;
+    }
+    .site-intro-content {
+        position: relative;
+        display: grid;
+        justify-items: center;
+        gap: 1.1rem;
+        padding: 2rem;
+        animation: site-intro-arrive 850ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+    .site-intro-logo {
+        display: block;
+        width: min(68vw, 19rem);
+        height: auto;
+        filter: drop-shadow(0 0 30px rgb(99 102 241 / 0.22));
+    }
+    .site-intro-progress {
+        width: 5rem;
+        height: 2px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgb(148 163 184 / 0.18);
+    }
+    .site-intro-progress::after {
+        display: block;
+        width: 45%;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #6366f1, #f59e0b);
+        content: "";
+        animation: site-intro-progress 900ms ease-in-out both;
+    }
+    @keyframes site-intro-arrive {
+        from { opacity: 0; transform: translateY(0.6rem) scale(0.94); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes site-intro-glow {
+        from { opacity: 0; transform: scale(0.72); }
+        35% { opacity: 1; }
+        to { opacity: 0.65; transform: scale(1.08); }
+    }
+    @keyframes site-intro-progress {
+        from { transform: translateX(-120%); }
+        to { transform: translateX(240%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .site-intro,
+        .site-intro-glow,
+        .site-intro-content,
+        .site-intro-progress::after {
+            animation: none;
+            transition: none;
+        }
+    }
     @media (min-width: 768px) and (max-width: 1023px) {
         .site-nav-shell { gap: 0.75rem; }
         .site-navigation {
@@ -370,3 +449,33 @@ navigationStyles.textContent = `
     }
 `;
 document.head.append(navigationStyles);
+
+(() => {
+    const introKey = 'damnresize-intro-shown';
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    try {
+        if (sessionStorage.getItem(introKey)) return;
+        sessionStorage.setItem(introKey, 'true');
+    } catch (error) {
+        console.warn('Could not store the intro animation preference for this tab:', error);
+        return;
+    }
+
+    const intro = document.createElement('div');
+    intro.className = 'site-intro';
+    intro.setAttribute('aria-hidden', 'true');
+    intro.innerHTML = `
+        <div class="site-intro-glow"></div>
+        <div class="site-intro-content">
+            <img class="site-intro-logo" src="damnresize-v4-dark.svg" alt="">
+            <span class="site-intro-progress"></span>
+        </div>
+    `;
+    document.body.append(intro);
+
+    window.setTimeout(() => {
+        intro.classList.add('is-leaving');
+        window.setTimeout(() => intro.remove(), 400);
+    }, 1050);
+})();
