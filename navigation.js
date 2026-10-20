@@ -73,7 +73,7 @@
                 </div>
             </nav>
         </div>`;
-    document.documentElement.classList.remove('site-navigation-pending');
+    header.style.visibility = 'visible';
 
     const updateActiveNavigation = () => {
         const currentUrl = new URL(window.location.href);

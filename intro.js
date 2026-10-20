@@ -1,13 +1,5 @@
 (() => {
     const introKey = 'damnresize-intro-shown';
-    const navigationStyles = document.createElement('style');
-    navigationStyles.textContent = `
-        html.site-navigation-pending body > header {
-            visibility: hidden;
-        }
-    `;
-    document.head.append(navigationStyles);
-    document.documentElement.classList.add('site-navigation-pending');
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
