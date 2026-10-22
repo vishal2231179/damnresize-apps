@@ -125,7 +125,8 @@
                     throw new Error('The contact service returned an invalid response. Please try again later or email support@damnresize.in.');
                 }
                 if (!response.ok) {
-                    throw new Error(result.error || 'Your message could not be sent. Please try again.');
+                    const reference = result.reference ? ` Reference: ${result.reference}.` : '';
+                    throw new Error(`${result.error || 'Your message could not be sent. Please try again.'}${reference}`);
                 }
 
                 contactForm.reset();

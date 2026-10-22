@@ -84,7 +84,7 @@ The contact form sends messages through a Cloudflare Worker and Cloudflare Email
 
 The Worker route supports the website at both `https://damnresize.in` and `https://www.damnresize.in` through Cloudflare. Cloudflare Email Routing forwards incoming messages for `support@damnresize.in`; the contact form sends to the verified inbox stored in the `CONTACT_TO_EMAIL` Worker secret. The sender address is `support@damnresize.in`, and visitors' addresses are set as Reply-To. No Resend account or API key is needed. Never put Worker secrets in website HTML or JavaScript.
 
-After deployment, submit a test message from the live Contact page and confirm it reaches the forwarded inbox. Form submissions contain personal contact details; see the [Privacy Policy](privacy.html).
+After deployment, submit a test message from the live Contact page and confirm it reaches the forwarded inbox. Failed requests show a reference ID; search the Worker logs for the same ID to find the server-side cause. Form submissions contain personal contact details; see the [Privacy Policy](privacy.html).
 
 ## Project structure
 
