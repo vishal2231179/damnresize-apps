@@ -82,7 +82,7 @@ The contact form sends messages through a Cloudflare Worker and Cloudflare Email
    npx wrangler deploy --config contact-worker/wrangler.toml
    ```
 
-The Worker route expects the website to be served from `https://damnresize.in` through Cloudflare. Cloudflare Email Routing forwards incoming messages for `support@damnresize.in`; the contact form sends to the verified inbox stored in the `CONTACT_TO_EMAIL` Worker secret. The sender address is `support@damnresize.in`, and visitors' addresses are set as Reply-To. No Resend account or API key is needed. Never put Worker secrets in website HTML or JavaScript.
+The Worker route supports the website at both `https://damnresize.in` and `https://www.damnresize.in` through Cloudflare. Cloudflare Email Routing forwards incoming messages for `support@damnresize.in`; the contact form sends to the verified inbox stored in the `CONTACT_TO_EMAIL` Worker secret. The sender address is `support@damnresize.in`, and visitors' addresses are set as Reply-To. No Resend account or API key is needed. Never put Worker secrets in website HTML or JavaScript.
 
 After deployment, submit a test message from the live Contact page and confirm it reaches the forwarded inbox. Form submissions contain personal contact details; see the [Privacy Policy](privacy.html).
 
