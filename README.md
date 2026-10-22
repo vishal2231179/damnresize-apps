@@ -59,7 +59,31 @@ Visit **[damnresize.in](https://damnresize.in/)** and choose the tool that match
    npx serve .
    ```
 
-The project has no required build step. Tailwind CSS and Font Awesome are loaded from CDNs, so an internet connection is needed for those assets.
+The static pages have no required build step. The contact form's email endpoint does require the separate Cloudflare Worker setup below. Tailwind CSS and Font Awesome are loaded from CDNs, so an internet connection is needed for those assets.
+
+### Contact form email setup
+
+The contact form sends messages through a Cloudflare Worker and Resend. Before deploying it:
+
+1. Verify `damnresize.in` as a sending domain in Resend and add the DNS records Resend provides in Cloudflare. Do not create a second SPF record for the same hostname; merge SPF mechanisms if Resend requires one.
+2. Create a Cloudflare Turnstile widget for the `damnresize.in` hostname. Replace `YOUR_CLOUDFLARE_TURNSTILE_SITE_KEY` in `contact.html` with its site key.
+3. In a terminal with Node.js installed, run `npx wrangler login` from the project folder.
+4. Set both private keys as Worker secrets:
+
+   ```bash
+   npx wrangler secret put RESEND_API_KEY --config contact-worker/wrangler.toml
+   npx wrangler secret put TURNSTILE_SECRET_KEY --config contact-worker/wrangler.toml
+   ```
+
+5. Deploy the Worker:
+
+   ```bash
+   npx wrangler deploy --config contact-worker/wrangler.toml
+   ```
+
+The Worker route expects the website to be served from `https://damnresize.in` through Cloudflare. `CONTACT_TO_EMAIL` defaults to `support@damnresize.in`, which must already forward to an inbox through Cloudflare Email Routing. Change it in `contact-worker/wrangler.toml` if needed. The message sender is `support@damnresize.in`; visitors' addresses are set as Reply-To. Never put either secret key in website HTML or JavaScript.
+
+After deployment, submit a test message from the live Contact page and confirm it reaches the forwarded inbox. Form submissions contain personal contact details; see the [Privacy Policy](privacy.html).
 
 ## Project structure
 
@@ -79,9 +103,12 @@ The project has no required build step. Tailwind CSS and Font Awesome are loaded
 ├── *-to-*.html               # Individual PDF conversion tools
 ├── privacy.html              # Privacy policy
 ├── about.html                # About the project
-├── contact.html              # Contact details
+├── contact.html              # Contact form and support details
 ├── terms.html                # Terms of use
 ├── navigation.js             # Shared navigation behavior and styles
+├── contact-worker/
+│   ├── worker.js             # Contact form email endpoint
+│   └── wrangler.toml         # Cloudflare Worker configuration
 ├── sitemap.xml               # Search-engine sitemap
 └── robots.txt                # Crawler rules and sitemap location
 ```

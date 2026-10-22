@@ -10,6 +10,7 @@
     <link rel="canonical" href="https://damnresize.in/contact.html">
     <link rel="icon" href="/favicon.png" type="image/png" sizes="96x96">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
     <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-3" style="visibility:hidden">
@@ -24,11 +25,46 @@
             <h1 class="mb-4 text-3xl font-extrabold tracking-tight md:text-5xl">Contact DamnResize.in</h1>
             <p class="mx-auto max-w-xl text-slate-400">Questions, feedback, or a problem using a tool? Email us and include the page name and a short description. Please do not email sensitive identity documents or passwords.</p>
         </div>
-        <div class="rounded-3xl border border-slate-800 bg-slate-900 p-8 text-center shadow-xl">
-            <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-500/10 text-2xl text-indigo-300" aria-hidden="true">@</div>
-            <h2 class="mb-2 text-xl font-bold text-white">Email support</h2>
-            <a href="mailto:support@damnresize.in" class="break-all text-lg font-semibold text-indigo-300 underline decoration-indigo-500/50 underline-offset-4 hover:text-indigo-200">support@damnresize.in</a>
-            <p class="mt-4 text-sm text-slate-400">For privacy questions, please mention “Privacy” in your subject line.</p>
+        <form id="contactForm" class="rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-xl md:p-8">
+            <div class="grid gap-5 sm:grid-cols-2">
+                <div>
+                    <label for="contactName" class="mb-2 block text-sm font-semibold text-slate-200">Your name</label>
+                    <input id="contactName" name="name" type="text" autocomplete="name" maxlength="100" required class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20">
+                </div>
+                <div>
+                    <label for="contactEmail" class="mb-2 block text-sm font-semibold text-slate-200">Email address</label>
+                    <input id="contactEmail" name="email" type="email" autocomplete="email" maxlength="254" required class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20">
+                </div>
+                <div class="sm:col-span-2">
+                    <label for="contactSubject" class="mb-2 block text-sm font-semibold text-slate-200">What is this about?</label>
+                    <select id="contactSubject" name="subject" required class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20">
+                        <option value="">Choose a topic</option>
+                        <option value="Tool help">Help with a tool</option>
+                        <option value="Website feedback">Website feedback</option>
+                        <option value="Privacy question">Privacy question</option>
+                        <option value="Business enquiry">Business enquiry</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="sm:col-span-2">
+                    <label for="contactMessage" class="mb-2 block text-sm font-semibold text-slate-200">Message</label>
+                    <textarea id="contactMessage" name="message" rows="6" maxlength="5000" required class="w-full resize-y rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20"></textarea>
+                    <p class="mt-2 text-xs text-slate-500">Please do not include passwords, payment details, or sensitive identity documents.</p>
+                </div>
+            </div>
+            <div class="absolute -left-[10000px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+                <label for="contactWebsite">Leave this field empty</label>
+                <input id="contactWebsite" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <div id="contactTurnstile" class="mt-6"></div>
+            <button id="contactSubmit" type="submit" class="mt-6 inline-flex min-h-12 items-center justify-center rounded-xl bg-indigo-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400 disabled:cursor-wait disabled:opacity-60">
+                Send message
+            </button>
+            <p id="contactStatus" class="mt-4 hidden rounded-xl border px-4 py-3 text-sm" role="status" aria-live="polite"></p>
+        </form>
+        <div class="mt-5 text-center text-sm text-slate-400">
+            <p>Prefer email? <a href="mailto:support@damnresize.in" class="font-semibold text-indigo-300 underline underline-offset-4 hover:text-indigo-200">support@damnresize.in</a></p>
+            <p class="mt-2">For privacy questions, select “Privacy question” above.</p>
         </div>
     </main>
     <footer class="border-t border-slate-800 bg-slate-900 px-6 py-6 text-center text-sm text-slate-500">
@@ -40,5 +76,74 @@
         </nav>
         <p>&copy; 2026 DamnResize.in. All rights reserved.</p>
     </footer>
+    <script>
+        const contactForm = document.querySelector('#contactForm');
+        const contactStatus = document.querySelector('#contactStatus');
+        const contactSubmit = document.querySelector('#contactSubmit');
+        const turnstileSiteKey = 'YOUR_CLOUDFLARE_TURNSTILE_SITE_KEY';
+        let turnstileWidgetId = null;
+
+        window.addEventListener('load', () => {
+            if (!window.turnstile || turnstileSiteKey === 'YOUR_CLOUDFLARE_TURNSTILE_SITE_KEY') return;
+            turnstileWidgetId = window.turnstile.render('#contactTurnstile', {
+                sitekey: turnstileSiteKey
+            });
+        });
+
+        contactForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            if (!window.turnstile || turnstileWidgetId === null) {
+                contactStatus.textContent = 'The contact form is not configured yet. Please email support@damnresize.in.';
+                contactStatus.className = 'mt-4 rounded-xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200';
+                return;
+            }
+            const turnstileToken = window.turnstile.getResponse(turnstileWidgetId);
+            if (!turnstileToken) {
+                contactStatus.textContent = 'Please complete the verification before sending your message.';
+                contactStatus.className = 'mt-4 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-200';
+                return;
+            }
+
+            contactSubmit.disabled = true;
+            contactSubmit.textContent = 'Sending...';
+            contactStatus.className = 'mt-4 hidden rounded-xl border px-4 py-3 text-sm';
+            contactStatus.textContent = '';
+
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ...Object.fromEntries(new FormData(contactForm)),
+                        turnstileToken
+                    })
+                });
+                let result;
+                try {
+                    result = await response.json();
+                } catch {
+                    throw new Error('The contact service returned an invalid response. Please try again later or email support@damnresize.in.');
+                }
+                if (!response.ok) {
+                    throw new Error(result.error || 'Your message could not be sent. Please try again.');
+                }
+
+                contactForm.reset();
+                window.turnstile.reset(turnstileWidgetId);
+                contactStatus.textContent = 'Thanks! Your message has been sent. We will get back to you by email.';
+                contactStatus.classList.remove('hidden');
+                contactStatus.classList.add('border-emerald-500/40', 'bg-emerald-500/10', 'text-emerald-200');
+            } catch (error) {
+                contactStatus.textContent = error instanceof TypeError
+                    ? 'We could not reach the contact service. Please try again later or email support@damnresize.in.'
+                    : error.message;
+                contactStatus.classList.remove('hidden');
+                contactStatus.classList.add('border-rose-500/40', 'bg-rose-500/10', 'text-rose-200');
+            } finally {
+                contactSubmit.disabled = false;
+                contactSubmit.textContent = 'Send message';
+            }
+        });
+    </script>
 </body>
 </html>
