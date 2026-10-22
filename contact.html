@@ -122,7 +122,14 @@
                 try {
                     result = await response.json();
                 } catch {
-                    throw new Error('The contact service returned an invalid response. Please try again later or email support@damnresize.in.');
+                    const requestId = response.headers.get('X-Request-ID');
+                    const cfRay = response.headers.get('CF-Ray');
+                    const reference = requestId
+                        ? ` Worker reference: ${requestId}.`
+                        : cfRay
+                            ? ` Cloudflare Ray ID: ${cfRay}.`
+                            : '';
+                    throw new Error(`The contact service returned an invalid response (HTTP ${response.status}).${reference} Please check the Worker deployment and logs, or email support@damnresize.in.`);
                 }
                 if (!response.ok) {
                     const reference = result.reference ? ` Reference: ${result.reference}.` : '';
@@ -130,7 +137,6 @@
                 }
 
                 contactForm.reset();
-                window.turnstile.reset(turnstileWidgetId);
                 contactStatus.textContent = 'Thanks! Your message has been sent. We will get back to you by email.';
                 contactStatus.classList.remove('hidden');
                 contactStatus.classList.add('border-emerald-500/40', 'bg-emerald-500/10', 'text-emerald-200');
@@ -141,6 +147,7 @@
                 contactStatus.classList.remove('hidden');
                 contactStatus.classList.add('border-rose-500/40', 'bg-rose-500/10', 'text-rose-200');
             } finally {
+                window.turnstile.reset(turnstileWidgetId);
                 contactSubmit.disabled = false;
                 contactSubmit.textContent = 'Send message';
             }

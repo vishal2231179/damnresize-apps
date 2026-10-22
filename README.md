@@ -63,26 +63,25 @@ The static pages have no required build step. The contact form's email endpoint 
 
 ### Contact form email setup
 
-The contact form sends messages through a Cloudflare Worker and Cloudflare Email Service. Before deploying it:
+The contact form sends messages through a Cloudflare Worker and Resend. Before deploying it:
 
-1. In Cloudflare Email Routing, add and verify the destination inbox where you want to receive submissions, then create a rule forwarding `support@damnresize.in` to that address.
-2. In Cloudflare Email Sending, onboard `damnresize.in` and complete the DNS setup Cloudflare provides.
-3. Create a Cloudflare Turnstile widget that allows the `damnresize.in` hostname. Configure its public site key in `contact.html`; keep its secret key private.
-4. In a terminal with Node.js installed, run `npx wrangler login` from the project folder.
-5. Set the recipient inbox and Turnstile secret as Worker secrets:
+1. Verify `damnresize.in` as a sending domain in Resend and add the DNS records Resend provides in Cloudflare. Do not create a second SPF record for the same hostname; merge SPF mechanisms if Resend requires one.
+2. Create a Cloudflare Turnstile widget for the `damnresize.in` hostname. Replace `YOUR_CLOUDFLARE_TURNSTILE_SITE_KEY` in `contact.html` with its site key.
+3. In a terminal with Node.js installed, run `npx wrangler login` from the project folder.
+4. Set both private keys as Worker secrets:
 
    ```bash
-   npx wrangler secret put CONTACT_TO_EMAIL --config contact-worker/wrangler.toml
+   npx wrangler secret put RESEND_API_KEY --config contact-worker/wrangler.toml
    npx wrangler secret put TURNSTILE_SECRET_KEY --config contact-worker/wrangler.toml
    ```
 
-6. Deploy the Worker:
+5. Deploy the Worker:
 
    ```bash
    npx wrangler deploy --config contact-worker/wrangler.toml
    ```
 
-The Worker route supports the website at both `https://damnresize.in` and `https://www.damnresize.in` through Cloudflare. Cloudflare Email Routing forwards incoming messages for `support@damnresize.in`; the contact form sends to the verified inbox stored in the `CONTACT_TO_EMAIL` Worker secret. The sender address is `support@damnresize.in`, and visitors' addresses are set as Reply-To. No Resend account or API key is needed. Never put Worker secrets in website HTML or JavaScript.
+The Worker route expects the website to be served from `https://damnresize.in` through Cloudflare. `CONTACT_TO_EMAIL` defaults to `support@damnresize.in`, which must already forward to an inbox through Cloudflare Email Routing. Change it in `contact-worker/wrangler.toml` if needed. The message sender is `support@damnresize.in`; visitors' addresses are set as Reply-To. Never put either secret key in website HTML or JavaScript.
 
 After deployment, submit a test message from the live Contact page and confirm it reaches the forwarded inbox. Failed requests show a reference ID; search the Worker logs for the same ID to find the server-side cause. Form submissions contain personal contact details; see the [Privacy Policy](privacy.html).
 
