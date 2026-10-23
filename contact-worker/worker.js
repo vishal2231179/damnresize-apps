@@ -7,14 +7,15 @@ const ALLOWED_SUBJECTS = new Set([
     'Other'
 ]);
 
-function jsonResponse(body, status, origin) {
+function jsonResponse(body, status, origin, requestId) {
     return new Response(JSON.stringify(body), {
         status,
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
             'Cache-Control': 'no-store',
             'Access-Control-Allow-Origin': origin,
-            'Vary': 'Origin'
+            'Vary': 'Origin',
+            'X-Request-ID': requestId
         }
     });
 }
@@ -54,6 +55,7 @@ async function readLimitedBody(request) {
 export default {
     async fetch(request, env) {
         const url = new URL(request.url);
+        const requestId = crypto.randomUUID();
         if (url.pathname !== '/api/contact') {
             return new Response('Not found', { status: 404 });
         }
@@ -63,14 +65,19 @@ export default {
                 headers: { Allow: 'POST' }
             });
         }
-        if (!env.ALLOWED_ORIGIN || request.headers.get('Origin') !== env.ALLOWED_ORIGIN) {
-            return jsonResponse({ error: 'Request origin is not allowed.' }, 403, env.ALLOWED_ORIGIN || 'null');
+        const allowedOrigins = (env.ALLOWED_ORIGIN || '')
+            .split(',')
+            .map(origin => origin.trim())
+            .filter(Boolean);
+        const origin = request.headers.get('Origin');
+        if (!origin || !allowedOrigins.includes(origin)) {
+            return jsonResponse({ error: 'Request origin is not allowed.', reference: requestId }, 403, 'null', requestId);
         }
         if (!request.headers.get('Content-Type')?.toLowerCase().startsWith('application/json')) {
-            return jsonResponse({ error: 'Expected a JSON request.' }, 415, env.ALLOWED_ORIGIN);
+            return jsonResponse({ error: 'Expected a JSON request.', reference: requestId }, 415, origin, requestId);
         }
         if (Number(request.headers.get('Content-Length')) > MAX_BODY_BYTES) {
-            return jsonResponse({ error: 'Message is too long.' }, 413, env.ALLOWED_ORIGIN);
+            return jsonResponse({ error: 'Message is too long.', reference: requestId }, 413, origin, requestId);
         }
 
         let data;
@@ -78,20 +85,20 @@ export default {
             data = JSON.parse(await readLimitedBody(request));
         } catch (error) {
             if (error instanceof RangeError) {
-                return jsonResponse({ error: 'Message is too long.' }, 413, env.ALLOWED_ORIGIN);
+                return jsonResponse({ error: 'Message is too long.', reference: requestId }, 413, origin, requestId);
             }
             if (error instanceof SyntaxError) {
-                return jsonResponse({ error: 'Invalid form submission.' }, 400, env.ALLOWED_ORIGIN);
+                return jsonResponse({ error: 'Invalid form submission.', reference: requestId }, 400, origin, requestId);
             }
-            console.error('Could not read contact form request:', error);
-            return jsonResponse({ error: 'Could not read your message. Please try again.' }, 400, env.ALLOWED_ORIGIN);
+            console.error(`Could not read contact form request [${requestId}]:`, error);
+            return jsonResponse({ error: 'Could not read your message. Please try again.', reference: requestId }, 400, origin, requestId);
         }
 
         if (!data || typeof data !== 'object' || Array.isArray(data)) {
-            return jsonResponse({ error: 'Invalid form submission.' }, 400, env.ALLOWED_ORIGIN);
+            return jsonResponse({ error: 'Invalid form submission.', reference: requestId }, 400, origin, requestId);
         }
         if (typeof data.website === 'string' && data.website.trim()) {
-            return jsonResponse({ ok: true }, 200, env.ALLOWED_ORIGIN);
+            return jsonResponse({ ok: true }, 200, origin, requestId);
         }
 
         const name = typeof data.name === 'string' ? data.name.trim() : '';
@@ -104,16 +111,18 @@ export default {
             !ALLOWED_SUBJECTS.has(subject) ||
             !message || message.length > 5000
         ) {
-            return jsonResponse({ error: 'Please check the form fields and try again.' }, 400, env.ALLOWED_ORIGIN);
+            return jsonResponse({ error: 'Please check the form fields and try again.', reference: requestId }, 400, origin, requestId);
         }
 
-        if (!env.RESEND_API_KEY || !env.CONTACT_FROM_EMAIL || !env.CONTACT_TO_EMAIL || !env.TURNSTILE_SECRET_KEY) {
-            console.error('Contact service is missing required environment configuration.');
-            return jsonResponse({ error: 'The contact service is not configured yet.' }, 503, env.ALLOWED_ORIGIN);
+        const missingConfiguration = ['RESEND_API_KEY', 'CONTACT_FROM_EMAIL', 'CONTACT_TO_EMAIL', 'TURNSTILE_SECRET_KEY']
+            .filter(key => !env[key]);
+        if (missingConfiguration.length) {
+            console.error(`Contact service is missing required environment configuration: ${missingConfiguration.join(', ')} [${requestId}].`);
+            return jsonResponse({ error: 'The contact service is not configured yet.', reference: requestId }, 503, origin, requestId);
         }
 
         if (typeof data.turnstileToken !== 'string' || !data.turnstileToken || data.turnstileToken.length > 2048) {
-            return jsonResponse({ error: 'Please complete the verification and try again.' }, 400, env.ALLOWED_ORIGIN);
+            return jsonResponse({ error: 'Please complete the verification and try again.', reference: requestId }, 400, origin, requestId);
         }
 
         let verificationResponse;
@@ -130,24 +139,25 @@ export default {
                 body: verificationBody
             });
         } catch (error) {
-            console.error('Turnstile verification request failed:', error);
-            return jsonResponse({ error: 'Verification is temporarily unavailable. Please try again later.' }, 502, env.ALLOWED_ORIGIN);
+            console.error(`Turnstile verification request failed [${requestId}]:`, error);
+            return jsonResponse({ error: 'Verification is temporarily unavailable. Please try again later.', reference: requestId }, 502, origin, requestId);
         }
 
         if (!verificationResponse.ok) {
-            console.error('Turnstile verification returned status:', verificationResponse.status);
-            return jsonResponse({ error: 'Verification is temporarily unavailable. Please try again later.' }, 502, env.ALLOWED_ORIGIN);
+            console.error(`Turnstile verification returned status ${verificationResponse.status} [${requestId}].`);
+            return jsonResponse({ error: 'Verification is temporarily unavailable. Please try again later.', reference: requestId }, 502, origin, requestId);
         }
 
         let verification;
         try {
             verification = await verificationResponse.json();
         } catch (error) {
-            console.error('Turnstile returned an invalid verification response:', error);
-            return jsonResponse({ error: 'Verification is temporarily unavailable. Please try again later.' }, 502, env.ALLOWED_ORIGIN);
+            console.error(`Turnstile returned an invalid verification response [${requestId}]:`, error);
+            return jsonResponse({ error: 'Verification is temporarily unavailable. Please try again later.', reference: requestId }, 502, origin, requestId);
         }
-        if (!verification.success || verification.hostname !== new URL(env.ALLOWED_ORIGIN).hostname) {
-            return jsonResponse({ error: 'Verification failed. Please try again.' }, 400, env.ALLOWED_ORIGIN);
+        if (!verification.success || verification.hostname !== new URL(origin).hostname) {
+            console.error(`Turnstile verification failed for hostname ${verification.hostname || 'unknown'} [${requestId}].`);
+            return jsonResponse({ error: 'Verification failed. Please try again.', reference: requestId }, 400, origin, requestId);
         }
 
         let providerResponse;
@@ -167,15 +177,18 @@ export default {
                 })
             });
         } catch (error) {
-            console.error('Contact email provider request failed:', error);
-            return jsonResponse({ error: 'Email delivery is temporarily unavailable. Please try again later.' }, 502, env.ALLOWED_ORIGIN);
+            const details = error instanceof Error
+                ? { name: error.name, message: error.message }
+                : { message: String(error) };
+            console.error(`Contact email provider request failed [${requestId}]:`, details);
+            return jsonResponse({ error: 'Email delivery is temporarily unavailable. Please try again later.', reference: requestId }, 502, origin, requestId);
         }
 
         if (!providerResponse.ok) {
-            console.error('Contact email provider returned status:', providerResponse.status);
-            return jsonResponse({ error: 'Email delivery failed. Please try again later.' }, 502, env.ALLOWED_ORIGIN);
+            console.error(`Contact email provider returned status ${providerResponse.status} [${requestId}].`);
+            return jsonResponse({ error: 'Email delivery failed. Please try again later.', reference: requestId }, 502, origin, requestId);
         }
 
-        return jsonResponse({ ok: true }, 200, env.ALLOWED_ORIGIN);
+        return jsonResponse({ ok: true }, 200, origin, requestId);
     }
 };

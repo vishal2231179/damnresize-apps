@@ -4,10 +4,11 @@ compatibility_date = "2026-10-22"
 workers_dev = false
 
 routes = [
-  { pattern = "damnresize.in/api/contact*", zone_name = "damnresize.in" }
+  { pattern = "damnresize.in/api/contact*", zone_name = "damnresize.in" },
+  { pattern = "www.damnresize.in/api/contact*", zone_name = "damnresize.in" }
 ]
 
 [vars]
-ALLOWED_ORIGIN = "https://damnresize.in"
+ALLOWED_ORIGIN = "https://damnresize.in,https://www.damnresize.in"
 CONTACT_FROM_EMAIL = "DamnResize Support <support@damnresize.in>"
 CONTACT_TO_EMAIL = "support@damnresize.in"
