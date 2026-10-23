@@ -114,10 +114,15 @@ export default {
             return jsonResponse({ error: 'Please check the form fields and try again.', reference: requestId }, 400, origin, requestId);
         }
 
+<<<<<<< HEAD
         const missingConfiguration = ['RESEND_API_KEY', 'CONTACT_FROM_EMAIL', 'CONTACT_TO_EMAIL', 'TURNSTILE_SECRET_KEY']
             .filter(key => !env[key]);
         if (missingConfiguration.length) {
             console.error(`Contact service is missing required environment configuration: ${missingConfiguration.join(', ')} [${requestId}].`);
+=======
+        if (!env.RESEND_API_KEY || !env.CONTACT_FROM_EMAIL || !env.CONTACT_TO_EMAIL || !env.TURNSTILE_SECRET_KEY) {
+            console.error(`Contact service is missing required environment configuration [${requestId}].`);
+>>>>>>> 4d6090736cda412c1b8326e4d2fc60371b789efa
             return jsonResponse({ error: 'The contact service is not configured yet.', reference: requestId }, 503, origin, requestId);
         }
 

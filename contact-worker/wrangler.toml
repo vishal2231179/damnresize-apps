@@ -11,4 +11,3 @@ routes = [
 [vars]
 ALLOWED_ORIGIN = "https://damnresize.in,https://www.damnresize.in"
 CONTACT_FROM_EMAIL = "DamnResize Support <support@damnresize.in>"
-CONTACT_TO_EMAIL = "support@damnresize.in"

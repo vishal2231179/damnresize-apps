@@ -83,7 +83,7 @@ The contact form sends messages through a Cloudflare Worker and Resend. Before d
 
 The Worker route expects the website to be served from `https://damnresize.in` through Cloudflare. `CONTACT_TO_EMAIL` defaults to `support@damnresize.in`, which must already forward to an inbox through Cloudflare Email Routing. Change it in `contact-worker/wrangler.toml` if needed. The message sender is `support@damnresize.in`; visitors' addresses are set as Reply-To. Never put either secret key in website HTML or JavaScript.
 
-After deployment, submit a test message from the live Contact page and confirm it reaches the forwarded inbox. Form submissions contain personal contact details; see the [Privacy Policy](privacy.html).
+After deployment, submit a test message from the live Contact page and confirm it reaches the forwarded inbox. Failed requests show a reference ID; search the Worker logs for the same ID to find the server-side cause. Form submissions contain personal contact details; see the [Privacy Policy](privacy.html).
 
 ## Project structure
 
