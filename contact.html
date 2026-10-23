@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="intro.js?v=20261021"></script>
-    <script src="navigation.js?v=20261021" defer></script>
+    <script src="navigation.js?v=20261024" defer></script>
     <title>Contact DamnResize.in</title>
     <meta name="description" content="Contact DamnResize.in for help with a tool, website feedback, privacy questions, or business enquiries.">
     <link rel="canonical" href="https://damnresize.in/contact.html">
@@ -63,7 +63,7 @@
             <p id="contactStatus" class="mt-4 hidden rounded-xl border px-4 py-3 text-sm" role="status" aria-live="polite"></p>
         </form>
         <div class="mt-5 text-center text-sm text-slate-400">
-            <p>Prefer email? <a href="mailto:support@damnresize.in" class="font-semibold text-indigo-300 underline underline-offset-4 hover:text-indigo-200">support@damnresize.in</a></p>
+            <p>Use the contact form above to send us a message.</p>
             <p class="mt-2">For privacy questions, select “Privacy question” above.</p>
         </div>
     </main>
@@ -93,7 +93,7 @@
         contactForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             if (!window.turnstile || turnstileWidgetId === null) {
-                contactStatus.textContent = 'The contact form is not configured yet. Please email support@damnresize.in.';
+                contactStatus.textContent = 'The contact form is not configured yet. Please try again later.';
                 contactStatus.className = 'mt-4 rounded-xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200';
                 return;
             }
@@ -129,7 +129,7 @@
                         : cfRay
                             ? ` Cloudflare Ray ID: ${cfRay}.`
                             : '';
-                    throw new Error(`The contact service returned an invalid response (HTTP ${response.status}).${reference} Please check the Worker deployment and logs, or email support@damnresize.in.`);
+                    throw new Error(`The contact service returned an invalid response (HTTP ${response.status}).${reference} Please check the Worker deployment and logs.`);
                 }
                 if (!response.ok) {
                     const reference = result.reference ? ` Reference: ${result.reference}.` : '';
@@ -142,7 +142,7 @@
                 contactStatus.classList.add('border-emerald-500/40', 'bg-emerald-500/10', 'text-emerald-200');
             } catch (error) {
                 contactStatus.textContent = error instanceof TypeError
-                    ? 'We could not reach the contact service. Please try again later or email support@damnresize.in.'
+                    ? 'We could not reach the contact service. Please try again later.'
                     : error.message;
                 contactStatus.classList.remove('hidden');
                 contactStatus.classList.add('border-rose-500/40', 'bg-rose-500/10', 'text-rose-200');

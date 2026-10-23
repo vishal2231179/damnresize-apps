@@ -126,7 +126,7 @@ After deployment, submit a test message from the live Contact page and confirm i
 - Exam and application rules can change. Presets are starting points, not official requirements or a guarantee of acceptance; follow the current notice from the relevant organization.
 - DamnResize.in is an independent utility website and is not affiliated with government departments, exam authorities, or recruitment organizations.
 - Processing and privacy behavior may differ between tools. Review the [Privacy Policy](privacy.html) and the information on the specific tool page.
-- Contact: [support@damnresize.in](mailto:support@damnresize.in)
+- Contact: [contact form](contact.html)
 
 ## License
 
