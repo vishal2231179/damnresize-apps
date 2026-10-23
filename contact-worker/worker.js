@@ -1,3 +1,5 @@
+import { EmailMessage } from 'cloudflare:email';
+
 const MAX_BODY_BYTES = 25_000;
 const ALLOWED_SUBJECTS = new Set([
     'Tool help',
@@ -6,6 +8,13 @@ const ALLOWED_SUBJECTS = new Set([
     'Business enquiry',
     'Other'
 ]);
+
+function toBase64(text) {
+    const bytes = new TextEncoder().encode(text);
+    let binary = '';
+    for (const b of bytes) binary += String.fromCharCode(b);
+    return btoa(binary);
+}
 
 function jsonResponse(body, status, origin, requestId) {
     return new Response(JSON.stringify(body), {
@@ -114,7 +123,7 @@ export default {
             return jsonResponse({ error: 'Please check the form fields and try again.', reference: requestId }, 400, origin, requestId);
         }
 
-        const missingConfiguration = ['RESEND_API_KEY', 'CONTACT_FROM_EMAIL', 'CONTACT_TO_EMAIL', 'TURNSTILE_SECRET_KEY']
+        const missingConfiguration = ['CONTACT_FROM_EMAIL', 'CONTACT_TO_EMAIL', 'TURNSTILE_SECRET_KEY', 'CONTACT_EMAIL']
             .filter(key => !env[key]);
         if (missingConfiguration.length) {
             console.error(`Contact service is missing required environment configuration: ${missingConfiguration.join(', ')} [${requestId}].`);
@@ -160,32 +169,32 @@ export default {
             return jsonResponse({ error: 'Verification failed. Please try again.', reference: requestId }, 400, origin, requestId);
         }
 
-        let providerResponse;
         try {
-            providerResponse = await fetch('https://api.resend.com/emails', {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${env.RESEND_API_KEY}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    from: env.CONTACT_FROM_EMAIL,
-                    to: [env.CONTACT_TO_EMAIL],
-                    reply_to: email,
-                    subject: `DamnResize contact: ${subject}`,
-                    text: `Name: ${name}\nEmail: ${email}\nTopic: ${subject}\n\n${message}`
-                })
-            });
+            const safeSubject = subject.replace(/[\r\n]/g, ' ');
+            const safeName = name.replace(/["<>]/g, '');
+            const fromAddress = env.CONTACT_FROM_EMAIL;
+            const body = `Name: ${name}\nEmail: ${email}\nTopic: ${subject}\n\n${message}`;
+            const encodedSubject = `=?UTF-8?B?${toBase64(`DamnResize contact: ${safeSubject}`)}?=`;
+            const encodedBody = toBase64(body).replace(/.{1,76}/g, '$&\r\n').trim();
+            const raw = [
+                `From: DamnResize Contact <${fromAddress}>`,
+                `To: ${env.CONTACT_TO_EMAIL}`,
+                `Reply-To: ${safeName} <${email}>`,
+                `Subject: ${encodedSubject}`,
+                `Message-ID: <${requestId}@damnresize.in>`,
+                `Date: ${new Date().toUTCString()}`,
+                'MIME-Version: 1.0',
+                'Content-Type: text/plain; charset=UTF-8',
+                'Content-Transfer-Encoding: base64',
+                '',
+                encodedBody
+            ].join('\r\n');
+            await env.CONTACT_EMAIL.send(new EmailMessage(fromAddress, env.CONTACT_TO_EMAIL, raw));
         } catch (error) {
             const details = error instanceof Error
                 ? { name: error.name, message: error.message }
                 : { message: String(error) };
-            console.error(`Contact email provider request failed [${requestId}]:`, details);
-            return jsonResponse({ error: 'Email delivery is temporarily unavailable. Please try again later.', reference: requestId }, 502, origin, requestId);
-        }
-
-        if (!providerResponse.ok) {
-            console.error(`Contact email provider returned status ${providerResponse.status} [${requestId}].`);
+            console.error(`Contact email send failed [${requestId}]:`, details);
             return jsonResponse({ error: 'Email delivery failed. Please try again later.', reference: requestId }, 502, origin, requestId);
         }
 
