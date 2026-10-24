@@ -164,10 +164,33 @@ export default {
             console.error(`Turnstile returned an invalid verification response [${requestId}]:`, error);
             return jsonResponse({ error: 'Verification is temporarily unavailable. Please try again later.', reference: requestId }, 502, origin, requestId);
         }
-        if (!verification.success || verification.hostname !== new URL(origin).hostname) {
-            console.error(`Turnstile verification failed for hostname ${verification.hostname || 'unknown'} [${requestId}].`);
-            return jsonResponse({ error: 'Verification failed. Please try again.', reference: requestId }, 400, origin, requestId);
-        }
+console.log("Origin:", origin);
+console.log("Verification:", JSON.stringify(verification));
+
+const allowedHostnames = [
+  "damnresize.in",
+  "www.damnresize.in"
+];
+
+if (
+  !verification.success ||
+  (verification.hostname &&
+   !allowedHostnames.includes(verification.hostname))
+) {
+    console.error(
+      `Turnstile verification failed: ${JSON.stringify(verification)} [${requestId}]`
+    );
+
+    return jsonResponse(
+      {
+        error: 'Verification failed. Please try again.',
+        reference: requestId
+      },
+      400,
+      origin,
+      requestId
+    );
+}
 
         try {
             const safeSubject = subject.replace(/[\r\n]/g, ' ');
