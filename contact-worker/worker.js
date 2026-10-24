@@ -156,71 +156,44 @@ export default {
             console.error(`Turnstile verification returned status ${verificationResponse.status} [${requestId}].`);
             return jsonResponse({ error: 'Verification is temporarily unavailable. Please try again later.', reference: requestId }, 502, origin, requestId);
         }
-
-        let verification;
-        try {
-            verification = await verificationResponse.json();
-        } catch (error) {
-            console.error(`Turnstile returned an invalid verification response [${requestId}]:`, error);
-            return jsonResponse({ error: 'Verification is temporarily unavailable. Please try again later.', reference: requestId }, 502, origin, requestId);
-        }
-console.log("Origin:", origin);
-console.log("Verification:", JSON.stringify(verification));
-
-const allowedHostnames = [
-  "damnresize.in",
-  "www.damnresize.in"
-];
-
-if (
-  !verification.success ||
-  (verification.hostname &&
-   !allowedHostnames.includes(verification.hostname))
-) {
-    console.error(
-      `Turnstile verification failed: ${JSON.stringify(verification)} [${requestId}]`
-    );
-
+let verification;
+try {
+    verification = await verificationResponse.json();
+} catch (error) {
+    console.error(`Turnstile returned an invalid verification response [${requestId}]:`, error);
     return jsonResponse(
-      {
-        error: 'Verification failed. Please try again.',
-        reference: requestId
-      },
-      400,
-      origin,
-      requestId
+        {
+            error: 'Verification is temporarily unavailable. Please try again later.',
+            reference: requestId
+        },
+        502,
+        origin,
+        requestId
     );
 }
 
-        try {
-            const safeSubject = subject.replace(/[\r\n]/g, ' ');
-            const safeName = name.replace(/["<>]/g, '');
-            const fromAddress = env.CONTACT_FROM_EMAIL;
-            const body = `Name: ${name}\nEmail: ${email}\nTopic: ${subject}\n\n${message}`;
-            const encodedSubject = `=?UTF-8?B?${toBase64(`DamnResize contact: ${safeSubject}`)}?=`;
-            const encodedBody = toBase64(body).replace(/.{1,76}/g, '$&\r\n').trim();
-            const raw = [
-                `From: DamnResize Contact <${fromAddress}>`,
-                `To: ${env.CONTACT_TO_EMAIL}`,
-                `Reply-To: ${safeName} <${email}>`,
-                `Subject: ${encodedSubject}`,
-                `Message-ID: <${requestId}@damnresize.in>`,
-                `Date: ${new Date().toUTCString()}`,
-                'MIME-Version: 1.0',
-                'Content-Type: text/plain; charset=UTF-8',
-                'Content-Transfer-Encoding: base64',
-                '',
-                encodedBody
-            ].join('\r\n');
-            await env.CONTACT_EMAIL.send(new EmailMessage(fromAddress, env.CONTACT_TO_EMAIL, raw));
-        } catch (error) {
-            const details = error instanceof Error
-                ? { name: error.name, message: error.message }
-                : { message: String(error) };
-            console.error(`Contact email send failed [${requestId}]:`, details);
-            return jsonResponse({ error: 'Email delivery failed. Please try again later.', reference: requestId }, 502, origin, requestId);
-        }
+console.log("TURNSTILE_DEBUG:", JSON.stringify(verification));
 
-        return jsonResponse({ ok: true }, 200, origin, requestId);
-    }
-};
+const allowedHostnames = [
+    "damnresize.in",
+    "www.damnresize.in"
+];
+
+if (
+    !verification.success ||
+    (
+        verification.hostname &&
+        !allowedHostnames.includes(verification.hostname)
+    )
+) {
+    return jsonResponse(
+        {
+            error: 'Verification failed.',
+            verification,
+            reference: requestId
+        },
+        400,
+        origin,
+        requestId
+    );
+}
