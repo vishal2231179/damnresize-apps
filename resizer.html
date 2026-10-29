@@ -39,14 +39,14 @@
     <section class="py-10 px-6 max-w-3xl mx-auto w-full flex-grow">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
             <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            
+
             <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-expand text-indigo-400"></i> Upload & Resize Image
             </h2>
-            
+
             <!-- File Input -->
             <div class="mb-6">
-                <label class="block text-sm font-medium text-slate-300 mb-2">Select Image File</label>
+                <label for="imageInput" class="block text-sm font-medium text-slate-300 mb-2">Select Image File</label>
                 <input type="file" id="imageInput" accept="image/*" class="block w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer border border-slate-700 rounded-xl bg-slate-950 p-2"/>
             </div>
 
@@ -54,13 +54,18 @@
             <div id="editorWorkspace" class="hidden space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Width (px)</label>
-                        <input type="number" id="widthInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500"/>
+                        <label for="widthInput" class="block text-sm font-medium text-slate-300 mb-1">Width (px)</label>
+                        <input type="number" id="widthInput" min="1" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500"/>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Height (px)</label>
-                        <input type="number" id="heightInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500"/>
+                        <label for="heightInput" class="block text-sm font-medium text-slate-300 mb-1">Height (px)</label>
+                        <input type="number" id="heightInput" min="1" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500"/>
                     </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="lockRatio" checked class="w-4 h-4 accent-indigo-500 rounded cursor-pointer"/>
+                    <label for="lockRatio" class="text-xs text-slate-300 cursor-pointer select-none">Lock aspect ratio (keep proportions)</label>
                 </div>
 
                 <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-2xl p-6 bg-slate-950/50 min-h-[180px]">
@@ -79,8 +84,56 @@
         </div>
     </section>
 
+    <!-- SEO Content Section -->
+    <section class="py-12 px-6 max-w-4xl mx-auto w-full text-slate-400 text-sm space-y-4 border-t border-slate-900">
+        <h2 class="text-lg font-semibold text-white">Why use DamnResize Image Resizer?</h2>
+        <p>Online forms, job portals, social profiles and websites often require images in specific pixel dimensions. This free image resizer changes the width and height of JPG, PNG and WebP images directly in your browser. Your image is processed on your device and is not uploaded by this page. The resized image is downloaded as a JPEG file, so always preview it before using it.</p>
+
+        <h2 class="text-lg font-semibold text-white">How to resize an image online</h2>
+        <ol class="list-decimal pl-5 space-y-1">
+            <li>Click "Select Image File" and choose a JPG, PNG or WebP image.</li>
+            <li>Enter the new width or height in pixels. Keep "Lock aspect ratio" selected to avoid stretching the image.</li>
+            <li>Click "Apply Dimensions" and check the preview.</li>
+            <li>Click "Download Resized Image" to save the file.</li>
+        </ol>
+
+        <h2 class="text-lg font-semibold text-white">Need a specific file size too?</h2>
+        <p>Resizing changes the pixel dimensions, and this usually lowers the file size as well. If you also need to stay under a limit in KB, use the <a href="/compress.html" class="text-indigo-300 underline underline-offset-4 hover:text-indigo-200">Image Compressor</a> after resizing. To remove unwanted edges first, use the <a href="/crop.html" class="text-indigo-300 underline underline-offset-4 hover:text-indigo-200">Crop Image</a> tool. For exam forms, try the <a href="/exams.html" class="text-indigo-300 underline underline-offset-4 hover:text-indigo-200">Govt Exam Photo &amp; Signature tool</a> and read the <a href="/ssc-photo-signature-guide.html" class="text-indigo-300 underline underline-offset-4 hover:text-indigo-200">SSC photo and signature guide</a>.</p>
+
+        <h2 class="text-lg font-semibold text-white">Frequently asked questions</h2>
+
+        <h3 class="font-semibold text-slate-200">Is this image resizer free?</h3>
+        <p>Yes. It is free to use, with no signup and no watermark.</p>
+
+        <h3 class="font-semibold text-slate-200">Is my image uploaded to a server?</h3>
+        <p>No. This page resizes the image in your browser using the canvas API, so your file stays on your device.</p>
+
+        <h3 class="font-semibold text-slate-200">Which image formats can I resize?</h3>
+        <p>You can upload JPG, PNG and WebP images. The resized image is downloaded as a JPEG file.</p>
+
+        <h3 class="font-semibold text-slate-200">Why does my image look stretched after resizing?</h3>
+        <p>This happens when the new width and height do not match the original proportions. Keep "Lock aspect ratio" selected, or crop the image first.</p>
+
+        <h3 class="font-semibold text-slate-200">Does resizing reduce image quality?</h3>
+        <p>Making an image smaller usually keeps it sharp, but enlarging it can make it look soft or blurry. Preview the result before you download it.</p>
+    </section>
+
     <!-- Footer -->
     <footer class="bg-slate-900 border-t border-slate-800 py-6 px-6 mt-auto text-center text-xs text-slate-500">
+        <nav class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs text-slate-400 mb-3" aria-label="Footer">
+            <a href="/" class="hover:text-indigo-300">Home</a>
+            <a href="/resizer.html" class="hover:text-indigo-300">Resize</a>
+            <a href="/compress.html" class="hover:text-indigo-300">Compress</a>
+            <a href="/crop.html" class="hover:text-indigo-300">Crop</a>
+            <a href="/convert.html" class="hover:text-indigo-300">Convert</a>
+            <a href="/exams.html" class="hover:text-indigo-300">Exam Photos</a>
+            <a href="/jpg-to-pdf.html" class="hover:text-indigo-300">JPG to PDF</a>
+            <a href="/pdf-to-word.html" class="hover:text-indigo-300">PDF to Word</a>
+            <a href="/about.html" class="hover:text-indigo-300">About</a>
+            <a href="/contact.html" class="hover:text-indigo-300">Contact</a>
+            <a href="/privacy.html" class="hover:text-indigo-300">Privacy</a>
+            <a href="/terms.html" class="hover:text-indigo-300">Terms</a>
+        </nav>
         <p>&copy; 2026 DamnResize.in. All rights reserved.</p>
     </footer>
 
@@ -89,6 +142,7 @@
         const imageInput = document.getElementById('imageInput');
         const widthInput = document.getElementById('widthInput');
         const heightInput = document.getElementById('heightInput');
+        const lockRatio = document.getElementById('lockRatio');
         const imagePreview = document.getElementById('imagePreview');
         const editorWorkspace = document.getElementById('editorWorkspace');
         const placeholderBox = document.getElementById('placeholderBox');
@@ -96,6 +150,7 @@
         const downloadBtn = document.getElementById('downloadBtn');
 
         let loadedImage = null;
+        let originalAspect = 1;
 
         imageInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -104,6 +159,7 @@
                 reader.onload = function(event) {
                     loadedImage = new Image();
                     loadedImage.onload = function() {
+                        originalAspect = loadedImage.width / loadedImage.height;
                         widthInput.value = loadedImage.width;
                         heightInput.value = loadedImage.height;
                         imagePreview.src = event.target.result;
@@ -117,6 +173,22 @@
             }
         });
 
+        widthInput.addEventListener('input', () => {
+            if (lockRatio.checked && loadedImage) {
+                const w = parseInt(widthInput.value);
+                if (w) heightInput.value = Math.round(w / originalAspect);
+            }
+            downloadBtn.classList.add('hidden');
+        });
+
+        heightInput.addEventListener('input', () => {
+            if (lockRatio.checked && loadedImage) {
+                const h = parseInt(heightInput.value);
+                if (h) widthInput.value = Math.round(h * originalAspect);
+            }
+            downloadBtn.classList.add('hidden');
+        });
+
         resizeBtn.addEventListener('click', () => {
             if (!loadedImage) return;
             const targetWidth = parseInt(widthInput.value) || loadedImage.width;
@@ -126,6 +198,11 @@
             canvas.width = targetWidth;
             canvas.height = targetHeight;
             const ctx = canvas.getContext('2d');
+            // White background so transparent PNGs do not turn black in JPEG
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, targetWidth, targetHeight);
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
             ctx.drawImage(loadedImage, 0, 0, targetWidth, targetHeight);
 
             const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
